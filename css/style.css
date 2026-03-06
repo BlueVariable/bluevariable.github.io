@@ -324,21 +324,21 @@ section { padding: 6rem 0; }
 
 /* ── Animated logo letters ───────────────────────── */
 @keyframes float-b {
-  0%, 100% { transform: translate(0px,  0px) rotate(-2deg); }
+  0%, 100% { transform: translate(0px,  0px) rotate(0deg); }
   35%       { transform: translate(-5px, -9px) rotate(-4deg); }
   70%       { transform: translate( 4px, -4px) rotate( 0deg); }
 }
 @keyframes float-l {
-  0%, 100% { transform: translate(0px,  0px) rotate(8deg); }
+  0%, 100% { transform: translate(0px,  0px) rotate(0deg); }
   50%       { transform: translate( 6px,-11px) rotate(6deg); }
 }
 @keyframes float-u {
-  0%, 100% { transform: translate(0px,  0px) rotate(-10deg); }
+  0%, 100% { transform: translate(0px,  0px) rotate(0deg); }
   40%       { transform: translate(-6px,  8px) rotate(-7deg); }
   75%       { transform: translate( 5px,  5px) rotate(-12deg); }
 }
 @keyframes float-e {
-  0%, 100% { transform: translate(0px,  0px) rotate(5deg); }
+  0%, 100% { transform: translate(0px,  0px) rotate(0deg); }
   45%       { transform: translate( 7px, -7px) rotate(8deg); }
 }
 @keyframes float-dot {
@@ -366,10 +366,10 @@ section { padding: 6rem 0; }
   opacity: 0.82;
 }
 
-.ll-b   { top: 0.1em;      left: 0.35em;      animation: float-b   5.2s ease-in-out infinite; }
-.ll-l   { top: 0.3em;      left: 1.25em;  animation: float-l   6.1s ease-in-out infinite 0.4s; }
-.ll-u   { top: 0.8em; left: 0.15em; animation: float-u  4.8s ease-in-out infinite 1.1s; }
-.ll-e   { top: 1.1em;  left: 1.05em; animation: float-e   5.5s ease-in-out infinite 0.7s; }
+.ll-b   { rotate:-2deg; top: 0.1em;      left: 0.35em;      animation: float-b   5.2s ease-in-out infinite; }
+.ll-l   { rotate:8deg; top: 0.3em;      left: 1.25em;  animation: float-l   6.1s ease-in-out infinite 0.4s; }
+.ll-u   { rotate:-10deg; top: 0.8em; left: 0.15em; animation: float-u  4.8s ease-in-out infinite 1.1s; }
+.ll-e   { rotate:5deg; top: 1.1em;  left: 1.05em; animation: float-e   5.5s ease-in-out infinite 0.7s; }
 
 .ll-dot {
   position: absolute;
