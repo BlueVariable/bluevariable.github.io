@@ -100,8 +100,8 @@ section { padding: 6rem 0; }
 }
 
 @keyframes ticker-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-25%); }
+  from { transform: translateX(0%); }
+  to   { transform: translateX(-34%); }
 }
 
 @keyframes float {
@@ -184,7 +184,7 @@ section { padding: 6rem 0; }
 .ticker-track {
   display: inline-flex;
   gap: 2.5rem;
-  animation: ticker-scroll 28s linear infinite;
+  animation: ticker-scroll 5s linear infinite;
   white-space: nowrap;
 }
 
@@ -350,7 +350,7 @@ section { padding: 6rem 0; }
   /* font-size IS the letter size — all em values share this base */
   font-size: clamp(80px, 11vw, 128px);
   position: relative;
-  width:  2.3em;
+  width:  3em;
   height: 2.6em;
   flex-shrink: 0;
   user-select: none;

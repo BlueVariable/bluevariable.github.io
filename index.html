@@ -9,11 +9,52 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .ticker-top,
+    .ticker-bottom {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      z-index: 200;
+    }
+
+    .ticker-top    { top: 0; }
+    .ticker-bottom { bottom: 0; }
+
+    .ticker-bottom .ticker-track {
+      animation-direction: reverse;
+    }
+
+    .uc-center {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .uc-label {
+      font-family: 'Instrument Sans', system-ui, sans-serif;
+      font-size: clamp(0.6rem, 1.4vw, 0.8rem);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ── Ticker ── -->
-  <div class="ticker" aria-hidden="true">
+  <!-- ── Top Ticker ── -->
+  <div class="ticker ticker-top" aria-hidden="true">
     <div class="ticker-track">
       <span>Coming 2027</span>
       <span class="ticker-sep">·</span>
@@ -23,7 +64,52 @@
       <span class="ticker-sep">·</span>
       <span>Indie Game Studio</span>
       <span class="ticker-sep">·</span>
-      <!-- Duplicate for seamless loop -->
+      <!-- duplicate for seamless loop -->
+      <span>Coming 2027</span>
+      <span class="ticker-sep">·</span>
+      <span>Under Construction</span>
+      <span class="ticker-sep">·</span>
+      <span>Blue Variable</span>
+      <span class="ticker-sep">·</span>
+      <span>Indie Game Studio</span>
+      <span class="ticker-sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span>Coming 2027</span>
+      <span class="ticker-sep">·</span>
+      <span>Under Construction</span>
+      <span class="ticker-sep">·</span>
+      <span>Blue Variable</span>
+      <span class="ticker-sep">·</span>
+      <span>Indie Game Studio</span>
+      <span class="ticker-sep">·</span>
+    </div>
+  </div>
+
+  <!-- ── Center ── -->
+  <div class="uc-center">
+    <div class="logo-letters anim d1" aria-hidden="true">
+      <span class="ll ll-b">b</span>
+      <span class="ll ll-l">l</span>
+      <span class="ll ll-u">u</span>
+      <span class="ll ll-e">e</span>
+      <span class="ll-dot"></span>
+    </div>
+    <div></div>
+    <div></div>
+    <p class="uc-label">Under Construction &nbsp;·&nbsp; Coming 2027</p>
+  </div>
+
+  <!-- ── Bottom Ticker ── -->
+  <div class="ticker ticker-bottom" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Coming 2027</span>
+      <span class="ticker-sep">·</span>
+      <span>Under Construction</span>
+      <span class="ticker-sep">·</span>
+      <span>Blue Variable</span>
+      <span class="ticker-sep">·</span>
+      <span>Indie Game Studio</span>
+      <span class="ticker-sep">·</span>
       <span>Coming 2027</span>
       <span class="ticker-sep">·</span>
       <span>Under Construction</span>
@@ -42,62 +128,6 @@
       <span class="ticker-sep">·</span>
     </div>
   </div>
-
-  <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-layout">
-        <div class="hero-text">
-        </div>
-        <div class="logo-letters anim d1" aria-hidden="true">
-          <span class="ll ll-b">b</span>
-          <span class="ll ll-l">l</span>
-          <span class="ll ll-u">u</span>
-          <span class="ll ll-e">e</span>
-          <span class="ll-dot"></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Ticker ── -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>Coming 2027</span>
-      <span class="ticker-sep">·</span>
-      <span>Under Construction</span>
-      <span class="ticker-sep">·</span>
-      <span>Blue Variable</span>
-      <span class="ticker-sep">·</span>
-      <span>Indie Game Studio</span>
-      <span class="ticker-sep">·</span>
-      <!-- Duplicate for seamless loop -->
-      <span>Coming 2027</span>
-      <span class="ticker-sep">·</span>
-      <span>Under Construction</span>
-      <span class="ticker-sep">·</span>
-      <span>Blue Variable</span>
-      <span class="ticker-sep">·</span>
-      <span>Indie Game Studio</span>
-      <span class="ticker-sep">·</span>
-      <span>Coming 2027</span>
-      <span class="ticker-sep">·</span>
-      <span>Under Construction</span>
-      <span class="ticker-sep">·</span>
-      <span>Blue Variable</span>
-      <span class="ticker-sep">·</span>
-      <span>Indie Game Studio</span>
-      <span class="ticker-sep">·</span>
-    </div>
-  </div>
-
-  <script>
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
-      { threshold: 0.12 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
 
 </body>
 </html>
