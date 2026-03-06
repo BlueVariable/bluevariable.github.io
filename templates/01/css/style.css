@@ -14,7 +14,7 @@
   --warm-pale: #FDF0E7;
   --muted:     #7A7385;
 
-  --ff-display: 'Inter', Georgia, serif;
+  --ff-display: 'Fraunces', Georgia, serif;
   --ff-body:    'Instrument Sans', system-ui, sans-serif;
 
   --max-w:     1080px;
@@ -101,7 +101,7 @@ section { padding: 6rem 0; }
 
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-25%); }
+  to   { transform: translateX(-50%); }
 }
 
 @keyframes float {
