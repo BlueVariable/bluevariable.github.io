@@ -8,7 +8,7 @@ This is a GitHub Pages personal website repository (`bluevariable.github.io`). I
 
 ## Deployment
 
-No build step — the entire repository root is deployed as-is via `.github/workflows/static.yml`. To deploy, push to `main`.
+No build step — the entire repository root is deployed as-is via `.github/workflows/Deploy.yml`. To deploy, push to `main`.
 
 The site URL corresponds to the GitHub Pages URL for the BlueVariable account.
 
@@ -26,7 +26,7 @@ The site URL corresponds to the GitHub Pages URL for the BlueVariable account.
 ├── templates/
 │   └── 01/                    ← Template reference files
 └── .github/workflows/
-    └── static.yml             ← GitHub Actions deployment to GitHub Pages
+    └── Deploy.yml             ← GitHub Actions deployment to GitHub Pages
 ```
 
 ## Development Notes
