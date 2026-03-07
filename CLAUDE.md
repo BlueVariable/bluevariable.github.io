@@ -16,15 +16,17 @@ The site URL corresponds to the GitHub Pages URL for the BlueVariable account.
 
 ```
 /
-├── index.html            ← Studio home (hero, game card, footer)
-├── purrfect-fit.html     ← Game landing page
-├── about.html            ← About the team
+├── index.html                ← Studio home (hero, game card, footer)
 ├── css/
-│   └── style.css         ← Shared styles (design tokens, nav, layout, components)
+│   └── style.css             ← Shared styles (design tokens, nav, layout, components)
 ├── assets/
-│   └── logo.png          ← Studio logo (349×217px)
+│   ├── fonts/
+│   │   └── Garet-Heavy.ttf   ← Custom font
+│   └── images/                ← Image assets
+├── templates/
+│   └── 01/                    ← Template reference files
 └── .github/workflows/
-    └── static.yml        ← GitHub Actions deployment to GitHub Pages
+    └── static.yml             ← GitHub Actions deployment to GitHub Pages
 ```
 
 ## Development Notes
