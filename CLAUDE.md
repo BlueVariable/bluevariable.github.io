@@ -10,6 +10,7 @@ This is the GitHub Pages site for Blue Variable Studio, served at `bluevariables
 
 - `index.html` — the one-page homepage. Opens with the signature intro: the inlined wordmark-reveal SVG animation plays, then a blue dot floods the screen (adapted from the `blue_dot_scale` icon animation) and unveils the page. Sections: hero (animated icon), studio, Purrfect Fit, devlog teaser, contact. The two large SVGs are inlined directly in the file.
 - `devlogs.html` — devlog list + post reader. Uses hash routing (`#/slug`) so individual posts are linkable.
+- `press.html` — public press kit: factsheet, boilerplate, brand asset downloads, press contact.
 - `devlogs/index.json` — post manifest: array of `{slug, title, date, summary}`, newest first.
 - `devlogs/<slug>.md` — devlog posts, plain markdown, rendered client-side.
 - `assets/css/style.css` — shared styles; design tokens live in `:root`.
