@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devlogs — Blue Variable Studio</title>
+  <meta name="description" content="Development logs from Blue Variable Studio — notes from the making of Purrfect Fit and whatever comes next.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="ready">
+
+  <header class="site-head">
+    <div class="wrap bar">
+      <a class="brand" href="index.html" aria-label="Blue Variable Studio — home">
+        <svg class="brand-tile" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="14" fill="#1e1c1c"/>
+          <circle cx="32" cy="32" r="13" fill="#558eff"/>
+        </svg>
+        <span>Blue Variable</span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html#studio">Studio</a>
+        <a href="index.html#purrfect-fit">Purrfect Fit</a>
+        <a class="nav-keep" href="devlogs.html" aria-current="page">Devlogs</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- list view -->
+    <section class="section" id="devlog-list-view">
+      <div class="wrap">
+        <p class="eyebrow">Devlogs</p>
+        <h2>Building in the open.</h2>
+        <p class="lede">
+          Notes from the messy middle of making games. New posts land here as
+          plain markdown — no algorithm, no feed, just the work.
+        </p>
+        <div class="post-list" id="devlog-list"></div>
+      </div>
+    </section>
+
+    <!-- single post view -->
+    <section id="devlog-post-view" hidden>
+      <article class="article">
+        <a class="back" href="devlogs.html#">← All devlogs</a>
+        <p class="article-meta" id="devlog-meta"></p>
+        <div class="md" id="devlog-article"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap bar">
+      <span>© <span id="year">2026</span> Blue Variable Studio</span>
+      <span>
+        <a href="index.html">Home</a> ·
+        <a href="mailto:contact@bluevariablestudio.com">contact@bluevariablestudio.com</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="assets/js/markdown.js"></script>
+  <script src="assets/js/devlogs.js"></script>
+</body>
+</html>
