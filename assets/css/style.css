@@ -234,7 +234,6 @@ p.lede {
 .hero-icon {
   justify-self: center;
   width: min(340px, 68vw);
-  filter: drop-shadow(0 24px 48px rgba(30, 28, 28, 0.18));
 }
 .hero-icon svg { display: block; width: 100%; height: auto; }
 
