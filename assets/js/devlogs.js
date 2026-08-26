@@ -32,7 +32,7 @@
     }
     posts.forEach(function (post) {
       var a = document.createElement("a");
-      a.className = "post-card reveal-on-scroll is-in";
+      a.className = "post-card";
       a.href = "#/" + encodeURIComponent(post.slug);
 
       var t = document.createElement("time");

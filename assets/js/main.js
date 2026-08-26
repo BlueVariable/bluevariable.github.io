@@ -1,4 +1,4 @@
-/* Blue Variable Studio — intro sequence + page behaviors */
+/* Blue Variable Studio — intro sequence + menu-driven views */
 (function () {
   "use strict";
 
@@ -106,69 +106,31 @@
     document.body.classList.add("ready");
   }
 
-  /* ---------- sticky header hairline ---------- */
-  var head = document.querySelector(".site-head");
-  if (head) {
-    var onScroll = function () {
-      head.classList.toggle("is-stuck", window.scrollY > 8);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+  /* ---------- menu-driven views (no page scrolling) ---------- */
+  var mainEl = document.querySelector("main");
+  var views = Array.prototype.slice.call(document.querySelectorAll("main .view"));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.site-nav a[href^="#"]'));
+
+  function showView(id) {
+    var target = document.getElementById(id);
+    if (!target || views.indexOf(target) === -1) return; // unknown hash: keep current view
+    views.forEach(function (v) {
+      v.classList.toggle("is-active", v === target);
+    });
+    navLinks.forEach(function (a) {
+      if (a.getAttribute("href") === "#" + id) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    mainEl.scrollTop = 0;
   }
 
-  /* ---------- scroll-triggered reveals ---------- */
-  var revealables = document.querySelectorAll(".reveal-on-scroll");
-  if (revealables.length && "IntersectionObserver" in window && !reducedMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-in");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
-    revealables.forEach(function (el) { io.observe(el); });
-  } else {
-    revealables.forEach(function (el) { el.classList.add("is-in"); });
+  function routeView() {
+    var hash = window.location.hash || "#studio";
+    showView(hash.slice(1));
   }
 
-  /* ---------- devlog teaser (homepage) ---------- */
-  var teaser = document.getElementById("devlog-teaser");
-  if (teaser) {
-    fetch("devlogs/index.json")
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-      .then(function (posts) {
-        posts.slice(0, 2).forEach(function (post) {
-          var a = document.createElement("a");
-          a.className = "post-card";
-          a.href = "devlogs.html#/" + encodeURIComponent(post.slug);
-
-          var t = document.createElement("time");
-          t.dateTime = post.date;
-          t.textContent = post.date;
-
-          var mid = document.createElement("div");
-          var title = document.createElement("p");
-          title.className = "post-title";
-          title.textContent = post.title;
-          var sum = document.createElement("p");
-          sum.className = "post-summary";
-          sum.textContent = post.summary || "";
-          mid.appendChild(title);
-          mid.appendChild(sum);
-
-          var arrow = document.createElement("span");
-          arrow.className = "arrow";
-          arrow.textContent = "→";
-
-          a.appendChild(t);
-          a.appendChild(mid);
-          a.appendChild(arrow);
-          teaser.appendChild(a);
-        });
-      })
-      .catch(function () {
-        teaser.innerHTML = '<p class="empty-note">Devlogs are coming soon.</p>';
-      });
+  if (views.length) {
+    window.addEventListener("hashchange", routeView);
+    routeView();
   }
 })();

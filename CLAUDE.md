@@ -8,13 +8,13 @@ This is the GitHub Pages site for Blue Variable Studio, served at `bluevariables
 
 ## Structure
 
-- `index.html` — the one-page homepage. Opens with the signature intro: the inlined wordmark-reveal SVG animation plays, then a blue dot floods the screen (adapted from the `blue_dot_scale` icon animation) and unveils the page. Sections: hero (animated icon), studio, Purrfect Fit, devlog teaser, contact. The two large SVGs are inlined directly in the file.
+- `index.html` — the homepage, a fixed-viewport shell (no page scrolling): header menu, one active view, footer. The menu switches views via hash routing (`#studio` default, `#purrfect-fit`, `#contact`); Devlogs links out to `devlogs.html`. Opens with the signature intro: the inlined wordmark-reveal SVG animation plays, then a blue dot floods the screen (adapted from the `blue_dot_scale` icon animation) and unveils the page. The two large SVGs are inlined directly in the file.
 - `devlogs.html` — devlog list + post reader. Uses hash routing (`#/slug`) so individual posts are linkable.
 - `press.html` — public press kit: factsheet, boilerplate, brand asset downloads, press contact.
 - `devlogs/index.json` — post manifest: array of `{slug, title, date, summary}`, newest first.
 - `devlogs/<slug>.md` — devlog posts, plain markdown, rendered client-side.
 - `assets/css/style.css` — shared styles; design tokens live in `:root`.
-- `assets/js/main.js` — intro sequence (sessionStorage-gated, click-to-skip, reduced-motion aware), scroll reveals, devlog teaser.
+- `assets/js/main.js` — intro sequence (sessionStorage-gated, click-to-skip, reduced-motion aware) + homepage view switching.
 - `assets/js/markdown.js` — small hand-rolled markdown renderer (`window.BVSMarkdown.render`).
 - `assets/js/devlogs.js` — devlog manifest fetch + hash routing.
 - `assets/svg/reveal.svg`, `assets/svg/icon.svg` — source copies of the brand animation SVGs (the live pages use inlined, lightly adapted copies).

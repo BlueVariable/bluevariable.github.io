@@ -30,7 +30,30 @@ body {
   font-size: 17px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* fixed shell: header / active view / footer — the page itself never scrolls.
+   The main area scrolls internally only when a view can't fit (small screens). */
+main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.view { display: none; width: 100%; }
+.view.is-active {
+  display: block;
+  margin: auto 0; /* centers when it fits, tops out when it overflows */
+  padding: clamp(18px, 3.5vh, 44px) 0;
+  animation: view-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes view-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
 }
 
 ::selection { background: var(--blue); color: #fff; }
@@ -140,16 +163,11 @@ p.lede {
 
 /* ---------------- header / nav ---------------- */
 .site-head {
-  position: sticky;
-  top: 0;
+  flex: none;
   z-index: 40;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
 }
-.site-head.is-stuck { border-bottom-color: var(--line); }
 .site-head .bar {
   display: flex;
   align-items: center;
@@ -206,13 +224,7 @@ p.lede {
 }
 
 /* ---------------- hero ---------------- */
-.hero {
-  min-height: calc(100svh - 64px);
-  display: flex;
-  align-items: center;
-  padding: clamp(40px, 8vh, 90px) 0;
-  position: relative;
-}
+
 .hero-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -220,7 +232,7 @@ p.lede {
   gap: clamp(32px, 6vw, 80px);
 }
 .hero h1 {
-  font-size: clamp(42px, 6.6vw, 76px);
+  font-size: clamp(40px, 6vw, 68px);
   font-weight: 800;
   margin-bottom: 20px;
 }
@@ -229,7 +241,13 @@ p.lede {
   font-size: clamp(18px, 2.4vw, 23px);
   color: var(--muted);
   max-width: 30em;
-  margin: 0 0 34px;
+  margin: 0 0 14px;
+}
+.studio-line {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 32em;
+  margin: 0 0 32px;
 }
 .hero-icon {
   justify-self: center;
@@ -264,29 +282,6 @@ p.lede {
 }
 .btn:hover .dot { transform: scale(1.6); background: currentColor; }
 
-/* floating ambient dots */
-.float-dot {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--blue);
-  opacity: 0.35;
-  pointer-events: none;
-  animation: float-amb var(--dur, 7s) ease-in-out infinite var(--del, 0s);
-}
-@keyframes float-amb {
-  0%, 100% { transform: translate(0, 0); }
-  40% { transform: translate(-6px, -14px); }
-  75% { transform: translate(8px, 6px); }
-}
-
-/* ---------------- scroll reveal ---------------- */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--rd, 0s);
-}
-.reveal-on-scroll.is-in { opacity: 1; transform: none; }
 
 /* hero stagger after intro */
 .stagger {
@@ -300,40 +295,13 @@ body.ready .s2 { transition-delay: 0.16s; }
 body.ready .s3 { transition-delay: 0.27s; }
 body.ready .s4 { transition-delay: 0.38s; }
 
-/* ---------------- studio section ---------------- */
-.duo {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-  margin-top: 40px;
-}
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 28px;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(30, 28, 28, 0.09);
-}
-.card .card-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--blue);
-  margin-bottom: 18px;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.card:hover .card-dot { transform: scale(1.5); }
-.card p { margin: 0; color: var(--muted); }
-.card h3 { margin-bottom: 8px; }
 
 /* ---------------- game section ---------------- */
 .game {
   background: var(--ink);
   color: var(--bg);
   border-radius: calc(var(--radius) * 1.6);
-  padding: clamp(36px, 6vw, 72px);
+  padding: clamp(26px, 3.6vw, 48px);
   position: relative;
   overflow: hidden;
 }
@@ -372,6 +340,10 @@ body.ready .s4 { transition-delay: 0.38s; }
 }
 .game-art {
   aspect-ratio: 4 / 3;
+  max-height: min(44vh, 380px);
+  margin-inline: auto;
+  width: 100%;
+  max-width: 480px;
   border-radius: var(--radius);
   background:
     radial-gradient(120% 120% at 20% 15%, rgba(85, 142, 255, 0.35), transparent 55%),
@@ -400,7 +372,7 @@ body.ready .s4 { transition-delay: 0.38s; }
 .pillars {
   list-style: none;
   padding: 0;
-  margin: 26px 0 30px;
+  margin: 22px 0 26px;
   display: grid;
   gap: 12px;
 }
@@ -475,7 +447,6 @@ body.ready .s4 { transition-delay: 0.38s; }
 /* ---------------- footer / contact ---------------- */
 .contact {
   text-align: center;
-  padding-bottom: clamp(60px, 10vh, 110px);
 }
 .contact .mail {
   display: inline-block;
@@ -656,7 +627,6 @@ body.ready .s4 { transition-delay: 0.38s; }
   .hero .tagline { margin-inline: auto; }
   .cta-row { justify-content: center; }
   .game-grid { grid-template-columns: 1fr; }
-  .duo { grid-template-columns: 1fr; }
   .post-card { grid-template-columns: 1fr; gap: 6px; }
   .post-card .arrow { display: none; }
 }
@@ -673,5 +643,5 @@ body.ready .s4 { transition-delay: 0.38s; }
     transition-duration: 0.01ms !important;
   }
   #intro { display: none !important; }
-  .reveal-on-scroll, .stagger { opacity: 1 !important; transform: none !important; }
+  .stagger { opacity: 1 !important; transform: none !important; }
 }
