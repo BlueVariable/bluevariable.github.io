@@ -1,0 +1,42 @@
+---
+layout: default
+title: Games
+nav: games
+permalink: /games/
+description: Purrfect Fit — the debut game from Blue Variable Studio. Fit cats into shipping boxes, plan every fit, and become the best employee Purrfect Fit, Inc. has ever seen. Coming soon.
+---
+<div class="games">
+  <section class="paper games-panel" id="purrfect-fit">
+    <div class="wrap game">
+      <div class="game__art">
+        <img src="{{ '/assets/img/keyart.webp' | relative_url }}" alt="Purrfect Fit key art: the game logo on a grey wall crossed with yellow DO NOT ENTER tape" width="1600" height="865" fetchpriority="high">
+      </div>
+      <div class="game__info">
+        <span class="arrows game__arrows" aria-hidden="true"></span>
+        <p class="game__status">coming soon</p>
+        <h1 class="game__title">purrfect fit</h1>
+        <div class="game__desc">
+          <p>At Purrfect Fit, Inc., you get to be the one who “fits” cats into shipping boxes and sends them to their lucky new owners. Purchase the best treats, plan every fit, and achieve the purr-fect fits to be the best employee the company has ever seen.</p>
+          <p>Demo coming soon.<br>Plan-Fit-Repeat.</p>
+        </div>
+        <a class="brush-btn game__cta" href="{{ site.wishlist_url }}" target="_blank" rel="noopener">
+          <svg class="brush-btn__icon"><use href="#i-steam"/></svg>
+          <span class="brush-btn__label">wishlist now</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="wrap game-about" id="about-purrfect-fit">
+      <h2 class="game-about__title"><em>about |</em> purrfect fit</h2>
+      <p class="game-about__lead">More about the game soon. For now: cats, boxes, treats, and some questionable shipping logistics.</p>
+      {%- assign shots = site.static_files | where_exp: "f", "f.path contains '/assets/img/purrfect-fit/'" | sort: "path" -%}
+      {%- if shots.size > 0 %}
+      <ul class="shots">
+        {%- for shot in shots %}
+        <li><img src="{{ shot.path | relative_url }}" alt="Purrfect Fit screenshot" loading="lazy"></li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
+    </div>
+  </section>
+</div>

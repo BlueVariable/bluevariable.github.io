@@ -1,0 +1,90 @@
+---
+layout: default
+title: Contact
+nav: contact
+permalink: /contact/
+description: Say hi to Blue Variable Studio, report bugs, send feedback, or grab the press kit.
+---
+<section class="paper torn-bottom contact" id="contact">
+  <div class="wrap contact__wrap">
+    <div class="contact__form-col">
+      <h1 class="contact__heading">We’d love to<br>hear from you <span class="arrows contact__arrows" aria-hidden="true"></span></h1>
+      <form class="contact-form" data-contact-form action="mailto:{{ site.email }}" method="post" enctype="text/plain">
+        <label class="visually-hidden" for="cf-name">Name</label>
+        <input class="field" id="cf-name" name="name" type="text" placeholder="name" autocomplete="name" required>
+        <label class="visually-hidden" for="cf-email">Email</label>
+        <input class="field" id="cf-email" name="email" type="email" placeholder="email" autocomplete="email" required>
+        <label class="visually-hidden" for="cf-message">Message</label>
+        <textarea class="field field--area" id="cf-message" name="message" placeholder="message" rows="5" required></textarea>
+        <button class="btn btn--blue contact-form__submit" type="submit">send!</button>
+        <p class="contact-form__note" role="status" aria-live="polite"></p>
+      </form>
+      <p class="contact__email">
+        <span class="bubble" aria-hidden="true"></span>
+        <span class="contact__email-label">or send an email to:</span>
+        <a class="contact__email-link" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      </p>
+    </div>
+    <div class="contact__side-col">
+      <div class="reasons">
+        <p>some reasons you can reach us:</p>
+        <ul>
+          <li>- say hi</li>
+          <li>- report nasty bugs</li>
+          <li>- you have awesome feedback</li>
+          <li>- volunteer to be our music composer (cause we desperately need one)</li>
+          <li>- wants to feature our games :3</li>
+          <li>- destek için^^</li>
+        </ul>
+      </div>
+      <a class="brush-btn brush-btn--blue brush-btn--hand contact__discord" href="{{ site.links.discord }}" target="_blank" rel="noopener">
+        <svg class="brush-btn__icon"><use href="#i-discord"/></svg>
+        <span class="brush-btn__label">say hi on<br>discord</span>
+      </a>
+    </div>
+  </div>
+</section>
+<div class="side-anchor">
+  <nav class="side-labels side-labels--contact" aria-label="Page sections">
+    <a href="#contact">contact</a>
+    <a href="#presskit">press kit</a>
+  </nav>
+</div>
+
+<section class="presskit torn-bottom" id="presskit">
+  <div class="wrap presskit__wrap">
+    <div class="presskit__about">
+      <h2 class="presskit__title">About Blue Variable Studio</h2>
+      <p class="presskit__tagline">Two-person independent indie game studio.<br>Games we’d love to play, crafted into existence.</p>
+      <p class="presskit__body"><strong>Blue Variable Studio</strong> is an independent indie game studio based in Ankara, Turkey. The duo behind it had been dreaming about it for years, but only in 2026 did they finally decide it was time to chase it.<br>Currently working on their debut game Purrfect Fit.</p>
+      <dl class="facts">
+        <div><dt>Developer</dt><dd>Blue Variable</dd></div>
+        <div><dt>Location</dt><dd>Ankara, Turkey</dd></div>
+        <div><dt>Founded</dt><dd>2026</dd></div>
+        <div><dt>Team</dt><dd>Defne Tunçer, Gökay Atay</dd></div>
+        <div><dt>Games</dt><dd><a href="{{ '/games/' | relative_url }}">Purrfect Fit</a></dd></div>
+        <div><dt>Website</dt><dd><a href="{{ site.url }}">bluevariablestudio.com</a></dd></div>
+        <div><dt>Contact</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>
+        <div><dt>Social</dt><dd>
+          <a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a>
+          <a href="{{ site.links.instagram }}" target="_blank" rel="noopener">Instagram</a>
+          <a href="{{ site.links.youtube }}" target="_blank" rel="noopener">YouTube</a>
+          <a href="{{ site.links.steam }}" target="_blank" rel="noopener">Steam</a>
+          <a href="{{ site.links.itch }}" target="_blank" rel="noopener">itch.io</a>
+          <a href="{{ site.links.reddit }}" target="_blank" rel="noopener">Reddit</a>
+          <a href="{{ site.links.discord }}" target="_blank" rel="noopener">Discord</a>
+        </dd></div>
+      </dl>
+    </div>
+    <div class="presskit__logos">
+      <h2 class="presskit__title">Logos</h2>
+      <ul class="logos">
+        <li class="logos__tile logos__tile--dark"><img src="{{ '/assets/img/logo-wordmark-white.png' | relative_url }}" alt="Blue Variable Studio wordmark, white" width="290" height="143"></li>
+        <li class="logos__tile"><img src="{{ '/assets/img/logo-wordmark-black.png' | relative_url }}" alt="Blue Variable Studio wordmark, black" width="288" height="144"></li>
+        <li class="logos__tile logos__tile--dark"><img src="{{ '/assets/img/logo-stack-white.png' | relative_url }}" alt="blue mark, white" width="121" height="166"></li>
+        <li class="logos__tile"><img src="{{ '/assets/img/logo-stack-black.png' | relative_url }}" alt="blue mark, black" width="122" height="166"></li>
+      </ul>
+      <a class="btn btn--blue presskit__download" href="{{ site.presskit_url | relative_url }}" download>download press kit</a>
+    </div>
+  </div>
+</section>

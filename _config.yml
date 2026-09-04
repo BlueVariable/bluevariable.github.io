@@ -24,6 +24,7 @@ markdown: kramdown
 kramdown:
   input: GFM
 permalink: /news/:year/:month/:day/:title/
+future: true
 
 defaults:
   - scope: { path: "", type: posts }

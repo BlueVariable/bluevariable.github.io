@@ -1,0 +1,36 @@
+---
+layout: default
+nav: news
+---
+<article class="paper torn-bottom post">
+  <div class="wrap post__wrap">
+    <a class="post__back t-hand" href="{{ '/news/' | relative_url }}">← all news</a>
+    {%- if page.game %}<p class="entry__game">{{ page.game }}</p>{% endif %}
+    <h1 class="post__title">{{ page.title }}</h1>
+    <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %d, %Y" }}</time>
+    {%- if page.image %}
+    <figure class="post__media">
+      <div class="entry__frame">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title }}">
+        {%- if page.video %}
+        <button class="play" type="button" data-video="{{ page.video }}" aria-label="Play video: {{ page.title }}"><svg class="icon"><use href="#i-play"/></svg></button>
+        {%- endif %}
+      </div>
+    </figure>
+    {%- endif %}
+    <div class="post__content">{{ content }}</div>
+    {%- if page.steam %}
+    <a class="brush-btn brush-btn--sm" href="{{ page.steam }}" target="_blank" rel="noopener">
+      <svg class="brush-btn__icon"><use href="#i-steam"/></svg>
+      <span class="brush-btn__label">wishlist now</span>
+    </a>
+    {%- endif %}
+    {%- if page.tags.size > 0 %}
+    <ul class="entry__tags">{% for tag in page.tags %}<li>#{{ tag }}</li>{% endfor %}</ul>
+    {%- endif %}
+  </div>
+</article>
+<dialog class="video-modal" data-video-modal>
+  <button class="video-modal__close" type="button" data-video-close aria-label="Close video">×</button>
+  <div class="video-modal__frame" data-video-frame></div>
+</dialog>

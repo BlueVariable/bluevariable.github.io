@@ -90,6 +90,44 @@
     });
   });
 
+  /* ---------- Video modal (YouTube, privacy-enhanced embed) ---------- */
+  var modal = doc.querySelector('[data-video-modal]');
+  if (modal && typeof modal.showModal === 'function') {
+    var frame = modal.querySelector('[data-video-frame]');
+    var ytId = function (url) {
+      var m = url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/);
+      return m ? m[1] : null;
+    };
+    doc.querySelectorAll('[data-video]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = ytId(btn.getAttribute('data-video') || '');
+        if (!id) return;
+        frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        modal.showModal();
+      });
+    });
+    var closeModal = function () { modal.close(); frame.innerHTML = ''; };
+    modal.querySelector('[data-video-close]').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    modal.addEventListener('close', function () { frame.innerHTML = ''; });
+  }
+
+  /* ---------- Contact form: opens the visitor's mail app (no backend yet) ---------- */
+  var contactForm = doc.querySelector('[data-contact-form]');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = contactForm.name.value.trim(), email = contactForm.email.value.trim(), msg = contactForm.message.value.trim();
+      var note = contactForm.querySelector('.contact-form__note');
+      if (!name || !email || !msg) { note.textContent = 'fill in all three and we’re good :3'; return; }
+      var to = contactForm.getAttribute('action').replace('mailto:', '');
+      var subject = 'Hello from ' + name;
+      var body = msg + '\n\n— ' + name + ' (' + email + ')';
+      window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      note.textContent = 'opening your mail app…';
+    });
+  }
+
   /* ---------- Splash: reveal → dot pop → home (first visit per session) ---------- */
   var splash = doc.querySelector('[data-splash]');
   if (splash && root.classList.contains('splash-pending')) {
