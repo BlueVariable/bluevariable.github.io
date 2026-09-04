@@ -66,19 +66,6 @@
     });
   }
 
-  /* ---------- Side labels: highlight the section in view ---------- */
-  var sideLinks = doc.querySelectorAll('.side-labels a[href^="#"]');
-  if (sideLinks.length && 'IntersectionObserver' in window) {
-    var map = {};
-    sideLinks.forEach(function (a) { var t = doc.querySelector(a.getAttribute('href')); if (t) map[t.id] = a; });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { sideLinks.forEach(function (a) { a.classList.remove('is-active'); }); map[en.target.id].classList.add('is-active'); }
-      });
-    }, { rootMargin: '-40% 0px -50% 0px' });
-    Object.keys(map).forEach(function (id) { io.observe(doc.getElementById(id)); });
-  }
-
   /* ---------- Devlog entries: see more / see less ---------- */
   doc.querySelectorAll('[data-expand]').forEach(function (btn) {
     var entry = btn.closest('[data-entry]');
