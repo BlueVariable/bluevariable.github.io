@@ -1,0 +1,10 @@
+{% assign l = site.links %}
+<ul class="{{ include.class | default: 'socials' }}">
+  <li><a href="{{ l.steam }}" target="_blank" rel="noopener" aria-label="Steam"><svg class="icon"><use href="#i-steam"/></svg></a></li>
+  <li><a href="{{ l.discord }}" target="_blank" rel="noopener" aria-label="Discord"><svg class="icon"><use href="#i-discord"/></svg></a></li>
+  <li><a href="{{ l.itch }}" target="_blank" rel="noopener" aria-label="itch.io"><svg class="icon"><use href="#i-itch"/></svg></a></li>
+  <li><a href="{{ l.x }}" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg class="icon"><use href="#i-x"/></svg></a></li>
+  <li><a href="{{ l.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon"><use href="#i-instagram"/></svg></a></li>
+  <li><a href="{{ l.youtube }}" target="_blank" rel="noopener" aria-label="YouTube"><svg class="icon"><use href="#i-youtube"/></svg></a></li>
+  <li><a href="{{ l.reddit }}" target="_blank" rel="noopener" aria-label="Reddit"><svg class="icon"><use href="#i-reddit"/></svg></a></li>
+</ul>

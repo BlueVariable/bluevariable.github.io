@@ -1,28 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blue Variable</title>
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background: #F3EFE8;
-    }
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    img {
-      width: min(70vmin, 540px);
-      height: auto;
-      mix-blend-mode: darken;
-    }
-  </style>
-</head>
-<body>
-  <img src="assets/logo.gif" alt="Blue Variable">
-</body>
-</html>
+---
+layout: default
+title: Blue Variable Studio
+nav: home
+splash: true
+permalink: /
+---
+<section class="paper hero">
+  <div class="wrap">
+    <div class="hero__heading">
+      <p class="hero__kicker">debut game</p>
+      <h1 class="hero__title">coming soon</h1>
+      <span class="arrows" aria-hidden="true"></span>
+    </div>
+    <div class="hero__art">
+      <img src="{{ '/assets/img/keyart.webp' | relative_url }}" alt="Purrfect Fit key art: the game logo on a grey wall crossed with yellow DO NOT ENTER tape" width="1600" height="865" fetchpriority="high">
+    </div>
+    <div class="hero__cta">
+      <a class="brush-btn" href="{{ site.wishlist_url }}" target="_blank" rel="noopener">
+        <svg class="brush-btn__icon"><use href="#i-steam"/></svg>
+        <span class="brush-btn__label">wishlist now</span>
+      </a>
+    </div>
+  </div>
+</section>

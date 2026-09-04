@@ -1,0 +1,42 @@
+{% assign nav_items = "home|/,games|/games/,news|/news/,about|/about/,contact|/contact/" | split: "," %}
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="site-header__bar">
+    <div class="wrap site-header__wrap">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="Blue Variable Studio — home">
+        <img class="brand__full" src="{{ '/assets/img/logo-full.svg' | relative_url }}" alt="" width="293" height="146">
+        <img class="brand__compact" src="{{ '/assets/img/logo-compact.svg' | relative_url }}" alt="" width="186" height="72">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        {% for item in nav_items %}{% assign parts = item | split: "|" %}<a href="{{ parts[1] | relative_url }}" class="site-nav__link{% if page.nav == parts[0] %} is-active{% endif %}"{% if page.nav == parts[0] %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
+        {% endfor %}
+      </nav>
+      <div class="tagline" data-ticker>
+        <span class="tagline__bracket tagline__bracket--left" aria-hidden="true"></span>
+        <div class="tagline__ticker">
+          <p class="tagline__line is-current">Two-person independent <em>indie game studio.</em></p>
+          <p class="tagline__line">games we‘d love to <em>play,</em> crafted into <em>existence.</em></p>
+        </div>
+        <span class="tagline__bracket tagline__bracket--right" aria-hidden="true"></span>
+      </div>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+    </div>
+  </div>
+  <div class="torn torn--header" aria-hidden="true"></div>
+</header>
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <div class="mobile-menu__inner">
+    <nav class="mobile-menu__nav" aria-label="Primary (mobile)">
+      {% for item in nav_items %}{% assign parts = item | split: "|" %}<a href="{{ parts[1] | relative_url }}" class="mobile-menu__link{% if page.nav == parts[0] %} is-active{% endif %}">{{ parts[0] }}</a>
+      {% endfor %}
+    </nav>
+    <div class="mobile-menu__taglines">
+      <p>Two-person independent <em>indie game studio.</em></p>
+      <p>games we‘d love to <em>play,</em> crafted into <em>existence.</em></p>
+    </div>
+    {% include socials.html class="socials socials--menu" %}
+  </div>
+</div>

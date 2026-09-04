@@ -1,0 +1,16 @@
+<footer class="site-footer">
+  <div class="torn torn--footer" aria-hidden="true"></div>
+  <div class="site-footer__band">
+    <div class="wrap site-footer__wrap">
+      <form class="newsletter" data-newsletter action="#" novalidate>
+        <label class="newsletter__label" for="newsletter-email">get the latest<br>updates from us</label>
+        <div class="newsletter__field">
+          <input class="newsletter__input" id="newsletter-email" name="email" type="email" placeholder="your email here" autocomplete="email">
+          <button class="newsletter__submit" type="submit" aria-label="Subscribe"><svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+        <p class="newsletter__note" role="status" aria-live="polite"></p>
+      </form>
+      {% include socials.html class="socials socials--footer" %}
+    </div>
+  </div>
+</footer>
