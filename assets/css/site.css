@@ -74,6 +74,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3 { margin: 0; font-weight: inherit; }
 em { font-style: normal; color: var(--blue); }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+[id] { scroll-margin-top: calc(var(--header-compact-h) + 24px); }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip-link { position: absolute; left: 8px; top: -60px; z-index: 100; padding: 8px 12px; background: var(--blue); color: var(--white); border-radius: 8px; font-family: var(--font-hand); }
 .skip-link:focus { top: 8px; }
@@ -498,6 +499,17 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 .logos__tile--dark { background: var(--ink); }
 .logos__tile img { height: calc(66 * var(--px)); width: auto; }
 .presskit__download { margin-top: calc(22 * var(--px)); }
+
+
+/* ==========================================================================
+   404
+   ========================================================================== */
+.notfound { flex: 1 0 auto; display: flex; align-items: center; text-align: center; padding: calc(60 * var(--px)) 0; }
+.notfound__wrap { display: grid; justify-items: center; gap: calc(10 * var(--px)); }
+.notfound__code { font-family: var(--font-display); font-weight: 900; font-size: calc(120 * var(--px)); line-height: .83; color: var(--blue); }
+.notfound__title { font-family: var(--font-hand); font-weight: 400; text-transform: uppercase; font-size: calc(34 * var(--px)); letter-spacing: .02em; }
+.notfound__text { font-size: calc(19 * var(--px)); max-width: calc(420 * var(--px)); }
+.notfound__cta { margin-top: calc(12 * var(--px)); }
 
 /* ==========================================================================
    Mobile (< 900px)
