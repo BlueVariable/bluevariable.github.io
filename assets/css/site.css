@@ -256,13 +256,13 @@ body.menu-open { overflow: hidden; }
   display: inline-flex; align-items: center; justify-content: center;
   min-height: calc(37 * var(--px)); padding: calc(4 * var(--px)) calc(18 * var(--px));
   border: calc(2 * var(--px)) solid var(--ink); border-radius: calc(12 * var(--px));
-  background: var(--white); color: var(--ink);
+  background: var(--blue); color: var(--white);
   font-family: var(--font-hand); font-weight: 400; text-transform: uppercase;
   font-size: calc(20.5 * var(--px)); letter-spacing: .02em; line-height: 1;
   box-shadow: calc(4 * var(--px)) calc(4 * var(--px)) 0 rgba(30, 29, 29, .28);
   transition: transform var(--dur-quick) var(--ease-pop), box-shadow var(--dur-quick), background-color var(--dur-quick), color var(--dur-quick);
 }
-@media (any-hover: hover) { .btn:hover { background: var(--blue); color: var(--white); transform: translate(-1px, -1px); box-shadow: calc(6 * var(--px)) calc(6 * var(--px)) 0 rgba(30, 29, 29, .28); } }
+@media (any-hover: hover) { .btn:hover { background: var(--ink); color: var(--blue); transform: translate(-1px, -1px); box-shadow: calc(6 * var(--px)) calc(6 * var(--px)) 0 rgba(30, 29, 29, .28); } }
 .btn:active { transform: translate(calc(2 * var(--px)), calc(2 * var(--px))); box-shadow: calc(2 * var(--px)) calc(2 * var(--px)) 0 rgba(30, 29, 29, .28); }
 .brush-btn {
   position: relative; display: inline-flex; align-items: center; gap: calc(10 * var(--px));
@@ -277,10 +277,9 @@ body.menu-open { overflow: hidden; }
   animation: decor-boil .45s steps(1) infinite;
   transition: background-color var(--dur-quick);
 }
-.brush-btn--blue::before { background: var(--blue); }
 @media (any-hover: hover) {
-  .brush-btn:hover { transform: rotate(-2deg) scale(1.03); color: var(--white); }
-  .brush-btn:hover::before { background: var(--blue); }
+  .brush-btn:hover { transform: rotate(-2deg) scale(1.03); color: var(--yellow); }
+  .brush-btn:hover::before { background: var(--ink); }
 }
 .brush-btn:active { transform: rotate(-1deg) scale(.96); transition-duration: var(--dur-quick); }
 .brush-btn__icon { flex: 0 0 auto; width: calc(45 * var(--px)); height: calc(45 * var(--px)); fill: currentColor; }
@@ -422,6 +421,11 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .member__bio, .member__faves { font-family: var(--font-text); font-weight: 400; font-size: calc(17.2 * var(--px)); line-height: 1.1; max-width: calc(290 * var(--px)); }
 .member__bio { margin-top: calc(14 * var(--px)); }
 .member__faves { margin-top: calc(16 * var(--px)); }
+@media (any-hover: hover) {
+  .member__bio, .member__faves { opacity: 0; transform: translateY(calc(8 * var(--px))); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-pop); }
+  .member:hover .member__bio, .member:hover .member__faves { opacity: 1; transform: none; }
+  .member:hover .member__faves { transition-delay: 60ms; }
+}
 
 .games { position: relative; display: flex; flex-direction: column; flex: 1 0 auto; background: var(--white); }
 .games-panel {
