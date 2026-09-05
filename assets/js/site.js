@@ -10,7 +10,8 @@
     trail: { size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500 }
   };
   var BLUE = 'rgb(85, 142, 255)';
-  var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 800, SPLASH_HOLD_MS = 200;
+  var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_HOLD_MS = 200;
+  var TILT = { degrees: 7, ease: .18 };
 
   var wait = function (ms) { return new Promise(function (res) { setTimeout(res, ms); }); };
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
@@ -45,8 +46,10 @@
       var link = nav.querySelector('.site-nav__link.is-active');
       dot.classList.toggle('is-off', !link);
       if (!link) return;
-      dot.style.setProperty('--x', (link.offsetLeft + link.offsetWidth / 2).toFixed(1) + 'px');
-      dot.style.setProperty('--y', (link.offsetTop + link.offsetHeight).toFixed(1) + 'px');
+      var em = parseFloat(getComputedStyle(link).fontSize), size = em * .3;
+      dot.style.setProperty('--size', size.toFixed(1) + 'px');
+      dot.style.setProperty('--x', (link.offsetLeft + link.offsetWidth + em * .1 + size / 2).toFixed(1) + 'px');
+      dot.style.setProperty('--y', (link.offsetTop + em * 1.03 - size / 2).toFixed(1) + 'px');
     };
     var track = function (ms) {
       var end = performance.now() + ms;
@@ -77,7 +80,6 @@
       var next = compact ? y > threshold - 30 : y > threshold;
       if (next === compact) return;
       compact = next;
-      header.classList.toggle('is-compact', compact);
       root.classList.toggle('header-compact', compact);
       navDot.track(400);
     };
@@ -287,10 +289,12 @@
     var reset = function () {
       clearTimeout(hintTimer);
       wipe.classList.remove('is-covering', 'is-leaving', 'is-waiting', 'is-quick');
+      root.classList.remove('is-navigating');
       navigating = false;
     };
     var cover = function () {
       navigating = true;
+      root.classList.add('is-navigating');
       wipe.classList.add('is-instant', 'is-covering');
       void wipe.offsetWidth;
       wipe.classList.remove('is-instant');
@@ -306,6 +310,7 @@
     var go = function (url, opts) {
       if (navigating) { queued = { url: url, opts: opts }; return; }
       navigating = true;
+      root.classList.add('is-navigating');
       activate(keyFor(url));
       closeMenu();
       wipe.classList.toggle('is-quick', !!opts.quick);
@@ -445,19 +450,33 @@
 
   function initTilt() {
     if (!finePointer || reduceMotion) return;
+    var el = null, frame = 0, targetX = 0, targetY = 0, x = 0, y = 0;
+    var clear = function (node) { node.style.removeProperty('--tilt-x'); node.style.removeProperty('--tilt-y'); };
+    var render = function () {
+      x += (targetX - x) * TILT.ease; y += (targetY - y) * TILT.ease;
+      var settled = Math.abs(targetX - x) < .02 && Math.abs(targetY - y) < .02;
+      if (settled) { x = targetX; y = targetY; }
+      if (!el) { frame = 0; return; }
+      if (settled && !targetX && !targetY) { clear(el); el = null; frame = 0; return; }
+      el.style.setProperty('--tilt-x', x.toFixed(2) + 'deg');
+      el.style.setProperty('--tilt-y', y.toFixed(2) + 'deg');
+      frame = settled ? 0 : requestAnimationFrame(render);
+    };
+    var kick = function () { if (!frame) frame = requestAnimationFrame(render); };
     doc.addEventListener('pointermove', function (e) {
-      var el = closest(e.target, '[data-tilt]');
-      if (!el) return;
-      var r = el.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      el.style.setProperty('--tilt-x', (-y * 6).toFixed(2) + 'deg');
-      el.style.setProperty('--tilt-y', (x * 6).toFixed(2) + 'deg');
+      var node = closest(e.target, '[data-tilt]');
+      if (!node) return;
+      if (node !== el) { if (el) clear(el); el = node; x = 0; y = 0; }
+      var r = node.getBoundingClientRect();
+      targetX = -((e.clientY - r.top) / r.height - .5) * TILT.degrees;
+      targetY = ((e.clientX - r.left) / r.width - .5) * TILT.degrees;
+      kick();
     }, { passive: true });
     doc.addEventListener('pointerout', function (e) {
-      var el = closest(e.target, '[data-tilt]');
-      if (!el || el.contains(e.relatedTarget)) return;
-      el.style.removeProperty('--tilt-x');
-      el.style.removeProperty('--tilt-y');
+      var node = closest(e.target, '[data-tilt]');
+      if (!node || node.contains(e.relatedTarget)) return;
+      targetX = 0; targetY = 0;
+      kick();
     });
   }
 
