@@ -332,8 +332,8 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 
 /* ---------- Page transition: plain blue band rises from the bottom up to the navbar, then drops away ---------- */
 .page-wipe {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; /* above everything, navbar included */
-  height: calc(100vh + 45 * var(--px)); height: calc(100dvh + 45 * var(--px));
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; /* above everything, but it stops under the navbar */
+  top: calc(var(--header-h) - 22 * var(--px));
   background: var(--blue); pointer-events: none;
   transform: translateY(100%);
   /* blue torn top edge */
@@ -591,7 +591,7 @@ html.splash-pending .page-wipe { display: none; }
   .site-nav, .tagline { display: none; }
   .torn--header { top: calc(var(--header-h) - 8px); height: 22px; -webkit-mask-size: auto 36px; mask-size: auto 36px; }
   .torn--header::after { background-size: auto 36px; }
-  .page-wipe { height: calc(100vh + 30px); height: calc(100dvh + 30px); -webkit-mask-size: auto 30px, 100% calc(100% - 15px); mask-size: auto 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
+  .page-wipe { top: calc(var(--header-h) - 15px); -webkit-mask-size: auto 30px, 100% calc(100% - 15px); mask-size: auto 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
   .site-header.is-compact .torn--header { top: calc(var(--header-compact-h) - 8px); }
   .nav-toggle {
     display: flex; flex-direction: column; justify-content: center; gap: 6px;
