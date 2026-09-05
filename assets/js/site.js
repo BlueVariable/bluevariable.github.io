@@ -270,7 +270,7 @@
 
   /* ---------- The dot: custom cursor, droplet trail, click splat ----------
      Droplet settings. Tune them live in _tools/tear-tuner.html (Cursor & droplets panel) and paste the block it
-     prints over this object; the cursor and splat sizes are --cursor-size / --splat-size in site.css. */
+     prints over this object; the cursor size is --cursor-size in site.css. */
   var DOT = {
     splat: {count: [13, 15], size: [16.7, 37], distance: [53.6, 134], life: 200},
     trail: {size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500}
@@ -289,14 +289,13 @@
     }
     return blueCache;
   };
-  /* a paint splat wherever the page is pressed */
+  /* a ring of droplets flung out wherever the page is pressed (no core dot: the cursor itself is the dot) */
   if (!reduceMotion) {
     doc.addEventListener('pointerdown', function (e) {
       if (e.button !== 0 || !e.isPrimary) return;
       var splat = doc.createElement('div');
       splat.className = 'splat' + (onBlue(e.target) ? ' is-white' : '');
       splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
-      splat.style.setProperty('--r', deg());
       var n = Math.round(between(DOT.splat.count));
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
@@ -363,7 +362,7 @@
       Object.keys(d.vars).forEach(function (k) {
         var v = String(d.vars[k]);
         if (/^--tear-(b|t|l|r|line|bl|br|dot)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
-        if (/^--(cursor|splat)-size$/.test(k) && /^\d+(\.\d+)?px$/.test(v)) root.style.setProperty(k, v);
+        if (k === '--cursor-size' && /^\d+(\.\d+)?px$/.test(v)) root.style.setProperty(k, v);
       });
       /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
       root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';

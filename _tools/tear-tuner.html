@@ -109,7 +109,7 @@
     <div class="demo d-hero"><span class="cap">section tearing into the blue footer</span><div class="hero"></div></div>
     <div class="demo d-band"><span class="cap">white band tearing over cream (news, team)</span><div class="band"></div></div>
     <div class="demo d-side"><span class="cap">Games panel: torn sides</span><div class="panel"></div></div>
-    <div class="demo d-shapes"><span class="cap">timeline line / About divider, and the tagline brackets</span><div class="line"></div><div class="dot" title="cursor / splat dot"></div><div class="ink"><div class="brk"></div><p>Two-person independent indie game studio.</p><div class="brk r"></div></div></div>
+    <div class="demo d-shapes"><span class="cap">timeline line / About divider, and the tagline brackets</span><div class="line"></div><div class="dot" title="cursor dot"></div><div class="ink"><div class="brk"></div><p>Two-person independent indie game studio.</p><div class="brk r"></div></div></div>
   </div>
   <div class="out">
     <textarea id="css" readonly spellcheck="false"></textarea>
@@ -223,13 +223,12 @@
 
   /* ---- cursor & droplets: mirrors the DOT object at the top of the dot section in site.js ---- */
   var dot = {
-    cursorSize: 44, splatSize: 60,
+    cursorSize: 44,
     splat: { count: [7, 9], size: [9, 20], distance: [34, 90], life: 700 },
     trail: { size: [7, 16], spread: 6, sway: 14, drift: [4, 22], every: 40, minMove: 6, max: 24, life: 650 }
   };
   var DOT_CONTROLS = [
     ['', 'cursorSize', 'cursor size (px)', 20, 90, 1],
-    ['', 'splatSize', 'splat core size (px)', 20, 140, 2],
     ['splat', 'count.1', 'splat droplets (max)', 2, 24, 1],
     ['splat', 'size.1', 'splat droplet size (max px)', 4, 48, 1],
     ['splat', 'distance.1', 'splat reach (max px)', 20, 240, 2],
@@ -249,10 +248,10 @@
     var cfg = { splat: dot.splat, trail: dot.trail };
     try {
       site.contentWindow.postMessage({ type: 'bv-dot', dot: cfg }, '*');
-      site.contentWindow.postMessage({ type: 'bv-tear', vars: { '--cursor-size': dot.cursorSize + 'px', '--splat-size': dot.splatSize + 'px' } }, '*');
+      site.contentWindow.postMessage({ type: 'bv-tear', vars: { '--cursor-size': dot.cursorSize + 'px' } }, '*');
     } catch (e) {}
     document.getElementById('dotOut').value =
-      '/* site.css, :root in the cursor section */\n--cursor-size: ' + dot.cursorSize + 'px; --splat-size: ' + dot.splatSize + 'px;\n\n' +
+      '/* site.css, :root in the cursor section */\n--cursor-size: ' + dot.cursorSize + 'px;\n\n' +
       '/* site.js, the DOT object */\nvar DOT = {\n  splat: ' + JSON.stringify(dot.splat).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') +
       ',\n  trail: ' + JSON.stringify(dot.trail).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') + '\n};';
   }
