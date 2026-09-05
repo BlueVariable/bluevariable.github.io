@@ -372,7 +372,8 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 /* ==========================================================================
    GAMES
    ========================================================================== */
-.games { background: var(--white); display: flex; flex-direction: column; flex: 1 0 auto; position: relative; }
+/* white page margins; the bottom 45px are transparent so the footer shows through the panel's torn edge */
+.games { background: linear-gradient(var(--white), var(--white)) top / 100% calc(100% - 10 * var(--px)) no-repeat; display: flex; flex-direction: column; flex: 1 0 auto; position: relative; }
 /* dark specks along the panel's torn side edges */
 .games::before, .games::after {
   content: ""; position: absolute; top: 0; bottom: 0; width: calc(45 * var(--px)); pointer-events: none; z-index: 1;
@@ -387,10 +388,11 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   -webkit-mask-image: linear-gradient(#000, #000), url("../img/torn-left-mask.webp"), url("../img/torn-right-mask.webp"), url("../img/torn-bottom-mask.webp");
   mask-image: linear-gradient(#000, #000), url("../img/torn-left-mask.webp"), url("../img/torn-right-mask.webp"), url("../img/torn-bottom-mask.webp");
   --torn-fade: calc(22 * var(--px));
+  --torn-fade-b: calc(10 * var(--px));
   -webkit-mask-position: var(--torn-fade) 0, left top, right top, center bottom;
   mask-position: var(--torn-fade) 0, left top, right top, center bottom;
-  -webkit-mask-size: calc(100% - 2 * var(--torn-fade)) calc(100% - var(--torn-fade)), calc(45 * var(--px)) auto, calc(45 * var(--px)) auto, auto var(--torn-h);
-  mask-size: calc(100% - 2 * var(--torn-fade)) calc(100% - var(--torn-fade)), calc(45 * var(--px)) auto, calc(45 * var(--px)) auto, auto var(--torn-h);
+  -webkit-mask-size: calc(100% - 2 * var(--torn-fade)) calc(100% - var(--torn-fade-b)), calc(45 * var(--px)) auto, calc(45 * var(--px)) auto, auto var(--torn-h);
+  mask-size: calc(100% - 2 * var(--torn-fade)) calc(100% - var(--torn-fade-b)), calc(45 * var(--px)) auto, calc(45 * var(--px)) auto, auto var(--torn-h);
   -webkit-mask-repeat: no-repeat, repeat-y, repeat-y, repeat-x;
   mask-repeat: no-repeat, repeat-y, repeat-y, repeat-x;
   -webkit-mask-clip: border-box, content-box, content-box, border-box;
@@ -621,6 +623,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
     width: 100%; padding: 24px 0 30px; --torn-h: 30px;
   }
   .games::before, .games::after { display: none; }
+  .games { background-size: 100% calc(100% - 7px); }
   .games-panel > .wrap { padding-inline: 20px; }
   .games-panel {
     -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
