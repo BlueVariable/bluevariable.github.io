@@ -120,12 +120,20 @@
   if (wipe && !reduceMotion) {
     var clearWipe = function () {
       try { sessionStorage.removeItem('bv-wipe'); } catch (e) {}
-      if (root.classList.contains('wipe-in')) {
+      if (!root.classList.contains('wipe-in')) return;
+      var revealed = false;
+      var reveal = function () {
+        if (revealed) return; revealed = true;
         requestAnimationFrame(function () { requestAnimationFrame(function () {
           wipe.classList.add('is-leaving'); root.classList.add('wipe-leaving');
           setTimeout(function () { root.classList.remove('wipe-in'); root.classList.remove('wipe-leaving'); wipe.classList.remove('is-leaving'); }, 600);
         }); });
-      }
+      };
+      /* keep the band up until the page (images, fonts) has loaded, but never longer than 1.5s */
+      var loaded = doc.readyState === 'complete' ? Promise.resolve() : new Promise(function (res) { window.addEventListener('load', res, { once: true }); });
+      var fonts = (doc.fonts && doc.fonts.ready) ? doc.fonts.ready : Promise.resolve();
+      Promise.all([loaded, fonts]).then(reveal);
+      setTimeout(reveal, 1500);
     };
     clearWipe();
     window.addEventListener('pageshow', function (e) { if (e.persisted) { wipe.classList.remove('is-covering'); root.classList.remove('wipe-covering'); clearWipe(); } });
