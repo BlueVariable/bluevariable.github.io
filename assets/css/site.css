@@ -145,7 +145,10 @@ em { font-style: normal; color: var(--blue); }
 }
 
 /* ---------- Header ---------- */
-.site-header { position: sticky; top: 0; z-index: 40; }
+/* The sticky box keeps a constant height so collapsing the bar never changes the
+   page length (which would move scrollY and re-trigger the expand/collapse). */
+.site-header { position: sticky; top: 0; z-index: 40; height: var(--header-h); pointer-events: none; }
+.site-header__bar { pointer-events: auto; }
 .site-header__bar {
   background: var(--ink);
   height: var(--header-h);
