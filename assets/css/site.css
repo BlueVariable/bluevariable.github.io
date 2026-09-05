@@ -200,6 +200,7 @@ em { font-style: normal; color: var(--blue); }
 .mobile-menu__taglines { font-family: var(--font-hand); text-transform: uppercase; font-size: 18px; line-height: 1; display: grid; gap: 14px; max-width: 260px; }
 .socials--menu { margin-top: auto; }
 body.menu-open { overflow: hidden; }
+body.menu-open .torn--header { display: none; }
 
 /* ---------- Buttons ---------- */
 .btn {
