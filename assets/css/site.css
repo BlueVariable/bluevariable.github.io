@@ -110,7 +110,7 @@ em { font-style: normal; color: var(--blue); }
 .torn-bottom {
   --torn-h: calc(45 * var(--px));
   padding-bottom: var(--torn-h);
-  --torn-fade: calc(12 * var(--px));
+  --torn-fade: calc(26 * var(--px));
   -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
   mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
 }
@@ -125,8 +125,13 @@ em { font-style: normal; color: var(--blue); }
   pointer-events: none;
   transition: top .3s var(--ease-pop);
 }
-/* Anchor for the big side labels that straddle a torn edge */
-.side-anchor { position: relative; height: 0; }
+/* Anchor for the big side labels that straddle a torn edge; also draws the dark
+   paper specks of the tear so the strip reads on white as well as on cream */
+.side-anchor { position: relative; height: 0; z-index: 2; }
+.side-anchor::before {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(-45 * var(--px)); height: calc(45 * var(--px));
+  background: url("../img/specks-bottom.webp") center top / auto 100% repeat-x; opacity: 1; pointer-events: none;
+}
 
 /* ---------- Header ---------- */
 .site-header { position: sticky; top: 0; z-index: 40; }
@@ -390,7 +395,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 /* ==========================================================================
    NEWS / DEVLOGS
    ========================================================================== */
-.news { padding-top: calc(10 * var(--px)); flex: 1 0 auto; }
+.news { padding-top: calc(45 * var(--px)); flex: 1 0 auto; }
 .news__empty { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(24 * var(--px)); color: var(--grey); padding: calc(60 * var(--px)) 0; text-align: center; }
 .timeline { position: relative; }
 .timeline::before {
@@ -399,9 +404,20 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   -webkit-mask: url("../img/timeline-line.svg") center / 100% 100% no-repeat; mask: url("../img/timeline-line.svg") center / 100% 100% no-repeat;
 }
 .entry { position: relative; display: grid; grid-template-columns: calc(161 * var(--px)) 1fr; column-gap: 0; padding: calc(40 * var(--px)) 0 calc(50 * var(--px)) calc(249 * var(--px)); min-height: calc(240 * var(--px)); }
-/* full-bleed band behind each entry: cream, white, cream, white… */
-.entry::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); background: var(--paper); z-index: 0; }
+/* full-bleed band behind each entry: cream, white, cream, white…
+   Each band starts 45px above its entry with a torn top edge, overlapping the band before it. */
+.entry::before {
+  content: ""; position: absolute; top: calc(-45 * var(--px)); bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+  background: var(--paper); z-index: 0;
+  -webkit-mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+  mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+}
 .entry:nth-child(even)::before { background: var(--white); }
+.entry::after {
+  content: ""; position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); top: calc(-45 * var(--px)); height: calc(45 * var(--px));
+  background: url("../img/specks-top.webp") center top / auto 100% repeat-x; opacity: 1; pointer-events: none; z-index: 1;
+}
+.entry:first-child::after { display: none; }
 .entry > * { position: relative; z-index: 1; }
 .entry--media { grid-template-columns: calc(161 * var(--px)) minmax(0, calc(300 * var(--px))) 1fr; }
 .entry__year { position: absolute; left: calc(122 * var(--px)); top: calc(40 * var(--px)); font-family: var(--font-hand); text-transform: uppercase; font-size: calc(28.6 * var(--px)); line-height: .81; letter-spacing: .02em; color: var(--blue); }
@@ -542,7 +558,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .site-header { z-index: 45; }
 
   .side-labels { display: none; }
-  .torn-bottom { --torn-h: 30px; --torn-fade: 8px; }
+  .torn-bottom { --torn-h: 30px; --torn-fade: 18px; }
   .site-footer { margin-top: -30px; padding-top: 30px; }
 
   .site-footer__band { padding: 22px 0 18px; }
@@ -585,8 +601,8 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   }
   .games-panel > .wrap { padding-inline: 20px; }
   .games-panel {
-    -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 8px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
-    mask: linear-gradient(#000, #000) top / 100% calc(100% - 8px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
+    -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 18px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
+    mask: linear-gradient(#000, #000) top / 100% calc(100% - 18px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
   }
   .game { flex-direction: column; gap: 22px; }
   .game__art { flex: none; max-width: 100%; width: 100%; }
@@ -604,6 +620,10 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .timeline { margin-left: 0; }
   .timeline::before { left: 7px; top: 44px; bottom: 24px; width: 10px; }
   .entry, .entry--media { grid-template-columns: 1fr; padding: 30px 0 36px 34px; min-height: 0; }
+  .entry::after { top: -30px; height: 30px; }
+  .side-anchor::before { top: -30px; height: 30px; }
+  .entry::before { top: -30px; -webkit-mask-size: auto 30px, 100% calc(100% - 15px); mask-size: auto 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
+  .news { padding-top: 30px; }
   .entry__year { position: static; display: block; margin-bottom: 8px; font-size: 22px; }
   .entry__dot { left: 2px; top: 30px; width: 20px; height: 20px; }
   .entry__date { font-size: 24px; }
