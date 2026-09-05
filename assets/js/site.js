@@ -115,6 +115,35 @@
     });
   }
 
+  /* ---------- Page transition (blue band rises from the footer, then drops away) ---------- */
+  var wipe = doc.querySelector('[data-wipe]');
+  if (wipe && !reduceMotion) {
+    var clearWipe = function () {
+      try { sessionStorage.removeItem('bv-wipe'); } catch (e) {}
+      if (root.classList.contains('wipe-in')) {
+        requestAnimationFrame(function () { requestAnimationFrame(function () {
+          wipe.classList.add('is-leaving');
+          setTimeout(function () { root.classList.remove('wipe-in'); wipe.classList.remove('is-leaving'); }, 600);
+        }); });
+      }
+    };
+    clearWipe();
+    window.addEventListener('pageshow', function (e) { if (e.persisted) { wipe.classList.remove('is-covering'); clearWipe(); } });
+    doc.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest('a[href]');
+      if (!a || a.target === '_blank' || a.hasAttribute('download') || a.getAttribute('href').charAt(0) === '#') return;
+      var url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
+      e.preventDefault();
+      try { sessionStorage.setItem('bv-wipe', '1'); } catch (err) {}
+      wipe.classList.add('is-covering');
+      setTimeout(function () { location.href = url.href; }, 440);
+    });
+  }
+
   /* ---------- Splash: reveal → dot pop → home (first visit per session) ---------- */
   var splash = doc.querySelector('[data-splash]');
   if (splash && root.classList.contains('splash-pending')) {

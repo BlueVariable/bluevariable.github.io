@@ -14,7 +14,7 @@ GitHub Pages site for Blue Variable Studio, served at `bluevariablestudio.com` (
 - Pages: `index.html` (home, `nav: home`, `splash: true`), `games.html`, `news.html`, `about.html`, `contact.html` (press kit lives under `#presskit`). Each sets `nav:` for the active link and `permalink:`.
 - `_posts/` — devlogs rendered on the News timeline (newest first, expandable with "see more"). Front matter: `title`, `date`, `game`, optional `steam` (wishlist URL), `image` + `image_alt` + `caption` ("line one|line two") for the media card, `video` (YouTube URL, enables the play button/modal), `tags`. The first paragraph is the excerpt. `future: true` is set so scheduled dates still render.
 - `404.html` — branded not-found page.
-- `assets/css/site.css` — all styles. `assets/js/site.js` — all behaviour (compact header, tagline ticker, mobile menu, newsletter placeholder, side-label highlighting, devlog expand, first-visit splash).
+- `assets/css/site.css` — all styles. `assets/js/site.js` — all behaviour (compact header, tagline ticker, mobile menu, newsletter placeholder, devlog expand, video modal, mailto form, blue-band page transition, first-visit splash).
 - `assets/fonts/` — self-hosted fonts: Darumadrop One, Londrina Solid 300/400/900, Urbanist 700/800/900, Glacial Indifference Regular/Bold (OFL).
 - `assets/img/` — optimized artwork extracted from the Canva export (key art, torn edges, team illustrations, arrows, brackets, brush, paw, speech bubble, logos, background texture).
 - `assets/blue_logo*.svg` — logo SVGs authored by the studio: `blue_logo.svg` (wordmark), `blue_logo_reveal.svg` (splash intro), `blue_logo_scale.svg` (dot pop), `blue_logo_float.svg` (idle float, used on About).

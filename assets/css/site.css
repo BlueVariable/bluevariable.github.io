@@ -327,6 +327,21 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 }
 .splash__pop.is-popping { transition: transform .7s cubic-bezier(.32, 0, .67, 0); }
 
+
+/* ---------- Page transition: the blue footer band rises to cover, then drops away ---------- */
+.page-wipe {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+  height: calc(100vh + 45 * var(--px)); height: calc(100dvh + 45 * var(--px));
+  background: var(--blue); pointer-events: none;
+  transform: translateY(100%);
+  -webkit-mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+  mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+}
+.page-wipe.is-covering { transform: translateY(0); transition: transform .42s cubic-bezier(.4, 0, .2, 1); pointer-events: auto; }
+html.wipe-in .page-wipe { transform: translateY(0); }
+html.wipe-in .page-wipe.is-leaving { transform: translateY(100%); transition: transform .5s cubic-bezier(.4, 0, .2, 1); }
+html.splash-pending .page-wipe { display: none; }
+
 /* ==========================================================================
    HOME
    ========================================================================== */
