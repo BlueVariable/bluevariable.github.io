@@ -27,6 +27,7 @@
   var updateHeader = initHeader();
   var closeMenu = initMenu();
   var refreshSections = initSectionLabels();
+  var refreshReveal = initReveal();
   initTicker();
   initNewsletter();
   initEntries();
@@ -38,6 +39,7 @@
   initTunerBridge();
   initSplash();
   refreshSections();
+  refreshReveal();
 
   function initNavDot() {
     var nav = doc.querySelector('.site-nav'), dot = nav && nav.querySelector('.site-nav__dot');
@@ -153,6 +155,28 @@
         });
       }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
       Object.keys(labelFor).forEach(function (id) { observer.observe(doc.getElementById(id)); });
+    };
+  }
+
+  function initReveal() {
+    var observer = null;
+    return function () {
+      if (observer) { observer.disconnect(); observer = null; }
+      if (!main) return;
+      var sections = main.querySelectorAll('[data-reveal]');
+      if (!sections.length) return;
+      if (!window.IntersectionObserver || reduceMotion) {
+        sections.forEach(function (section) { section.classList.add('is-revealed'); });
+        return;
+      }
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -15% 0px', threshold: 0 });
+      sections.forEach(function (section) { observer.observe(section); });
     };
   }
 
@@ -287,6 +311,7 @@
       main.innerHTML = nextMain.innerHTML;
       main.setAttribute('tabindex', '-1');
       refreshSections();
+      refreshReveal();
     };
     var placeScroll = function (url, y) {
       var target = url.hash ? doc.getElementById(decodeURIComponent(url.hash.slice(1))) : null;

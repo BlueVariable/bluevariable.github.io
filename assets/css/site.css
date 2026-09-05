@@ -378,12 +378,13 @@ html.splash-pending .splash:not(.is-done) ~ .site-header__layer, html.splash-pen
 }
 .page-wipe.is-waiting::after { opacity: 1; }
 html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-depth-t)); }
-.site-main.is-arriving .wrap > * { animation: arrive var(--dur-slow) var(--ease-pop) 120ms both; }
-.site-main.is-arriving .wrap > :nth-child(2) { animation-delay: 190ms; }
-.site-main.is-arriving .wrap > :nth-child(3) { animation-delay: 260ms; }
-.site-main.is-arriving .wrap > :nth-child(4) { animation-delay: 330ms; }
-.site-main.is-arriving .wrap > :nth-child(5) { animation-delay: 400ms; }
-.site-main.is-arriving .wrap > :nth-child(n+6) { animation-delay: 470ms; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > *, [data-reveal].is-revealed .wrap > :not(.team__grid), [data-reveal].is-revealed .member { animation: arrive var(--dur-slow) var(--ease-pop) 120ms both; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > :nth-child(2), [data-reveal].is-revealed .wrap > :nth-child(2), [data-reveal].is-revealed .member:nth-child(2) { animation-delay: 190ms; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > :nth-child(3), [data-reveal].is-revealed .wrap > :nth-child(3), [data-reveal].is-revealed .member:nth-child(3) { animation-delay: 260ms; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > :nth-child(4), [data-reveal].is-revealed .wrap > :nth-child(4), [data-reveal].is-revealed .member:nth-child(4) { animation-delay: 330ms; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > :nth-child(5), [data-reveal].is-revealed .wrap > :nth-child(5), [data-reveal].is-revealed .member:nth-child(5) { animation-delay: 400ms; }
+.site-main.is-arriving :not([data-reveal]) > .wrap > :nth-child(n+6), [data-reveal].is-revealed .wrap > :nth-child(n+6), [data-reveal].is-revealed .member:nth-child(n+6) { animation-delay: 470ms; }
+[data-reveal]:not(.is-revealed) .wrap > :not(.team__grid), [data-reveal]:not(.is-revealed) .member { opacity: 0; }
 @keyframes arrive { from { opacity: 0; transform: translateY(calc(28 * var(--px))); } }
 
 .hero { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; padding-top: calc(14 * var(--px)); padding-bottom: calc(24 * var(--px)); text-align: center; }
