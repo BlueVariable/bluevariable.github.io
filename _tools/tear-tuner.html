@@ -22,8 +22,7 @@
   .demo { position: relative; overflow: hidden; margin-bottom: 18px; border-radius: 4px; }
   .demo .cap { position: absolute; left: 8px; top: 6px; font-size: 11px; color: var(--muted); z-index: 3; }
   .d-header { height: 110px; background: var(--paper); }
-  .d-header .bar { position: absolute; left: 0; right: 0; top: 0; height: 60px; background: var(--ink); }
-  .d-header .strip { position: absolute; left: 0; right: 0; top: 50px; height: 26px; background: var(--paper); -webkit-mask: var(--tear-t) center top / 100% 45px no-repeat; mask: var(--tear-t) center top / 100% 45px no-repeat; }
+  .d-header .bar { position: absolute; left: 0; right: 0; top: 0; height: 60px; background: var(--ink); -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 10px) no-repeat, var(--tear-b) center bottom / 100% 45px no-repeat; mask: linear-gradient(#000, #000) top / 100% calc(100% - 10px) no-repeat, var(--tear-b) center bottom / 100% 45px no-repeat; }
   .d-hero { height: 120px; background: var(--blue); }
   .d-hero .hero { position: absolute; left: 0; right: 0; top: 0; height: 80px; background: var(--paper); -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 10px) no-repeat, var(--tear-b) center bottom / 100% 45px no-repeat; mask: linear-gradient(#000, #000) top / 100% calc(100% - 10px) no-repeat, var(--tear-b) center bottom / 100% 45px no-repeat; }
   .d-band { height: 110px; background: var(--paper); }
@@ -93,7 +92,7 @@
     <iframe id="site" title="Site preview"></iframe>
   </details>
   <div class="demos" id="demos">
-    <div class="demo d-header"><span class="cap">header strip over the dark bar</span><div class="bar"></div><div class="strip"></div></div>
+    <div class="demo d-header"><span class="cap">header bar, torn bottom over the page</span><div class="bar"></div></div>
     <div class="demo d-hero"><span class="cap">section tearing into the blue footer</span><div class="hero"></div></div>
     <div class="demo d-band"><span class="cap">white band tearing over cream (news, team)</span><div class="band"></div></div>
     <div class="demo d-side"><span class="cap">Games panel: torn sides</span><div class="panel"></div></div>
