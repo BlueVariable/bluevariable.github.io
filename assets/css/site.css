@@ -45,7 +45,7 @@
   --px: clamp(0.72px, calc(100vw / 1366), 1.12px);
   --wrap: calc(1366 * var(--px));
   --header-h: calc(115 * var(--px));
-  --header-compact-h: calc(54 * var(--px));
+  --header-compact-h: calc(72 * var(--px));
   --ease-pop: cubic-bezier(.22, 1.18, .36, 1);
 }
 
@@ -232,7 +232,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .site-header__wrap { height: 100%; display: flex; align-items: center; }
 .brand { position: absolute; left: calc(31 * var(--px)); top: 0; height: 100%; display: flex; align-items: center; }
 .brand__full { width: calc(160 * var(--px)); height: auto; }
-.brand__compact { width: calc(120 * var(--px)); height: auto; display: none; }
+.brand__compact { width: calc(150 * var(--px)); height: auto; display: none; }
 .site-nav {
   position: absolute; left: calc(294 * var(--px)); top: 0; height: 100%;
   display: flex; align-items: center; gap: calc(56 * var(--px));
@@ -641,7 +641,7 @@ html.splash-pending .page-wipe { display: none; }
    Mobile (< 900px)
    ========================================================================== */
 @media (max-width: 899px) {
-  :root { --px: 1px; --header-h: 72px; --header-compact-h: 72px; }
+  :root { --px: 1px; --header-h: 72px; --header-compact-h: 60px; }
   .wrap { width: 100%; padding-inline: 20px; }
   .brand { left: 20px; }
   .brand__full { width: 118px; }
