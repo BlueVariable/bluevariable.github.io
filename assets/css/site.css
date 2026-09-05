@@ -238,6 +238,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .site-nav__link {
   font-family: var(--font-hand); font-weight: 400; text-transform: uppercase;
   font-size: calc(28.7 * var(--px)); letter-spacing: .02em; color: var(--cream);
+  padding-bottom: .27em; /* the hand font's ink sits .135em below its line-box centre; this centres the ink in the bar */
   transition: color .2s, transform .2s var(--ease-pop), font-size .3s var(--ease-pop);
 }
 .site-nav__link:hover { transform: translateY(-2px) rotate(-2deg); }
