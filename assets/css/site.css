@@ -372,8 +372,12 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 /* ==========================================================================
    GAMES
    ========================================================================== */
-/* white page margins; the bottom 45px are transparent so the footer shows through the panel's torn edge */
-.games { background: linear-gradient(var(--white), var(--white)) top / 100% calc(100% - 10 * var(--px)) no-repeat; display: flex; flex-direction: column; flex: 1 0 auto; position: relative; }
+/* white page margins around the panel; the whole strip (margins + panel) tears into the footer */
+.games {
+  background: var(--white); display: flex; flex-direction: column; flex: 1 0 auto; position: relative;
+  -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 10 * var(--px)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto calc(45 * var(--px)) repeat-x;
+  mask: linear-gradient(#000, #000) top / 100% calc(100% - 10 * var(--px)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto calc(45 * var(--px)) repeat-x;
+}
 /* dark specks along the panel's torn side edges */
 .games::before, .games::after {
   content: ""; position: absolute; top: 0; bottom: 0; width: calc(45 * var(--px)); pointer-events: none; z-index: 1;
@@ -623,7 +627,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
     width: 100%; padding: 24px 0 30px; --torn-h: 30px;
   }
   .games::before, .games::after { display: none; }
-  .games { background-size: 100% calc(100% - 7px); }
+  .games { -webkit-mask-size: 100% calc(100% - 7px), auto 30px; mask-size: 100% calc(100% - 7px), auto 30px; }
   .games-panel > .wrap { padding-inline: 20px; }
   .games-panel {
     -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
