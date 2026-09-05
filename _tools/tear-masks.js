@@ -15,17 +15,28 @@
    some places than others. Three frames are rendered per direction; they share
    the speckle but each is nudged by a different low-frequency displacement
    ("boil"), and site.css steps through them. The SVGs have no intrinsic size,
-   so `mask-size: 100% <h>` lays each one across the full width without repeating. */
+   so `mask-size: 100% <h>` lays each one across the full width without repeating.
+   The same recipe also draws the News timeline line / About divider (line) and
+   the tagline brackets (bl, br): plain rects with a fixed hand-drawn wave, blurred
+   a little so the grain can roughen their edges, then the same boil frames. */
 
 (function (root) {
   'use strict';
 
   var DEFAULTS = {
-    grain: { type: 'fractalNoise', freq: [0.12, 0.25], octaves: 2, seed: 3 },
-    grit: { on: true, type: 'fractalNoise', freq: [0.55, 0.8], octaves: 2, seed: 7, mix: 0.55 },
-    threshold: { offset: -0.55, slope: 30 },
-    mod: { on: true, freq: [0.012, 0.04], octaves: 1, seed: 5, amount: 0.3 },
-    boil: { freq: [0.03, 0.05], scale: 3, seeds: [1, 2, 3] },
+    grain: { type: 'turbulence', freq: [0.02, 0.91], octaves: 1, seed: 1 },
+    grit: { on: true, type: 'turbulence', freq: [0.77, 0.1], octaves: 4, seed: 1, mix: 0.85 },
+    threshold: { offset: -0.31, slope: 120 },
+    mod: { on: false, freq: [0.06, 0.002], octaves: 1, seed: 1, amount: 0.8 },
+    boil: { freq: [0.005, 0.1], scale: 3.5, seeds: [1, 2, 3] },
+    /* the timeline line / About divider and the tagline brackets: plain rects roughened with the same grain
+       and boil. `wave` is a fixed hand-drawn wobble, `blur` widens the edge band the grain can chew into. */
+    shapes: {
+      blur: 0.8,
+      wave: { freq: [0.02, 0.01], octaves: 1, seed: 9, scale: 2 },
+      line: { widths: [70, 64, 58, 52, 46, 40, 34], head: 5 },   /* stroke width in % of the box, top to bottom; head radius in px */
+      bracket: { stem: 27, tick: 5, top: 12, bottom: 88 }        /* % of the box */
+    },
     /* stop offsets are fractions of the 45px band; alpha ~.57 gives roughly two-thirds coverage */
     profile: {
       bottom: [[0.7, 1], [0.78, 0.58], [0.9, 0.56], [1, 0.3]],   /* only the last 10px of the band show */
@@ -72,6 +83,43 @@
       "<rect " + rect + " fill='url(#g)' filter='url(#f)'/></svg>";
   }
 
+  /* brush line: a rounded head, then a stack of ever-narrower rects (the blur and grain hide the steps) */
+  function lineShape(o) {
+    var n = o.widths.length, s = "<circle cx='50%' cy='" + o.head + "' r='" + o.head + "'/>";
+    for (var i = 0; i < n; i++) {
+      var w = o.widths[i], y0 = (100 / n) * i, h = 100 / n + (i < n - 1 ? 0.5 : 0);
+      s += "<rect x='" + +(50 - w / 2).toFixed(2) + "%' y='" + +y0.toFixed(2) + "%' width='" + w + "%' height='" + +h.toFixed(2) + "%'/>";
+    }
+    return s;
+  }
+  function bracketShape(o, right) {
+    return "<rect x='" + (right ? 100 - o.stem : 0) + "%' y='" + o.top + "%' width='" + o.stem + "%' height='" + (o.bottom - o.top) + "%'/>" +
+      "<rect x='0' y='" + o.top + "%' width='100%' height='" + o.tick + "%'/>" +
+      "<rect x='0' y='" + (o.bottom - o.tick) + "%' width='100%' height='" + o.tick + "%'/>";
+  }
+  /* kind: 'line' | 'bl' | 'br' */
+  function shapeSvg(p, kind, frame) {
+    var o = p.shapes, shape = kind === 'line' ? lineShape(o.line) : bracketShape(o.bracket, kind === 'br');
+    var f = turb(o.wave, false, o.wave.seed, 'wv') +
+      "<feDisplacementMap in='SourceGraphic' in2='wv' scale='" + o.wave.scale + "' xChannelSelector='R' yChannelSelector='G'/>" +
+      "<feGaussianBlur stdDeviation='" + o.blur + "' result='bl'/>" +
+      turb(p.grain, false, p.grain.seed, 'n');
+    var noise = 'n';
+    if (p.grit && p.grit.on) {
+      f += turb(p.grit, false, p.grit.seed, 'g');
+      f += "<feComposite in='n' in2='g' operator='arithmetic' k2='" + p.grit.mix + "' k3='" + +(1 - p.grit.mix).toFixed(4) + "' result='n2'/>";
+      noise = 'n2';
+    }
+    f += "<feComposite in='bl' in2='" + noise + "' operator='arithmetic' k2='1' k3='1' k4='" + p.threshold.offset + "' result='s'/>";
+    var slope = p.threshold.slope, intercept = 0.5 - slope * 0.5;
+    f += "<feComponentTransfer in='s' result='m'><feFuncA type='linear' slope='" + slope + "' intercept='" + intercept + "'/></feComponentTransfer>";
+    f += turb(p.boil, false, p.boil.seeds[frame], 'w');
+    f += "<feDisplacementMap in='m' in2='w' scale='" + p.boil.scale + "' xChannelSelector='R' yChannelSelector='G'/>";
+    return "<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>" +
+      "<filter id='f' x='-50%' y='-10%' width='200%' height='120%'>" + f + "</filter>" +
+      "<g filter='url(#f)'>" + shape + "</g></svg>";
+  }
+
   function uri(s) { return 'url("data:image/svg+xml,' + s.replace(/%/g, '%25').replace(/#/g, '%23') + '")'; }
 
   /* -> { css: the lines for site.css, uris: { b: [frame1, frame2, frame3], t: [...], l: [...], r: [...] } } */
@@ -85,10 +133,18 @@
         css += '  --tear-' + dir + (k + 1) + ': ' + u + ';\n';
       }
     });
+    ['line', 'bl', 'br'].forEach(function (kind) {
+      uris[kind] = [];
+      for (var k = 0; k < p.boil.seeds.length; k++) {
+        var u = uri(shapeSvg(p, kind, k));
+        uris[kind].push(u);
+        css += '  --tear-' + kind + (k + 1) + ': ' + u + ';\n';
+      }
+    });
     return { css: css, uris: uris };
   }
 
-  var api = { DEFAULTS: DEFAULTS, build: build, svg: svg, uri: uri };
+  var api = { DEFAULTS: DEFAULTS, build: build, svg: svg, shapeSvg: shapeSvg, uri: uri };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
     if (typeof require !== 'undefined' && require.main === module) process.stdout.write(build(DEFAULTS).css);

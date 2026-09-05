@@ -264,7 +264,7 @@
       if (!d || d.type !== 'bv-tear' || !d.vars) return;
       Object.keys(d.vars).forEach(function (k) {
         var v = String(d.vars[k]);
-        if (/^--tear-[btlr][123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
+        if (/^--tear-(b|t|l|r|line|bl|br)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
       });
       /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
       root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';
