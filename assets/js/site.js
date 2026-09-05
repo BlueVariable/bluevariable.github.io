@@ -192,9 +192,20 @@
       window.scrollTo(0, scrollY || 0);
     };
     var pending = null; /* a link clicked mid-transition is followed once the band is down */
+    /* highlight the nav link for a path right away (the swap sets it again from the new page, which agrees) */
+    var trim = function (p) { return p.replace(/\/+$/, '') || '/'; };
+    var setActiveNav = function (url) {
+      var target = trim(url.pathname);
+      doc.querySelectorAll('.site-nav__link, .mobile-menu__link').forEach(function (link) {
+        var on = trim(new URL(link.href, location.href).pathname) === target;
+        link.classList.toggle('is-active', on);
+        if (on) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+      });
+    };
     var go = function (url, opts) {
       if (navigating) { pending = { url: url, opts: opts }; return; }
       navigating = true;
+      setActiveNav(url); /* the link turns blue on the press, not when the band comes down */
       closeMenu();
       wipe.classList.remove('is-leaving');
       wipe.classList.add('is-covering');
@@ -261,9 +272,8 @@
      Droplet settings. Tune them live in _tools/tear-tuner.html (Cursor & droplets panel) and paste the block it
      prints over this object; the cursor and splat sizes are --cursor-size / --splat-size in site.css. */
   var DOT = {
-    splat: { count: [7, 9], size: [9, 20], distance: [34, 90], life: 700 },  /* droplets per press; px; px; ms until removed */
-    trail: { size: [7, 16], spread: 6, sway: 14, drift: [4, 22], every: 40, minMove: 6, max: 24, life: 650 }
-    /* trail: px; scatter around the path (px); sideways drift (px); downward drift (px); ms between droplets; min pointer move (px); max alive; ms */
+    splat: {count: [13, 15], size: [16.7, 37], distance: [53.6, 134], life: 200},
+    trail: {size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500}
   };
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
   var between = function (r) { return rnd(r[0], r[1]); };
@@ -286,7 +296,7 @@
       var splat = doc.createElement('div');
       splat.className = 'splat' + (onBlue(e.target) ? ' is-white' : '');
       splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
-      splat.style.setProperty('--r', deg());
+      splat.style.setProperty('--r', deg()); splat.style.setProperty('--life', DOT.splat.life + 'ms'); /* the animation lasts exactly as long as the element */
       var n = Math.round(between(DOT.splat.count));
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
@@ -309,7 +319,7 @@
       if (white) p.className = 'is-white';
       p.style.setProperty('--x', (x + rnd(-t.spread, t.spread)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-t.spread, t.spread)).toFixed(1) + 'px');
       p.style.setProperty('--dx', rnd(-t.sway, t.sway).toFixed(1) + 'px'); p.style.setProperty('--dy', between(t.drift).toFixed(1) + 'px'); /* drifts down a little, like a drip */
-      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
+      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg()); p.style.setProperty('--life', t.life + 'ms');
       trail.appendChild(p); live++;
       setTimeout(function () { p.remove(); live--; }, t.life);
     };

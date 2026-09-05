@@ -178,7 +178,7 @@ em { font-style: normal; color: var(--blue); }
    site.js hides the native pointer (html.has-cursor, fine pointers only) and moves .cursor with it; the dot
    is the logo dot masked with the wobbling --tear-dot frames. Moving sheds droplets (.trail i), pressing
    anywhere drops a paint splat (.splat). All of it is inert to the pointer and cleans itself up. */
-:root { --cursor-size: 44px; --splat-size: 60px; }
+:root { --cursor-size: 44px; --splat-size: 20px; }
 html.has-cursor, html.has-cursor * { cursor: none; }
 html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor: auto; } /* the dot hides itself over fields */
 .cursor {
@@ -204,15 +204,15 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
   border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; background: var(--dot-color, var(--blue));
 }
 .is-white { --dot-color: var(--white); } /* the dot, its droplets and splats over blue backgrounds */
-.trail i { transform: translate(var(--x), var(--y)) rotate(var(--r)); animation: trail-drop .6s cubic-bezier(.2, .6, .4, 1) forwards; }
+.trail i { transform: translate(var(--x), var(--y)) rotate(var(--r)); animation: trail-drop var(--life, .6s) cubic-bezier(.2, .6, .4, 1) forwards; }
 @keyframes trail-drop { 0% { opacity: 1; } 100% { transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) rotate(var(--r)) scale(0); opacity: 0; } }
 .splat { z-index: 95; }
 .splat::before {
   content: ""; position: absolute; left: calc(var(--splat-size) / -2); top: calc(var(--splat-size) / -2); width: var(--splat-size); height: var(--splat-size); background: var(--dot-color, var(--blue));
   -webkit-mask: var(--tear-dot) center / 100% 100% no-repeat; mask: var(--tear-dot) center / 100% 100% no-repeat;
-  transform: rotate(var(--r, 0deg)) scale(.2); animation: splat-core .5s cubic-bezier(.2, .8, .3, 1) forwards;
+  transform: rotate(var(--r, 0deg)) scale(.2); animation: splat-core var(--life, .5s) cubic-bezier(.2, .8, .3, 1) forwards;
 }
-.splat i { animation: splat-drop .6s cubic-bezier(.1, .7, .3, 1) forwards; }
+.splat i { animation: splat-drop var(--life, .6s) cubic-bezier(.1, .7, .3, 1) forwards; }
 @keyframes splat-core { 0% { transform: rotate(var(--r, 0deg)) scale(.2); opacity: 1; } 55% { transform: rotate(var(--r, 0deg)) scale(1); opacity: 1; } 100% { transform: rotate(var(--r, 0deg)) scale(1.15); opacity: 0; } }
 @keyframes splat-drop { 0% { transform: translate(0, 0) rotate(var(--r)) scale(.5); opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(0); opacity: 0; } }
 
@@ -641,7 +641,7 @@ html.splash-pending .page-wipe { display: none; }
    Mobile (< 900px)
    ========================================================================== */
 @media (max-width: 899px) {
-  :root { --px: 1px; --header-h: 72px; --header-compact-h: 60px; }
+  :root { --px: 1px; --header-h: 72px; --header-compact-h: 72px; }
   .wrap { width: 100%; padding-inline: 20px; }
   .brand { left: 20px; }
   .brand__full { width: 118px; }
