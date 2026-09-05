@@ -4,6 +4,7 @@
 {% include head.html %}
 </head>
 <body class="page-{{ page.nav | default: 'default' }}">
+<div class="page-wipe" data-wipe aria-hidden="true"></div>
 {% if page.splash %}{% include splash.html %}{% endif %}
 {% include icons.html %}
 {% include nav.html %}
@@ -11,7 +12,6 @@
 {{ content }}
 </main>
 {% include footer.html %}
-<div class="page-wipe" data-wipe aria-hidden="true"></div>
 <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
 </body>
 </html>
