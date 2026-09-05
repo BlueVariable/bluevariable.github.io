@@ -346,16 +346,16 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 /* ---------- Page transition: plain blue band rises from the bottom up to the navbar, then drops away ---------- */
 .page-wipe {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; /* above everything, but it stops under the navbar */
-  top: calc(var(--header-h) - 22 * var(--px));
+  top: calc(var(--header-h) - 10 * var(--px)); /* the ragged top sits on the bar's own torn bottom */
   background: var(--blue); pointer-events: none;
   transform: translateY(100%);
-  /* blue torn top edge */
-  -webkit-mask: var(--tear-t) center top / 100% calc(45 * var(--px)) no-repeat, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
-  mask: var(--tear-t) center top / 100% calc(45 * var(--px)) no-repeat, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+  /* blue torn top edge, 10px tall like the other tears */
+  -webkit-mask: var(--tear-t) center top / 100% calc(45 * var(--px)) no-repeat, linear-gradient(#000, #000) left calc(10 * var(--px)) / 100% calc(100% - 10 * var(--px)) no-repeat;
+  mask: var(--tear-t) center top / 100% calc(45 * var(--px)) no-repeat, linear-gradient(#000, #000) left calc(10 * var(--px)) / 100% calc(100% - 10 * var(--px)) no-repeat;
 }
 .page-wipe.is-covering { transform: translateY(0); transition: transform .42s cubic-bezier(.4, 0, .2, 1), top .3s var(--ease-pop); pointer-events: auto; }
 .page-wipe.is-leaving { transform: translateY(100%); transition: transform .5s cubic-bezier(.4, 0, .2, 1); }
-html.header-compact .page-wipe { top: calc(var(--header-compact-h) - 22 * var(--px)); } /* follows the bar when it is collapsed */
+html.header-compact .page-wipe { top: calc(var(--header-compact-h) - 10 * var(--px)); } /* follows the bar when it is collapsed */
 html.splash-pending .page-wipe { display: none; }
 
 /* ==========================================================================
@@ -592,8 +592,8 @@ html.splash-pending .page-wipe { display: none; }
   .site-header.is-compact .brand__compact { display: none; }
   .site-nav, .tagline { display: none; }
   .site-header__bar { -webkit-mask-size: 100% calc(100% - 7px), 100% 30px; mask-size: 100% calc(100% - 7px), 100% 30px; }
-  .page-wipe { top: calc(var(--header-h) - 15px); -webkit-mask-size: 100% 30px, 100% calc(100% - 15px); mask-size: 100% 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
-  html.header-compact .page-wipe { top: calc(var(--header-compact-h) - 15px); }
+  .page-wipe { top: calc(var(--header-h) - 7px); -webkit-mask-size: 100% 30px, 100% calc(100% - 7px); mask-size: 100% 30px, 100% calc(100% - 7px); -webkit-mask-position: center top, left 7px; mask-position: center top, left 7px; }
+  html.header-compact .page-wipe { top: calc(var(--header-compact-h) - 7px); }
   .nav-toggle {
     display: flex; flex-direction: column; justify-content: center; gap: 6px;
     position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
