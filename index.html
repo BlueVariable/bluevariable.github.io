@@ -13,13 +13,10 @@ permalink: /
       <span class="arrows" aria-hidden="true"></span>
     </div>
     <div class="hero__art">
-      <img src="{{ '/assets/img/keyart.webp' | relative_url }}" alt="Purrfect Fit key art: the game logo on a grey wall crossed with yellow DO NOT ENTER tape" width="1600" height="865" fetchpriority="high">
+      <img src="{{ '/assets/img/purrfect-fit/keyart.webp' | relative_url }}" alt="Purrfect Fit key art: the game logo on a grey wall crossed with yellow DO NOT ENTER tape" width="1600" height="865" fetchpriority="high">
     </div>
     <div class="hero__cta">
-      <a class="brush-btn" href="{{ site.wishlist_url }}" target="_blank" rel="noopener">
-        <svg class="brush-btn__icon"><use href="#i-steam"/></svg>
-        <span class="brush-btn__label">wishlist now</span>
-      </a>
+      {% include wishlist.html href=site.wishlist_url %}
     </div>
   </div>
 </section>

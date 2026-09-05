@@ -6,7 +6,6 @@ baseurl: ""
 lang: en
 email: info@bluevariablestudio.com
 
-# External links (usernames are all "bluevariablestudio")
 links:
   steam: https://store.steampowered.com/developer/bluevariablestudio
   discord: https://discord.gg/bluevariablestudio
@@ -15,9 +14,7 @@ links:
   instagram: https://instagram.com/bluevariablestudio
   youtube: https://youtube.com/@bluevariablestudio
   reddit: https://reddit.com/r/bluevariablestudio
-# Purrfect Fit store page. Replace with the Steam app URL once it exists.
 wishlist_url: https://store.steampowered.com/developer/bluevariablestudio
-# Press kit download. Add the file at this path when ready.
 presskit_url: /assets/presskit/blue-variable-presskit.zip
 
 markdown: kramdown
@@ -32,10 +29,7 @@ defaults:
 
 exclude:
   - CLAUDE.md
-  - README.md
   - Gemfile
   - Gemfile.lock
   - node_modules
   - vendor
-  - "assets/Blue Variable.zip"
-  - "assets/BLUE - Website.png"

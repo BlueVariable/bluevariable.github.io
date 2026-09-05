@@ -33,10 +33,7 @@ description: Devlogs and announcements from Blue Variable Studio — follow the 
           <button class="entry__toggle" type="button" data-expand aria-expanded="false">see more</button>
           {%- endif %}
           {%- if post.steam %}
-          <a class="brush-btn brush-btn--sm entry__wishlist" href="{{ post.steam }}" target="_blank" rel="noopener">
-            <svg class="brush-btn__icon"><use href="#i-steam"/></svg>
-            <span class="brush-btn__label">wishlist now</span>
-          </a>
+          {% include wishlist.html href=post.steam class="brush-btn--sm entry__wishlist" %}
           {%- endif %}
           {%- if post.tags.size > 0 %}
           <ul class="entry__tags">{% for tag in post.tags %}<li>#{{ tag }}</li>{% endfor %}</ul>
@@ -61,7 +58,3 @@ description: Devlogs and announcements from Blue Variable Studio — follow the 
     </ol>
   </div>
 </section>
-<dialog class="video-modal" data-video-modal>
-  <button class="video-modal__close" type="button" data-video-close aria-label="Close video">×</button>
-  <div class="video-modal__frame" data-video-frame></div>
-</dialog>
