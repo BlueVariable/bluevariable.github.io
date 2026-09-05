@@ -12,6 +12,7 @@
   var BLUE = 'rgb(85, 142, 255)';
   var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
   var TILT = { degrees: 7, ease: .18 };
+  var TICKER_MS = 4000, TICKER_LEAVE_MS = 600;
 
   var wait = function (ms) { return new Promise(function (res) { setTimeout(res, ms); }); };
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
@@ -90,18 +91,31 @@
 
   function initTicker() {
     var ticker = doc.querySelector('[data-ticker]');
-    if (!ticker || reduceMotion) return;
+    if (!ticker) return;
     var lines = ticker.querySelectorAll('.tagline__line');
     if (lines.length < 2) return;
-    var current = 0;
-    setInterval(function () {
+    var current = 0, timer = 0;
+    var schedule = function () {
+      clearTimeout(timer);
+      if (!reduceMotion) timer = setTimeout(advance, TICKER_MS);
+    };
+    var advance = function () {
       var prev = lines[current];
       current = (current + 1) % lines.length;
       var next = lines[current];
+      if (next.classList.contains('is-leaving')) {
+        next.style.transition = 'none';
+        next.classList.remove('is-leaving');
+        void next.offsetWidth;
+        next.style.transition = '';
+      }
       prev.classList.remove('is-current'); prev.classList.add('is-leaving');
-      next.classList.remove('is-leaving'); next.classList.add('is-current');
-      setTimeout(function () { prev.classList.remove('is-leaving'); }, 600);
-    }, 4000);
+      next.classList.add('is-current');
+      setTimeout(function () { prev.classList.remove('is-leaving'); }, TICKER_LEAVE_MS);
+      schedule();
+    };
+    ticker.addEventListener('click', advance);
+    schedule();
   }
 
   function initMenu() {
@@ -421,7 +435,7 @@
       }
       cursor.style.setProperty('--x', e.clientX + 'px'); cursor.style.setProperty('--y', e.clientY + 'px');
       cursor.classList.toggle('is-hidden', !!closest(e.target, 'input, textarea, select'));
-      cursor.classList.toggle('is-link', !!closest(e.target, 'a, button, [role="button"], label, summary'));
+      cursor.classList.toggle('is-link', !!closest(e.target, 'a, button, [role="button"], label, summary, [data-ticker]'));
       var white = onBlue(e.target);
       cursor.classList.toggle('is-white', white);
       var dx = e.clientX - lastX, dy = e.clientY - lastY;
