@@ -618,7 +618,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .video-modal__close { top: -40px; }
 
   .contact { padding: 30px 0 30px; }
-  .contact__wrap { flex-direction: column; gap: 34px; padding-left: 0; }
+  .contact__wrap { flex-direction: column; gap: 34px; padding-left: 20px; }
   .contact__form-col { width: 100%; max-width: 420px; }
   .contact__heading { font-size: 22px; width: 200px; }
   .contact__arrows { width: 60px; }
@@ -629,7 +629,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .reasons { font-size: 19px; }
   .contact__discord { margin-left: 0; margin-top: 28px; }
   .presskit { padding: 60px 0 40px; }
-  .presskit__wrap { flex-direction: column; gap: 34px; padding-left: 0; }
+  .presskit__wrap { flex-direction: column; gap: 34px; padding-left: 20px; }
   .presskit__about { width: 100%; }
   .presskit__title { font-size: 26px; }
   .presskit__tagline, .presskit__body { font-size: 15px; }
