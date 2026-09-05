@@ -296,7 +296,7 @@
       var splat = doc.createElement('div');
       splat.className = 'splat' + (onBlue(e.target) ? ' is-white' : '');
       splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
-      splat.style.setProperty('--r', deg()); splat.style.setProperty('--life', DOT.splat.life + 'ms'); /* the animation lasts exactly as long as the element */
+      splat.style.setProperty('--r', deg());
       var n = Math.round(between(DOT.splat.count));
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
@@ -319,7 +319,7 @@
       if (white) p.className = 'is-white';
       p.style.setProperty('--x', (x + rnd(-t.spread, t.spread)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-t.spread, t.spread)).toFixed(1) + 'px');
       p.style.setProperty('--dx', rnd(-t.sway, t.sway).toFixed(1) + 'px'); p.style.setProperty('--dy', between(t.drift).toFixed(1) + 'px'); /* drifts down a little, like a drip */
-      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg()); p.style.setProperty('--life', t.life + 'ms');
+      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
       trail.appendChild(p); live++;
       setTimeout(function () { p.remove(); live--; }, t.life);
     };
