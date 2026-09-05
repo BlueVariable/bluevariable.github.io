@@ -6,12 +6,17 @@
 
   /* ---------- Sticky header: compact after scrolling ---------- */
   var header = doc.querySelector('[data-header]');
+  var onScroll = function () {};
   if (header) {
     var compact = false, threshold = 80;
-    var onScroll = function () {
+    onScroll = function () {
       var y = window.scrollY || root.scrollTop;
       var next = compact ? y > threshold - 30 : y > threshold; /* hysteresis */
-      if (next !== compact) { compact = next; header.classList.toggle('is-compact', compact); }
+      if (next !== compact) {
+        compact = next;
+        header.classList.toggle('is-compact', compact);
+        root.classList.toggle('header-compact', compact); /* lets the page band stop under the compact bar too */
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -37,6 +42,7 @@
   /* ---------- Mobile menu ---------- */
   var toggle = doc.querySelector('[data-nav-toggle]');
   var menu = doc.querySelector('[data-mobile-menu]');
+  var closeMenu = function () {};
   if (toggle && menu) {
     var setMenu = function (open) {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -44,6 +50,7 @@
       doc.body.classList.toggle('menu-open', open);
       if (open) { var first = menu.querySelector('a'); if (first) first.focus({ preventScroll: true }); }
     };
+    closeMenu = function () { if (!menu.hidden) setMenu(false); };
     toggle.addEventListener('click', function () { setMenu(toggle.getAttribute('aria-expanded') !== 'true'); });
     doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); toggle.focus(); } });
     matchMedia('(min-width: 900px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
@@ -66,90 +73,187 @@
     });
   }
 
-  /* ---------- Devlog entries: see more / see less ---------- */
-  doc.querySelectorAll('[data-expand]').forEach(function (btn) {
-    var entry = btn.closest('[data-entry]');
-    if (!entry) return;
-    btn.addEventListener('click', function () {
-      var open = entry.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.textContent = open ? 'see less' : 'see more';
-    });
-  });
-
-  /* ---------- Video modal (YouTube, privacy-enhanced embed) ---------- */
-  var modal = doc.querySelector('[data-video-modal]');
-  if (modal && typeof modal.showModal === 'function') {
-    var frame = modal.querySelector('[data-video-frame]');
-    var ytId = function (url) {
-      var m = url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/);
-      return m ? m[1] : null;
-    };
-    doc.querySelectorAll('[data-video]').forEach(function (btn) {
+  /* ---------- Per-page behaviour: runs on load and again after every in-page navigation ---------- */
+  var initContent = function (scope) {
+    /* Devlog entries: see more / see less */
+    scope.querySelectorAll('[data-expand]').forEach(function (btn) {
+      var entry = btn.closest('[data-entry]');
+      if (!entry) return;
       btn.addEventListener('click', function () {
-        var id = ytId(btn.getAttribute('data-video') || '');
-        if (!id) return;
-        frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
-        modal.showModal();
+        var open = entry.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'see less' : 'see more';
       });
     });
-    var closeModal = function () { modal.close(); frame.innerHTML = ''; };
-    modal.querySelector('[data-video-close]').addEventListener('click', closeModal);
-    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
-    modal.addEventListener('close', function () { frame.innerHTML = ''; });
-  }
 
-  /* ---------- Contact form: opens the visitor's mail app (no backend yet) ---------- */
-  var contactForm = doc.querySelector('[data-contact-form]');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var name = contactForm.name.value.trim(), email = contactForm.email.value.trim(), msg = contactForm.message.value.trim();
-      var note = contactForm.querySelector('.contact-form__note');
-      if (!name || !email || !msg) { note.textContent = 'fill in all three and we’re good :3'; return; }
-      var to = contactForm.getAttribute('action').replace('mailto:', '');
-      var subject = 'Hello from ' + name;
-      var body = msg + '\n\n— ' + name + ' (' + email + ')';
-      window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      note.textContent = 'opening your mail app…';
-    });
-  }
-
-  /* ---------- Page transition (blue band rises from the footer, then drops away) ---------- */
-  var wipe = doc.querySelector('[data-wipe]');
-  if (wipe && !reduceMotion) {
-    var clearWipe = function () {
-      try { sessionStorage.removeItem('bv-wipe'); } catch (e) {}
-      if (!root.classList.contains('wipe-in')) return;
-      var revealed = false;
-      var reveal = function () {
-        if (revealed) return; revealed = true;
-        void wipe.offsetHeight; /* flush the covering state before transitioning (works in background tabs too) */
-        setTimeout(function () {
-          wipe.classList.add('is-leaving'); root.classList.add('wipe-leaving');
-          setTimeout(function () { root.classList.remove('wipe-in'); root.classList.remove('wipe-leaving'); wipe.classList.remove('is-leaving'); }, 600);
-        }, 30);
+    /* Video modal (YouTube, privacy-enhanced embed) */
+    var modal = scope.querySelector('[data-video-modal]');
+    if (modal && typeof modal.showModal === 'function') {
+      var frame = modal.querySelector('[data-video-frame]');
+      var ytId = function (url) {
+        var m = url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/);
+        return m ? m[1] : null;
       };
-      /* keep the band up until the page (images, fonts) has loaded, but never longer than 1.5s */
-      var loaded = doc.readyState === 'complete' ? Promise.resolve() : new Promise(function (res) { window.addEventListener('load', res, { once: true }); });
-      var fonts = (doc.fonts && doc.fonts.ready) ? doc.fonts.ready : Promise.resolve();
-      Promise.all([loaded, fonts]).then(reveal);
-      setTimeout(reveal, 1500);
+      scope.querySelectorAll('[data-video]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = ytId(btn.getAttribute('data-video') || '');
+          if (!id) return;
+          frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+          modal.showModal();
+        });
+      });
+      var closeModal = function () { modal.close(); frame.innerHTML = ''; };
+      modal.querySelector('[data-video-close]').addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      modal.addEventListener('close', function () { frame.innerHTML = ''; });
+    }
+
+    /* Contact form: opens the visitor's mail app (no backend yet) */
+    var contactForm = scope.querySelector('[data-contact-form]');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = contactForm.name.value.trim(), email = contactForm.email.value.trim(), msg = contactForm.message.value.trim();
+        var note = contactForm.querySelector('.contact-form__note');
+        var to = contactForm.getAttribute('action').replace('mailto:', '');
+        var subject = 'Hello from ' + name;
+        var body = msg + '\n\n— ' + name + ' (' + email + ')';
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        note.textContent = 'opening your mail app…';
+      });
+    }
+  };
+  var main = doc.getElementById('main');
+  initContent(main || doc);
+
+  /* ---------- Page transition ----------
+     The blue band rises from the footer up to the navbar; meanwhile the next page is fetched.
+     Its content is swapped into <main> under the band (the document never reloads, so nothing
+     can flash), images get a moment to arrive, then the band drops away. Same idea as the
+     app-style routers on studio sites, done with plain fetch + history. Falls back to a normal
+     navigation if anything goes wrong. */
+  var wipe = doc.querySelector('[data-wipe]');
+  var COVER_MS = 460, LEAVE_MS = 520, SETTLE_MS = 1500;
+  if (wipe && main && !reduceMotion && window.fetch && window.DOMParser && history.pushState) {
+    var navigating = false;
+    var currentKey = location.pathname + location.search;
+    var cache = {};
+    try { history.scrollRestoration = 'manual'; } catch (e) {}
+
+    var wait = function (ms) { return new Promise(function (res) { setTimeout(res, ms); }); };
+    var isInternal = function (url) {
+      if (url.origin !== location.origin) return false;
+      if (/\.[a-z0-9]+$/i.test(url.pathname) && !/\.html?$/i.test(url.pathname)) return false; /* files (zip, images…) */
+      return true;
     };
-    clearWipe();
-    window.addEventListener('pageshow', function (e) { if (e.persisted) { wipe.classList.remove('is-covering'); root.classList.remove('wipe-covering'); clearWipe(); } });
+    var load = function (href) {
+      if (!cache[href]) {
+        cache[href] = fetch(href, { credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } }).then(function (r) {
+          if (!r.ok || !/text\/html/i.test(r.headers.get('content-type') || '')) throw new Error('not a page');
+          return r.text();
+        });
+        cache[href].catch(function () { delete cache[href]; });
+      }
+      return cache[href];
+    };
+    /* wait for the images (and fonts) of the new content, but never longer than SETTLE_MS */
+    var settle = function (scope) {
+      var pending = [];
+      scope.querySelectorAll('img').forEach(function (img) {
+        if (img.complete) return;
+        pending.push(new Promise(function (res) { img.addEventListener('load', res, { once: true }); img.addEventListener('error', res, { once: true }); }));
+      });
+      if (doc.fonts && doc.fonts.ready) pending.push(doc.fonts.ready);
+      return Promise.race([Promise.all(pending), wait(SETTLE_MS)]);
+    };
+    var swap = function (html, url) {
+      var next = new DOMParser().parseFromString(html, 'text/html');
+      var nextMain = next.getElementById('main');
+      if (!nextMain) throw new Error('no main');
+      doc.title = next.title;
+      var desc = doc.querySelector('meta[name="description"]'), nextDesc = next.querySelector('meta[name="description"]');
+      if (desc && nextDesc) desc.setAttribute('content', nextDesc.getAttribute('content'));
+      doc.body.className = next.body.className + (doc.body.classList.contains('menu-open') ? ' menu-open' : '');
+      /* active nav link (desktop + mobile) */
+      next.querySelectorAll('.site-nav__link, .mobile-menu__link').forEach(function (link) {
+        var mine = doc.querySelector('.' + link.className.split(' ')[0] + '[href="' + link.getAttribute('href') + '"]');
+        if (!mine) return;
+        mine.classList.toggle('is-active', link.classList.contains('is-active'));
+        if (link.hasAttribute('aria-current')) mine.setAttribute('aria-current', 'page'); else mine.removeAttribute('aria-current');
+      });
+      main.innerHTML = nextMain.innerHTML;
+      main.setAttribute('tabindex', '-1');
+      initContent(main);
+      currentKey = url.pathname + url.search;
+    };
+    var placeScroll = function (url, scrollY) {
+      var target = url.hash ? doc.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+      if (target) { target.scrollIntoView({ block: 'start' }); return; }
+      window.scrollTo(0, scrollY || 0);
+    };
+    var pending = null; /* a link clicked mid-transition is followed once the band is down */
+    var go = function (url, opts) {
+      if (navigating) { pending = { url: url, opts: opts }; return; }
+      navigating = true;
+      closeMenu();
+      wipe.classList.remove('is-leaving');
+      wipe.classList.add('is-covering');
+      root.classList.add('wipe-covering');
+      var covered = wait(COVER_MS);
+      var page = load(url.href);
+      Promise.all([covered, page]).then(function (r) {
+        delete cache[url.href];
+        if (opts.push) {
+          history.replaceState({ scroll: window.scrollY }, '');
+          history.pushState({ scroll: 0 }, '', url.href);
+        }
+        swap(r[1], url);
+        placeScroll(url, opts.scroll);
+        onScroll();
+        main.focus({ preventScroll: true });
+        return settle(main);
+      }).then(function () {
+        wipe.classList.add('is-leaving');
+        return wait(LEAVE_MS);
+      }).then(function () {
+        wipe.classList.remove('is-covering'); wipe.classList.remove('is-leaving');
+        root.classList.remove('wipe-covering');
+        navigating = false;
+        if (pending) { var p = pending; pending = null; go(p.url, p.opts); }
+      }, function () {
+        location.href = url.href; /* fallback: let the browser do it */
+      });
+    };
+
     doc.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest('a[href]');
       if (!a || a.target === '_blank' || a.hasAttribute('download') || a.getAttribute('href').charAt(0) === '#') return;
       var url;
       try { url = new URL(a.href, location.href); } catch (err) { return; }
-      if (url.origin !== location.origin) return;
-      if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
+      if (!isInternal(url)) return;
+      if (url.pathname === location.pathname && url.search === location.search && url.hash) return; /* same-page anchor */
       e.preventDefault();
-      try { sessionStorage.setItem('bv-wipe', '1'); } catch (err) {}
-      wipe.classList.add('is-covering'); root.classList.add('wipe-covering');
-      setTimeout(function () { location.href = url.href; }, 440);
+      go(url, { push: true, scroll: 0 });
+    });
+    /* warm the cache as soon as a link is hovered / touched, so the swap is instant */
+    doc.addEventListener('pointerenter', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a || a.target === '_blank') return;
+      var url; try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (!isInternal(url) || url.pathname + url.search === currentKey) return;
+      load(url.href).catch(function () {});
+    }, true);
+    window.addEventListener('popstate', function (e) {
+      var url = new URL(location.href);
+      if (url.pathname + url.search === currentKey) return; /* only the hash changed */
+      go(url, { push: false, scroll: (e.state && e.state.scroll) || 0 });
+    });
+    window.addEventListener('pageshow', function (e) {
+      if (!e.persisted) return; /* restored from bfcache: make sure no band is left up */
+      wipe.classList.remove('is-covering'); wipe.classList.remove('is-leaving');
+      root.classList.remove('wipe-covering');
+      navigating = false;
     });
   }
 
