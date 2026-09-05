@@ -46,6 +46,9 @@
   --wrap: calc(1366 * var(--px));
   --header-h: calc(115 * var(--px));
   --header-compact-h: calc(72 * var(--px));
+  /* About / Team / Contact / Press kit each fill at least this much of the viewport on desktop,
+     so tall screens (4K) still scroll one section at a time. */
+  --section-min-h: 80vh;
   --ease-pop: cubic-bezier(.22, 1.18, .36, 1);
 }
 
@@ -434,7 +437,7 @@ html.splash-pending .page-wipe { display: none; }
 /* ==========================================================================
    ABOUT
    ========================================================================== */
-.about { padding-top: calc(70 * var(--px)); padding-bottom: calc(60 * var(--px)); }
+.about { padding-top: calc(70 * var(--px)); padding-bottom: calc(60 * var(--px)); min-height: var(--section-min-h); display: grid; align-content: center; }
 .about__wrap { display: flex; align-items: center; justify-content: center; gap: calc(50 * var(--px)); min-height: calc(420 * var(--px)); }
 .about__mark { width: calc(330 * var(--px)); flex: 0 0 auto; }
 .about__mark img { width: 100%; height: auto; }
@@ -446,7 +449,7 @@ html.splash-pending .page-wipe { display: none; }
 .about__cta { margin-top: calc(6 * var(--px)); }
 .side-labels--about { top: calc(-110 * var(--px)); }
 
-.team { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); }
+.team { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); min-height: var(--section-min-h); display: grid; align-content: center; }
 .team__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(40 * var(--px)); max-width: calc(1100 * var(--px)); margin-inline: auto; padding-inline: calc(20 * var(--px)); }
 .member { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .member__art { height: calc(135 * var(--px)); width: auto; max-width: 100%; margin-bottom: calc(6 * var(--px)); transition: transform .3s var(--ease-pop); }
@@ -575,7 +578,7 @@ html.splash-pending .page-wipe { display: none; }
 /* ==========================================================================
    CONTACT + PRESS KIT
    ========================================================================== */
-.contact { padding-top: calc(60 * var(--px)); padding-bottom: calc(40 * var(--px)); }
+.contact { padding-top: calc(60 * var(--px)); padding-bottom: calc(40 * var(--px)); min-height: var(--section-min-h); display: grid; align-content: center; }
 .contact__wrap { display: flex; gap: calc(66 * var(--px)); padding-left: calc(361 * var(--px)); }
 .contact__form-col { width: calc(306 * var(--px)); flex: 0 0 auto; }
 .contact__heading { position: relative; font-family: var(--font-hand); font-weight: 400; text-transform: uppercase; font-size: calc(21.2 * var(--px)); line-height: .85; letter-spacing: .02em; width: calc(180 * var(--px)); }
@@ -605,7 +608,7 @@ html.splash-pending .page-wipe { display: none; }
 .contact__discord .brush-btn__icon { width: calc(40 * var(--px)); height: calc(32 * var(--px)); margin-left: calc(10 * var(--px)); }
 .side-labels--contact { top: calc(-110 * var(--px)); }
 
-.presskit { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); }
+.presskit { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); min-height: var(--section-min-h); display: grid; align-content: center; }
 .presskit__wrap { display: flex; gap: calc(80 * var(--px)); padding-left: calc(255 * var(--px)); }
 .presskit__about { width: calc(430 * var(--px)); flex: 0 0 auto; }
 .presskit__title { font-size: calc(27.8 * var(--px)); line-height: 1.2; }
@@ -690,6 +693,7 @@ html.splash-pending .page-wipe { display: none; }
   .hero__art { width: 100%; margin-top: 14px; }
   .hero__cta { margin-top: 18px; }
 
+  .about, .team, .contact, .presskit { min-height: 0; display: block; }
   .about { padding: 28px 0 40px; }
   .about__wrap { flex-direction: column; gap: 22px; min-height: 0; }
   .about__mark { width: 56%; max-width: 240px; }
