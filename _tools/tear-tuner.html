@@ -84,6 +84,10 @@
   <div id="c-boil"></div>
   <h2>Line &amp; brackets</h2>
   <div id="c-shapes"></div>
+  <h2>Cursor &amp; droplets</h2>
+  <p class="hint">Live on the embedded site only (move and click inside it). Copy the block below into <code>site.js</code> to keep.</p>
+  <div id="c-drops"></div>
+  <textarea id="dotOut" readonly spellcheck="false" style="width:100%;height:96px;margin-top:8px;background:#1a1919;color:var(--muted);border:1px solid var(--line);border-radius:4px;font:11px/1.3 ui-monospace,Consolas,monospace;padding:6px;resize:vertical"></textarea>
 </aside>
 
 <main>
@@ -185,37 +189,75 @@
   function get(obj, path) { return path.split('.').reduce(function (o, k) { return o[k]; }, obj); }
   function set(obj, path, v) { var ks = path.split('.'), last = ks.pop(); var o = ks.reduce(function (o, k) { return o[k]; }, obj); o[last] = v; }
 
-  function renderControls() {
-    Object.keys(CONTROLS).forEach(function (id) {
-      var host = document.getElementById(id); host.innerHTML = '';
-      CONTROLS[id].forEach(function (c) {
-        var group = c[0], key = c[1], label = c[2], path = group + '.' + key;
-        var row = document.createElement('div'); row.className = 'row';
-        var lab = document.createElement('label'); lab.textContent = label; row.appendChild(lab);
-        if (c.length === 3) { /* toggle */
-          row.classList.add('toggle');
-          var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!get(state, path);
-          cb.addEventListener('change', function () { set(state, path, cb.checked); update(); });
-          row.appendChild(cb);
-        } else if (Array.isArray(c[3])) { /* select */
-          row.classList.add('toggle');
-          var sel = document.createElement('select'); c[3].forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
-          sel.value = get(state, path) || c[3][0];
-          sel.addEventListener('change', function () { set(state, path, sel.value); update(); });
-          row.appendChild(sel);
-        } else {
-          var range = document.createElement('input'); range.type = 'range'; range.min = c[3]; range.max = c[4]; range.step = c[5];
-          var num = document.createElement('input'); num.type = 'number'; num.min = c[3]; num.max = c[4]; num.step = c[5];
-          range.value = num.value = get(state, path);
-          var on = function (v) { v = parseFloat(v); if (isNaN(v)) return; set(state, path, v); range.value = num.value = v; update(); };
-          range.addEventListener('input', function () { on(range.value); });
-          num.addEventListener('change', function () { on(num.value); });
-          row.appendChild(range); row.appendChild(num);
-        }
-        host.appendChild(row);
-      });
+  /* builds the rows of one control list into a host element, reading/writing `obj`, calling onChange after edits */
+  function renderRows(hostId, controls, obj, onChange) {
+    var host = document.getElementById(hostId); host.innerHTML = '';
+    controls.forEach(function (c) {
+      var group = c[0], key = c[1], label = c[2], path = group ? group + '.' + key : key;
+      var row = document.createElement('div'); row.className = 'row';
+      var lab = document.createElement('label'); lab.textContent = label; row.appendChild(lab);
+      if (c.length === 3) { /* toggle */
+        row.classList.add('toggle');
+        var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!get(obj, path);
+        cb.addEventListener('change', function () { set(obj, path, cb.checked); onChange(); });
+        row.appendChild(cb);
+      } else if (Array.isArray(c[3])) { /* select */
+        row.classList.add('toggle');
+        var sel = document.createElement('select'); c[3].forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+        sel.value = get(obj, path) || c[3][0];
+        sel.addEventListener('change', function () { set(obj, path, sel.value); onChange(); });
+        row.appendChild(sel);
+      } else {
+        var range = document.createElement('input'); range.type = 'range'; range.min = c[3]; range.max = c[4]; range.step = c[5];
+        var num = document.createElement('input'); num.type = 'number'; num.min = c[3]; num.max = c[4]; num.step = c[5];
+        range.value = num.value = get(obj, path);
+        var on = function (v) { v = parseFloat(v); if (isNaN(v)) return; set(obj, path, v); range.value = num.value = v; onChange(); };
+        range.addEventListener('input', function () { on(range.value); });
+        num.addEventListener('change', function () { on(num.value); });
+        row.appendChild(range); row.appendChild(num);
+      }
+      host.appendChild(row);
     });
   }
+  function renderControls() { Object.keys(CONTROLS).forEach(function (id) { renderRows(id, CONTROLS[id], state, update); }); }
+
+  /* ---- cursor & droplets: mirrors the DOT object at the top of the dot section in site.js ---- */
+  var dot = {
+    cursorSize: 44, splatSize: 60,
+    splat: { count: [7, 9], size: [9, 20], distance: [34, 90], life: 700 },
+    trail: { size: [7, 16], spread: 6, sway: 14, drift: [4, 22], every: 40, minMove: 6, max: 24, life: 650 }
+  };
+  var DOT_CONTROLS = [
+    ['', 'cursorSize', 'cursor size (px)', 20, 90, 1],
+    ['', 'splatSize', 'splat core size (px)', 20, 140, 2],
+    ['splat', 'count.1', 'splat droplets (max)', 2, 24, 1],
+    ['splat', 'size.1', 'splat droplet size (max px)', 4, 48, 1],
+    ['splat', 'distance.1', 'splat reach (max px)', 20, 240, 2],
+    ['splat', 'life', 'splat life (ms)', 200, 2000, 50],
+    ['trail', 'size.1', 'trail droplet size (max px)', 3, 40, 1],
+    ['trail', 'every', 'trail spacing (ms between droplets)', 10, 300, 5],
+    ['trail', 'drift.1', 'trail downward drift (max px)', 0, 80, 1],
+    ['trail', 'sway', 'trail sideways drift (px)', 0, 60, 1],
+    ['trail', 'max', 'trail droplets alive (max)', 2, 80, 1],
+    ['trail', 'life', 'trail life (ms)', 200, 2000, 50]
+  ];
+  function updateDot() {
+    /* the minimums follow the maximums so one slider is enough per range */
+    dot.splat.count[0] = Math.max(1, dot.splat.count[1] - 2);
+    dot.splat.size[0] = +(dot.splat.size[1] * 0.45).toFixed(1); dot.splat.distance[0] = +(dot.splat.distance[1] * 0.4).toFixed(1);
+    dot.trail.size[0] = +(dot.trail.size[1] * 0.45).toFixed(1); dot.trail.drift[0] = +(dot.trail.drift[1] * 0.2).toFixed(1);
+    var cfg = { splat: dot.splat, trail: dot.trail };
+    try {
+      site.contentWindow.postMessage({ type: 'bv-dot', dot: cfg }, '*');
+      site.contentWindow.postMessage({ type: 'bv-tear', vars: { '--cursor-size': dot.cursorSize + 'px', '--splat-size': dot.splatSize + 'px' } }, '*');
+    } catch (e) {}
+    document.getElementById('dotOut').value =
+      '/* site.css, :root in the cursor section */\n--cursor-size: ' + dot.cursorSize + 'px; --splat-size: ' + dot.splatSize + 'px;\n\n' +
+      '/* site.js, the DOT object */\nvar DOT = {\n  splat: ' + JSON.stringify(dot.splat).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') +
+      ',\n  trail: ' + JSON.stringify(dot.trail).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') + '\n};';
+  }
+  renderRows('c-drops', DOT_CONTROLS, dot, updateDot);
+  updateDot();
 
   function applyPreset(name) {
     var p = PRESETS[name]; var next = clone(T.DEFAULTS);
@@ -233,7 +275,7 @@
     try { site.contentWindow.postMessage({ type: 'bv-tear', vars: lastVars }, '*'); } catch (e) { /* not loaded yet */ }
   }
   function loadSite() { site.src = siteUrl.value; }
-  site.addEventListener('load', pushToSite);
+  site.addEventListener('load', function () { pushToSite(); if (typeof updateDot === 'function') updateDot(); });
   document.getElementById('siteReload').addEventListener('click', loadSite);
   siteUrl.addEventListener('change', loadSite);
 

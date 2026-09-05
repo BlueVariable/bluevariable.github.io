@@ -257,41 +257,61 @@
     });
   }
 
-  /* ---------- The dot: custom cursor, droplet trail, click splat ---------- */
+  /* ---------- The dot: custom cursor, droplet trail, click splat ----------
+     Droplet settings. Tune them live in _tools/tear-tuner.html (Cursor & droplets panel) and paste the block it
+     prints over this object; the cursor and splat sizes are --cursor-size / --splat-size in site.css. */
+  var DOT = {
+    splat: { count: [7, 9], size: [9, 20], distance: [34, 90], life: 700 },  /* droplets per press; px; px; ms until removed */
+    trail: { size: [7, 16], spread: 6, sway: 14, drift: [4, 22], every: 40, minMove: 6, max: 24, life: 650 }
+    /* trail: px; scatter around the path (px); sideways drift (px); downward drift (px); ms between droplets; min pointer move (px); max alive; ms */
+  };
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
+  var between = function (r) { return rnd(r[0], r[1]); };
   var deg = function () { return Math.round(Math.random() * 360) + 'deg'; };
-  /* a blue paint splat wherever the page is pressed */
+  /* is the first solid background behind this element the brand blue? (footer, transition band…) → the dot turns white there */
+  var BLUE = 'rgb(85, 142, 255)', blueCacheEl = null, blueCache = false;
+  var onBlue = function (el) {
+    if (el === blueCacheEl) return blueCache;
+    blueCacheEl = el; blueCache = false;
+    for (; el && el.nodeType === 1 && el !== root; el = el.parentElement) {
+      var bg = getComputedStyle(el).backgroundColor;
+      if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') { blueCache = bg === BLUE; break; }
+    }
+    return blueCache;
+  };
+  /* a paint splat wherever the page is pressed */
   if (!reduceMotion) {
     doc.addEventListener('pointerdown', function (e) {
       if (e.button !== 0 || !e.isPrimary) return;
       var splat = doc.createElement('div');
-      splat.className = 'splat';
+      splat.className = 'splat' + (onBlue(e.target) ? ' is-white' : '');
       splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
       splat.style.setProperty('--r', deg());
-      var n = 7 + Math.floor(Math.random() * 3);
+      var n = Math.round(between(DOT.splat.count));
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
-        var angle = (i / n) * Math.PI * 2 + rnd(-.35, .35), dist = rnd(34, 90);
+        var angle = (i / n) * Math.PI * 2 + rnd(-.35, .35), dist = between(DOT.splat.distance);
         drop.style.setProperty('--dx', (Math.cos(angle) * dist).toFixed(1) + 'px');
         drop.style.setProperty('--dy', (Math.sin(angle) * dist).toFixed(1) + 'px');
-        drop.style.setProperty('--s', rnd(9, 20).toFixed(1) + 'px');
+        drop.style.setProperty('--s', between(DOT.splat.size).toFixed(1) + 'px');
         drop.style.setProperty('--r', deg());
         splat.appendChild(drop);
       }
       doc.body.appendChild(splat);
-      setTimeout(function () { splat.remove(); }, 700);
+      setTimeout(function () { splat.remove(); }, DOT.splat.life);
     }, { passive: true });
   }
   /* the cursor itself: appears on the first mouse/pen move, hides over text fields and when the pointer leaves */
   if (window.matchMedia && matchMedia('(pointer: fine)').matches) {
     var cursor = null, trail = null, live = 0, lastX = 0, lastY = 0, lastEmit = 0;
-    var emit = function (x, y) {
-      var p = doc.createElement('i');
-      p.style.setProperty('--x', (x + rnd(-6, 6)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-6, 6)).toFixed(1) + 'px');
-      p.style.setProperty('--dx', rnd(-14, 14).toFixed(1) + 'px'); p.style.setProperty('--dy', rnd(4, 22).toFixed(1) + 'px'); /* drifts down a little, like a drip */
-      p.style.setProperty('--s', rnd(7, 16).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
+    var emit = function (x, y, white) {
+      var t = DOT.trail, p = doc.createElement('i');
+      if (white) p.className = 'is-white';
+      p.style.setProperty('--x', (x + rnd(-t.spread, t.spread)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-t.spread, t.spread)).toFixed(1) + 'px');
+      p.style.setProperty('--dx', rnd(-t.sway, t.sway).toFixed(1) + 'px'); p.style.setProperty('--dy', between(t.drift).toFixed(1) + 'px'); /* drifts down a little, like a drip */
+      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
       trail.appendChild(p); live++;
-      setTimeout(function () { p.remove(); live--; }, 650);
+      setTimeout(function () { p.remove(); live--; }, t.life);
     };
     doc.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;
@@ -305,9 +325,11 @@
       var t = e.target && e.target.closest ? e.target : null;
       cursor.classList.toggle('is-hidden', !!(t && t.closest('input, textarea, select')));
       cursor.classList.toggle('is-link', !!(t && t.closest('a, button, [role="button"], label, summary')));
+      var white = onBlue(t);
+      cursor.classList.toggle('is-white', white);
       var dx = e.clientX - lastX, dy = e.clientY - lastY;
-      if (!reduceMotion && live < 24 && e.timeStamp - lastEmit > 40 && Math.hypot(dx, dy) > 6) {
-        emit(e.clientX - dx * .6, e.clientY - dy * .6); /* a little behind the dot */
+      if (!reduceMotion && live < DOT.trail.max && e.timeStamp - lastEmit > DOT.trail.every && Math.hypot(dx, dy) > DOT.trail.minMove) {
+        emit(e.clientX - dx * .6, e.clientY - dy * .6, white); /* a little behind the dot */
         lastEmit = e.timeStamp;
       }
       lastX = e.clientX; lastY = e.clientY;
@@ -322,10 +344,16 @@
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
     window.addEventListener('message', function (e) {
       var d = e.data;
-      if (!d || d.type !== 'bv-tear' || !d.vars) return;
+      if (!d || typeof d !== 'object') return;
+      if (d.type === 'bv-dot' && d.dot) { /* droplet settings from the tuner */
+        ['splat', 'trail'].forEach(function (k) { if (d.dot[k]) Object.keys(d.dot[k]).forEach(function (key) { if (key in DOT[k]) DOT[k][key] = d.dot[k][key]; }); });
+        return;
+      }
+      if (d.type !== 'bv-tear' || !d.vars) return;
       Object.keys(d.vars).forEach(function (k) {
         var v = String(d.vars[k]);
         if (/^--tear-(b|t|l|r|line|bl|br|dot)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
+        if (/^--(cursor|splat)-size$/.test(k) && /^\d+(\.\d+)?px$/.test(v)) root.style.setProperty(k, v);
       });
       /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
       root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';

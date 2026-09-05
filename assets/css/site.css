@@ -178,14 +178,15 @@ em { font-style: normal; color: var(--blue); }
    site.js hides the native pointer (html.has-cursor, fine pointers only) and moves .cursor with it; the dot
    is the logo dot masked with the wobbling --tear-dot frames. Moving sheds droplets (.trail i), pressing
    anywhere drops a paint splat (.splat). All of it is inert to the pointer and cleans itself up. */
+:root { --cursor-size: 44px; --splat-size: 60px; }
 html.has-cursor, html.has-cursor * { cursor: none; }
 html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor: auto; } /* the dot hides itself over fields */
 .cursor {
-  position: fixed; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; z-index: 120; pointer-events: none;
-  background: var(--blue);
+  position: fixed; left: 0; top: 0; width: var(--cursor-size); height: var(--cursor-size); margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2); z-index: 120; pointer-events: none;
+  background: var(--dot-color, var(--blue));
   -webkit-mask: var(--tear-dot) center / 100% 100% no-repeat; mask: var(--tear-dot) center / 100% 100% no-repeat;
   transform: translate(var(--x, -100px), var(--y, -100px)) rotate(var(--rot, 0deg)) scale(calc(var(--sc, 1) * var(--sx, 1)), calc(var(--sc, 1) * var(--sy, 1)));
-  transition: opacity .15s;
+  transition: opacity .15s, background-color .15s;
   animation: dot-boil .45s steps(1) infinite; /* squash + tilt per frame, on top of the mask frames */
 }
 @keyframes dot-boil {
@@ -200,13 +201,14 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .trail { z-index: 119; }
 .trail i, .splat i {
   position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; background: var(--blue);
+  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; background: var(--dot-color, var(--blue));
 }
+.is-white { --dot-color: var(--white); } /* the dot, its droplets and splats over blue backgrounds */
 .trail i { transform: translate(var(--x), var(--y)) rotate(var(--r)); animation: trail-drop .6s cubic-bezier(.2, .6, .4, 1) forwards; }
 @keyframes trail-drop { 0% { opacity: 1; } 100% { transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) rotate(var(--r)) scale(0); opacity: 0; } }
 .splat { z-index: 95; }
 .splat::before {
-  content: ""; position: absolute; left: -30px; top: -30px; width: 60px; height: 60px; background: var(--blue);
+  content: ""; position: absolute; left: calc(var(--splat-size) / -2); top: calc(var(--splat-size) / -2); width: var(--splat-size); height: var(--splat-size); background: var(--dot-color, var(--blue));
   -webkit-mask: var(--tear-dot) center / 100% 100% no-repeat; mask: var(--tear-dot) center / 100% 100% no-repeat;
   transform: rotate(var(--r, 0deg)) scale(.2); animation: splat-core .5s cubic-bezier(.2, .8, .3, 1) forwards;
 }
