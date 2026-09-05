@@ -45,7 +45,7 @@
   /* 1 design pixel: the 1366x768 artboard fitted to the viewport (width or height, whichever binds). */
   --px: max(0.72px, min(calc(100vw / 1366), calc(100vh / 768)));
   --wrap: calc(1366 * var(--px));
-  --header-h: calc(115 * var(--px));
+  --header-h: calc(92 * var(--px));
   --header-compact-h: calc(72 * var(--px));
   /* About / Team / Contact / Press kit each fill at least this much of the viewport on desktop,
      so tall screens (4K) still scroll one section at a time. */
@@ -229,7 +229,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 }
 .site-header__wrap { height: 100%; display: flex; align-items: center; }
 .brand { position: absolute; left: calc(31 * var(--px)); top: 0; height: 100%; display: flex; align-items: center; }
-.brand__full { width: calc(160 * var(--px)); height: auto; }
+.brand__full { width: calc(140 * var(--px)); height: auto; }
 .brand__compact { width: calc(70 * var(--px)); height: auto; display: none; }
 .site-nav {
   position: absolute; left: calc(294 * var(--px)); top: 0; height: 100%;
@@ -244,8 +244,8 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .site-nav__link.is-active { color: var(--blue); }
 
 .tagline {
-  position: absolute; right: calc(16 * var(--px)); top: calc(8 * var(--px));
-  height: calc(85 * var(--px));
+  position: absolute; right: calc(16 * var(--px)); top: calc(9 * var(--px));
+  height: calc(66 * var(--px));
   display: flex; align-items: stretch; gap: calc(6 * var(--px));
   transition: opacity .25s, transform .25s;
 }
@@ -258,9 +258,9 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .tagline__ticker { position: relative; width: calc(160 * var(--px)); overflow: hidden; }
 .tagline__line {
   position: absolute; inset: 0; margin: 0;
-  padding-top: calc(6 * var(--px));
+  padding-top: calc(4 * var(--px));
   font-family: var(--font-hand); font-weight: 400; text-transform: uppercase;
-  font-size: calc(20.2 * var(--px)); line-height: .9; letter-spacing: .02em; color: var(--white);
+  font-size: calc(18.5 * var(--px)); line-height: .9; letter-spacing: .02em; color: var(--white);
   transform: translateY(110%); opacity: 0;
   transition: transform .55s var(--ease-pop), opacity .35s;
 }
@@ -506,7 +506,7 @@ html.splash-pending .page-wipe { display: none; }
 .news__empty { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(24 * var(--px)); color: var(--grey); padding: calc(60 * var(--px)) 0; text-align: center; }
 .timeline { position: relative; }
 .timeline::before {
-  content: ""; position: absolute; left: calc(230 * var(--px)); top: calc(60 * var(--px)); bottom: calc(30 * var(--px)); width: calc(12 * var(--px)); z-index: 1;
+  content: ""; position: absolute; left: calc(227 * var(--px)); top: calc(60 * var(--px)); bottom: calc(30 * var(--px)); width: calc(12 * var(--px)); z-index: 1;
   background: var(--blue);
   -webkit-mask: var(--tear-line) center / 100% 100% no-repeat; mask: var(--tear-line) center / 100% 100% no-repeat;
 }
@@ -524,7 +524,12 @@ html.splash-pending .page-wipe { display: none; }
 .entry > * { position: relative; z-index: 1; }
 .entry--media { grid-template-columns: calc(161 * var(--px)) minmax(0, calc(300 * var(--px))) 1fr; }
 .entry__year { position: absolute; left: calc(122 * var(--px)); top: calc(40 * var(--px)); font-family: var(--font-hand); text-transform: uppercase; font-size: calc(28.6 * var(--px)); line-height: .81; letter-spacing: .02em; color: var(--blue); }
-.entry__dot { position: absolute; left: calc(225 * var(--px)); top: calc(37 * var(--px)); width: calc(22 * var(--px)); height: calc(22 * var(--px)); border-radius: 50%; background: var(--blue); }
+/* the timeline dot is the blu.e dot like the cursor: same mask frames, same boil; centred on the date's ink (15.5px below the line top) */
+.entry__dot {
+  position: absolute; left: calc(220 * var(--px)); top: calc(42.5 * var(--px)); width: calc(26 * var(--px)); height: calc(26 * var(--px)); background: var(--blue);
+  -webkit-mask: var(--tear-dot) center / 100% 100% no-repeat; mask: var(--tear-dot) center / 100% 100% no-repeat;
+  transform: rotate(var(--rot, 0deg)) scale(var(--sx, 1), var(--sy, 1)); animation: dot-boil .45s steps(1) infinite;
+}
 .entry__date { grid-column: 1; font-family: var(--font-hand); text-transform: uppercase; font-size: calc(28.6 * var(--px)); line-height: .81; letter-spacing: .02em; color: var(--blue); }
 .entry__body { grid-column: 2; padding-top: calc(70 * var(--px)); }
 .entry__game { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(17.9 * var(--px)); line-height: .81; letter-spacing: .02em; color: var(--purple); opacity: .4; }
