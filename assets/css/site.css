@@ -266,7 +266,7 @@ body.menu-open .torn--header { display: none; }
 }
 .side-labels {
   position: absolute; left: calc(14 * var(--px)); z-index: 2;
-  display: flex; flex-direction: column; gap: calc(24 * var(--px));
+  display: flex; flex-direction: column; gap: calc(62 * var(--px));
   font-family: var(--font-hand); text-transform: uppercase; font-size: calc(67.8 * var(--px)); line-height: .81; letter-spacing: .02em;
   pointer-events: none;
 }
@@ -355,7 +355,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 }
 .about__text { width: calc(300 * var(--px)); font-size: calc(21.5 * var(--px)); line-height: 1.12; display: grid; gap: calc(14 * var(--px)); justify-items: start; }
 .about__cta { margin-top: calc(6 * var(--px)); }
-.side-labels--about { top: calc(-68 * var(--px)); }
+.side-labels--about { top: calc(-110 * var(--px)); }
 
 .team { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); }
 .team__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(40 * var(--px)); max-width: calc(1100 * var(--px)); margin-inline: auto; padding-inline: calc(20 * var(--px)); }
@@ -519,7 +519,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 .reasons ul { margin-top: calc(6 * var(--px)); display: grid; gap: calc(9 * var(--px)); padding-left: calc(6 * var(--px)); }
 .contact__discord { margin-top: calc(40 * var(--px)); margin-left: calc(-40 * var(--px)); }
 .contact__discord .brush-btn__icon { width: calc(40 * var(--px)); height: calc(32 * var(--px)); margin-left: calc(10 * var(--px)); }
-.side-labels--contact { top: calc(-68 * var(--px)); }
+.side-labels--contact { top: calc(-110 * var(--px)); }
 
 .presskit { background: var(--white); padding: calc(130 * var(--px)) 0 calc(60 * var(--px)); }
 .presskit__wrap { display: flex; gap: calc(80 * var(--px)); padding-left: calc(255 * var(--px)); }
