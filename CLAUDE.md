@@ -23,7 +23,7 @@ GitHub Pages site for Blue Variable Studio, served at `bluevariablestudio.com` (
 
 ## Conventions
 
-- The cursor is the logo dot (SVG data URIs `--cursor-dot` / `--cursor-dot-lg`, traced from `blue_logo_reveal.svg`, with a hairline ink outline; fine pointers only). Every click drops a blue paint splat (`.splat`, built in `site.js`, styled next to the cursor rules).
+- The cursor is the logo dot: on fine pointers `site.js` hides the native cursor (`html.has-cursor`) and moves a `.cursor` element masked with the wobbling `--tear-dot` frames (the dot path is traced from `blue_logo_reveal.svg` and lives in the generator). It grows over links, hides over text fields, sheds droplets while moving (`.trail`), and every press drops a paint splat (`.splat`). Styles sit in the "Cursor, cursor trail and click splat" section of `site.css`.
 - Brand colors: ink `#1e1d1d`, paper `#f7f3ed`, cream text `#f5f3ef`, blue `#558eff`, yellow `#f5cb49`. Page backgrounds use `.paper` (cream + multiplied texture) so artwork blends.
 - Desktop layout scales like the artboard: sizes are written as `calc(N * var(--px))` where N is the pixel value measured on the 1366-wide Canva page. Below 900px `--px` is 1px and layouts stack (mobile rules live at the end of `site.css`).
 - Recolorable vector art (brush, arrows, paw, bubble) is applied with CSS `mask-image` so it takes `background-color`; the SVG files use `currentColor`. The News timeline line, the About divider and the tagline brackets are generated the same way as the torn edges (`--tear-line`, `--tear-bl`, `--tear-br`, see below) and boil with them.

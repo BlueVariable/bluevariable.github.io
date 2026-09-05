@@ -257,28 +257,65 @@
     });
   }
 
-  /* ---------- Click splat: a blue paint splash wherever the page is pressed ---------- */
+  /* ---------- The dot: custom cursor, droplet trail, click splat ---------- */
+  var rnd = function (a, b) { return a + Math.random() * (b - a); };
+  var deg = function () { return Math.round(Math.random() * 360) + 'deg'; };
+  /* a blue paint splat wherever the page is pressed */
   if (!reduceMotion) {
     doc.addEventListener('pointerdown', function (e) {
       if (e.button !== 0 || !e.isPrimary) return;
       var splat = doc.createElement('div');
       splat.className = 'splat';
       splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
-      splat.style.setProperty('--r', Math.round(Math.random() * 360) + 'deg');
+      splat.style.setProperty('--r', deg());
       var n = 7 + Math.floor(Math.random() * 3);
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
-        var angle = (i / n) * Math.PI * 2 + (Math.random() - .5) * .7;
-        var dist = 22 + Math.random() * 36, size = 4 + Math.random() * 6;
+        var angle = (i / n) * Math.PI * 2 + rnd(-.35, .35), dist = rnd(34, 90);
         drop.style.setProperty('--dx', (Math.cos(angle) * dist).toFixed(1) + 'px');
         drop.style.setProperty('--dy', (Math.sin(angle) * dist).toFixed(1) + 'px');
-        drop.style.setProperty('--s', size.toFixed(1) + 'px');
-        drop.style.setProperty('--r', Math.round(Math.random() * 360) + 'deg');
+        drop.style.setProperty('--s', rnd(9, 20).toFixed(1) + 'px');
+        drop.style.setProperty('--r', deg());
         splat.appendChild(drop);
       }
       doc.body.appendChild(splat);
       setTimeout(function () { splat.remove(); }, 700);
     }, { passive: true });
+  }
+  /* the cursor itself: appears on the first mouse/pen move, hides over text fields and when the pointer leaves */
+  if (window.matchMedia && matchMedia('(pointer: fine)').matches) {
+    var cursor = null, trail = null, live = 0, lastX = 0, lastY = 0, lastEmit = 0;
+    var emit = function (x, y) {
+      var p = doc.createElement('i');
+      p.style.setProperty('--x', (x + rnd(-6, 6)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-6, 6)).toFixed(1) + 'px');
+      p.style.setProperty('--dx', rnd(-14, 14).toFixed(1) + 'px'); p.style.setProperty('--dy', rnd(4, 22).toFixed(1) + 'px'); /* drifts down a little, like a drip */
+      p.style.setProperty('--s', rnd(7, 16).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
+      trail.appendChild(p); live++;
+      setTimeout(function () { p.remove(); live--; }, 650);
+    };
+    doc.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      if (!cursor) {
+        cursor = doc.createElement('div'); cursor.className = 'cursor'; doc.body.appendChild(cursor);
+        trail = doc.createElement('div'); trail.className = 'trail'; doc.body.appendChild(trail);
+        root.classList.add('has-cursor');
+        lastX = e.clientX; lastY = e.clientY;
+      }
+      cursor.style.setProperty('--x', e.clientX + 'px'); cursor.style.setProperty('--y', e.clientY + 'px');
+      var t = e.target && e.target.closest ? e.target : null;
+      cursor.classList.toggle('is-hidden', !!(t && t.closest('input, textarea, select')));
+      cursor.classList.toggle('is-link', !!(t && t.closest('a, button, [role="button"], label, summary')));
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      if (!reduceMotion && live < 24 && e.timeStamp - lastEmit > 40 && Math.hypot(dx, dy) > 6) {
+        emit(e.clientX - dx * .6, e.clientY - dy * .6); /* a little behind the dot */
+        lastEmit = e.timeStamp;
+      }
+      lastX = e.clientX; lastY = e.clientY;
+    }, { passive: true });
+    doc.addEventListener('pointerdown', function (e) { if (cursor && e.pointerType !== 'touch') cursor.classList.add('is-down'); }, { passive: true });
+    doc.addEventListener('pointerup', function () { if (cursor) cursor.classList.remove('is-down'); }, { passive: true });
+    root.addEventListener('mouseleave', function () { if (cursor) cursor.classList.add('is-hidden'); });
+    root.addEventListener('mouseenter', function () { if (cursor) cursor.classList.remove('is-hidden'); });
   }
 
   /* ---------- Local preview only: _tools/tear-tuner.html pushes new torn-edge frames into this page ---------- */
@@ -288,7 +325,7 @@
       if (!d || d.type !== 'bv-tear' || !d.vars) return;
       Object.keys(d.vars).forEach(function (k) {
         var v = String(d.vars[k]);
-        if (/^--tear-(b|t|l|r|line|bl|br)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
+        if (/^--tear-(b|t|l|r|line|bl|br|dot)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
       });
       /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
       root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';
