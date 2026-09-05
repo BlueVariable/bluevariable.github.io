@@ -110,7 +110,7 @@ em { font-style: normal; color: var(--blue); }
 .torn-bottom {
   --torn-h: calc(45 * var(--px));
   padding-bottom: var(--torn-h);
-  --torn-fade: calc(26 * var(--px));
+  --torn-fade: calc(10 * var(--px));
   -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
   mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
 }
@@ -124,6 +124,17 @@ em { font-style: normal; color: var(--blue); }
   background: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x;
   pointer-events: none;
   transition: top .3s var(--ease-pop);
+}
+/* Sections with a torn TOP edge: they start 45px above the previous section and
+   tear over it (same construction as the news bands). */
+.torn-top {
+  position: relative; margin-top: calc(-45 * var(--px));
+  -webkit-mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+  mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px)) no-repeat;
+}
+.torn-top.torn-bottom {
+  -webkit-mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px) - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
+  mask: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x, linear-gradient(#000, #000) left calc(22 * var(--px)) / 100% calc(100% - 22 * var(--px) - var(--torn-fade)) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto var(--torn-h) repeat-x;
 }
 /* Anchor for the big side labels that straddle a torn edge; also draws the dark
    paper specks of the tear so the strip reads on white as well as on cream */
@@ -358,14 +369,21 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 /* ==========================================================================
    GAMES
    ========================================================================== */
-.games { background: var(--white); display: flex; flex-direction: column; flex: 1 0 auto; }
+.games { background: var(--white); display: flex; flex-direction: column; flex: 1 0 auto; position: relative; }
+/* dark specks along the panel's torn side edges */
+.games::before, .games::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: calc(45 * var(--px)); pointer-events: none; z-index: 1;
+  background: url("../img/specks-left.webp") left top / 100% auto repeat-y;
+}
+.games::before { left: calc(50% - 603.5 * var(--px)); }
+.games::after { right: calc(50% - 603.5 * var(--px)); background-image: url("../img/specks-right.webp"); background-position: right top; }
 .games-panel {
   --torn-h: calc(45 * var(--px));
   width: calc(1207 * var(--px)); max-width: 100%; margin-inline: auto; flex: 1 0 auto;
   padding: calc(60 * var(--px)) 0 var(--torn-h);
   -webkit-mask-image: linear-gradient(#000, #000), url("../img/torn-left-mask.webp"), url("../img/torn-right-mask.webp"), url("../img/torn-bottom-mask.webp");
   mask-image: linear-gradient(#000, #000), url("../img/torn-left-mask.webp"), url("../img/torn-right-mask.webp"), url("../img/torn-bottom-mask.webp");
-  --torn-fade: calc(12 * var(--px));
+  --torn-fade: calc(22 * var(--px));
   -webkit-mask-position: var(--torn-fade) 0, left top, right top, center bottom;
   mask-position: var(--torn-fade) 0, left top, right top, center bottom;
   -webkit-mask-size: calc(100% - 2 * var(--torn-fade)) calc(100% - var(--torn-fade)), calc(45 * var(--px)) auto, calc(45 * var(--px)) auto, auto var(--torn-h);
@@ -558,7 +576,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .site-header { z-index: 45; }
 
   .side-labels { display: none; }
-  .torn-bottom { --torn-h: 30px; --torn-fade: 18px; }
+  .torn-bottom { --torn-h: 30px; --torn-fade: 7px; }
   .site-footer { margin-top: -30px; padding-top: 30px; }
 
   .site-footer__band { padding: 22px 0 18px; }
@@ -599,10 +617,11 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .games-panel {
     width: 100%; padding: 24px 0 30px; --torn-h: 30px;
   }
+  .games::before, .games::after { display: none; }
   .games-panel > .wrap { padding-inline: 20px; }
   .games-panel {
-    -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 18px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
-    mask: linear-gradient(#000, #000) top / 100% calc(100% - 18px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
+    -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
+    mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, url("../img/torn-bottom-mask.webp") center bottom / auto 30px repeat-x;
   }
   .game { flex-direction: column; gap: 22px; }
   .game__art { flex: none; max-width: 100%; width: 100%; }
@@ -622,6 +641,8 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
   .entry, .entry--media { grid-template-columns: 1fr; padding: 30px 0 36px 34px; min-height: 0; }
   .entry::after { top: -30px; height: 30px; }
   .side-anchor::before { top: -30px; height: 30px; }
+  .torn-top { margin-top: -30px; -webkit-mask-size: auto 30px, 100% calc(100% - 15px); mask-size: auto 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
+  .torn-top.torn-bottom { -webkit-mask-size: auto 30px, 100% calc(100% - 15px - 7px), auto 30px; mask-size: auto 30px, 100% calc(100% - 15px - 7px), auto 30px; -webkit-mask-position: center top, left 15px, center bottom; mask-position: center top, left 15px, center bottom; }
   .entry::before { top: -30px; -webkit-mask-size: auto 30px, 100% calc(100% - 15px); mask-size: auto 30px, 100% calc(100% - 15px); -webkit-mask-position: center top, left 15px; mask-position: center top, left 15px; }
   .news { padding-top: 30px; }
   .entry__year { position: static; display: block; margin-bottom: 8px; font-size: 22px; }
