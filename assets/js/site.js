@@ -257,6 +257,30 @@
     });
   }
 
+  /* ---------- Click splat: a blue paint splash wherever the page is pressed ---------- */
+  if (!reduceMotion) {
+    doc.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || !e.isPrimary) return;
+      var splat = doc.createElement('div');
+      splat.className = 'splat';
+      splat.style.left = e.clientX + 'px'; splat.style.top = e.clientY + 'px';
+      splat.style.setProperty('--r', Math.round(Math.random() * 360) + 'deg');
+      var n = 7 + Math.floor(Math.random() * 3);
+      for (var i = 0; i < n; i++) {
+        var drop = doc.createElement('i');
+        var angle = (i / n) * Math.PI * 2 + (Math.random() - .5) * .7;
+        var dist = 22 + Math.random() * 36, size = 4 + Math.random() * 6;
+        drop.style.setProperty('--dx', (Math.cos(angle) * dist).toFixed(1) + 'px');
+        drop.style.setProperty('--dy', (Math.sin(angle) * dist).toFixed(1) + 'px');
+        drop.style.setProperty('--s', size.toFixed(1) + 'px');
+        drop.style.setProperty('--r', Math.round(Math.random() * 360) + 'deg');
+        splat.appendChild(drop);
+      }
+      doc.body.appendChild(splat);
+      setTimeout(function () { splat.remove(); }, 700);
+    }, { passive: true });
+  }
+
   /* ---------- Local preview only: _tools/tear-tuner.html pushes new torn-edge frames into this page ---------- */
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
     window.addEventListener('message', function (e) {

@@ -171,6 +171,34 @@ em { font-style: normal; color: var(--blue); }
 /* Anchor for the big side labels that straddle a torn edge */
 .side-anchor { position: relative; height: 0; z-index: 2; }
 
+/* ---------- Cursor + click splat: the blu.e dot ----------
+   --dot is the dot traced from the logo (used as a mask); the cursors are the same shape with a
+   hairline ink outline so it still reads over the blue footer and the transition band. */
+:root {
+  --dot: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.19 20.10'><path d='M 19.19,7.08 C 19.1,7.71 19.01,8.35 18.92,9.02 C 18.83,9.68 18.7,10.31 18.52,10.92 C 18.44,11.89 18.23,12.84 17.92,13.77 C 17.61,14.69 17.11,15.5 16.42,16.21 C 16.23,16.47 16.05,16.71 15.88,16.92 C 15.71,17.14 15.53,17.34 15.35,17.52 C 15.01,17.88 14.61,18.17 14.17,18.37 C 13.72,18.59 13.15,18.8 12.44,18.98 C 11.82,18.98 11.17,19 10.46,19.04 C 9.76,19.08 8.97,19.1 8.08,19.1 C 6.58,19.1 5.35,18.53 4.4,17.4 C 4.03,16.95 3.65,16.46 3.25,15.94 C 2.86,15.41 2.44,14.89 2,14.35 C 1.92,13.83 1.78,13.3 1.6,12.77 C 1.44,12.24 1.3,11.72 1.21,11.19 C 1.04,10.14 1,9.12 1.08,8.15 C 1.17,7.18 1.52,6.25 2.15,5.38 C 2.23,5.28 2.31,5.19 2.4,5.1 C 2.49,5.02 2.58,4.93 2.67,4.83 C 3.38,4.14 4.15,3.51 4.98,2.94 C 5.81,2.35 6.76,1.93 7.83,1.67 C 8.09,1.58 8.44,1.52 8.88,1.48 C 9.32,1.43 9.71,1.35 10.06,1.27 C 10.51,1.27 10.94,1.25 11.38,1.21 C 11.82,1.17 12.31,1.1 12.85,1 C 14.34,1.79 15.63,2.64 16.73,3.52 C 17.84,4.4 18.66,5.58 19.19,7.08' fill='%23fff'/></svg>");
+  --cursor-dot: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 20.19 20.10'><path d='M 19.19,7.08 C 19.1,7.71 19.01,8.35 18.92,9.02 C 18.83,9.68 18.7,10.31 18.52,10.92 C 18.44,11.89 18.23,12.84 17.92,13.77 C 17.61,14.69 17.11,15.5 16.42,16.21 C 16.23,16.47 16.05,16.71 15.88,16.92 C 15.71,17.14 15.53,17.34 15.35,17.52 C 15.01,17.88 14.61,18.17 14.17,18.37 C 13.72,18.59 13.15,18.8 12.44,18.98 C 11.82,18.98 11.17,19 10.46,19.04 C 9.76,19.08 8.97,19.1 8.08,19.1 C 6.58,19.1 5.35,18.53 4.4,17.4 C 4.03,16.95 3.65,16.46 3.25,15.94 C 2.86,15.41 2.44,14.89 2,14.35 C 1.92,13.83 1.78,13.3 1.6,12.77 C 1.44,12.24 1.3,11.72 1.21,11.19 C 1.04,10.14 1,9.12 1.08,8.15 C 1.17,7.18 1.52,6.25 2.15,5.38 C 2.23,5.28 2.31,5.19 2.4,5.1 C 2.49,5.02 2.58,4.93 2.67,4.83 C 3.38,4.14 4.15,3.51 4.98,2.94 C 5.81,2.35 6.76,1.93 7.83,1.67 C 8.09,1.58 8.44,1.52 8.88,1.48 C 9.32,1.43 9.71,1.35 10.06,1.27 C 10.51,1.27 10.94,1.25 11.38,1.21 C 11.82,1.17 12.31,1.1 12.85,1 C 14.34,1.79 15.63,2.64 16.73,3.52 C 17.84,4.4 18.66,5.58 19.19,7.08' fill='%23558eff' stroke='%231e1d1d' stroke-width='0.83' stroke-linejoin='round'/></svg>");
+  --cursor-dot-lg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20.19 20.10'><path d='M 19.19,7.08 C 19.1,7.71 19.01,8.35 18.92,9.02 C 18.83,9.68 18.7,10.31 18.52,10.92 C 18.44,11.89 18.23,12.84 17.92,13.77 C 17.61,14.69 17.11,15.5 16.42,16.21 C 16.23,16.47 16.05,16.71 15.88,16.92 C 15.71,17.14 15.53,17.34 15.35,17.52 C 15.01,17.88 14.61,18.17 14.17,18.37 C 13.72,18.59 13.15,18.8 12.44,18.98 C 11.82,18.98 11.17,19 10.46,19.04 C 9.76,19.08 8.97,19.1 8.08,19.1 C 6.58,19.1 5.35,18.53 4.4,17.4 C 4.03,16.95 3.65,16.46 3.25,15.94 C 2.86,15.41 2.44,14.89 2,14.35 C 1.92,13.83 1.78,13.3 1.6,12.77 C 1.44,12.24 1.3,11.72 1.21,11.19 C 1.04,10.14 1,9.12 1.08,8.15 C 1.17,7.18 1.52,6.25 2.15,5.38 C 2.23,5.28 2.31,5.19 2.4,5.1 C 2.49,5.02 2.58,4.93 2.67,4.83 C 3.38,4.14 4.15,3.51 4.98,2.94 C 5.81,2.35 6.76,1.93 7.83,1.67 C 8.09,1.58 8.44,1.52 8.88,1.48 C 9.32,1.43 9.71,1.35 10.06,1.27 C 10.51,1.27 10.94,1.25 11.38,1.21 C 11.82,1.17 12.31,1.1 12.85,1 C 14.34,1.79 15.63,2.64 16.73,3.52 C 17.84,4.4 18.66,5.58 19.19,7.08' fill='%23558eff' stroke='%231e1d1d' stroke-width='0.61' stroke-linejoin='round'/></svg>");
+}
+@media (pointer: fine) {
+  html { cursor: var(--cursor-dot) 11 11, auto; }
+  a, button, [role="button"], label, select, summary { cursor: var(--cursor-dot-lg) 15 15, pointer; }
+  input, textarea { cursor: text; }
+}
+/* a blue paint splat where the page is clicked (site.js adds .splat with a handful of droplets, removes it after the animation) */
+.splat { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 95; pointer-events: none; }
+.splat::before {
+  content: ""; position: absolute; left: -20px; top: -20px; width: 40px; height: 40px; background: var(--blue);
+  -webkit-mask: var(--dot) center / 100% 100% no-repeat; mask: var(--dot) center / 100% 100% no-repeat;
+  transform: rotate(var(--r, 0deg)) scale(.2); animation: splat-core .5s cubic-bezier(.2, .8, .3, 1) forwards;
+}
+.splat i {
+  position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; background: var(--blue);
+  animation: splat-drop .55s cubic-bezier(.1, .7, .3, 1) forwards;
+}
+@keyframes splat-core { 0% { transform: rotate(var(--r, 0deg)) scale(.2); opacity: 1; } 55% { transform: rotate(var(--r, 0deg)) scale(1); opacity: 1; } 100% { transform: rotate(var(--r, 0deg)) scale(1.15); opacity: 0; } }
+@keyframes splat-drop { 0% { transform: translate(0, 0) rotate(var(--r)) scale(.5); opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(0); opacity: 0; } }
+
 /* ---------- Header ---------- */
 /* The sticky box keeps a constant height so collapsing the bar never changes the
    page length (which would move scrollY and re-trigger the expand/collapse). */

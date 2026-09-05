@@ -15,7 +15,7 @@ GitHub Pages site for Blue Variable Studio, served at `bluevariablestudio.com` (
 - `_posts/` — devlogs rendered on the News timeline (newest first, expandable with "see more"). Front matter: `title`, `date`, `game`, optional `steam` (wishlist URL), `image` + `image_alt` + `caption` ("line one|line two") for the media card, `video` (YouTube URL, enables the play button/modal), `tags`. The first paragraph is the excerpt. `future: true` is set so scheduled dates still render.
 - `404.html` — branded not-found page.
 - `_tools/tear-masks.js` + `_tools/tear-tuner.html` — generator and visual tuner for the torn-edge masks (see Conventions). Underscore-prefixed, so Jekyll does not publish them.
-- `assets/css/site.css` — all styles. `assets/js/site.js` — all behaviour (compact header, tagline ticker, mobile menu, newsletter placeholder, devlog expand, video modal, mailto form, blue-band page transition, first-visit splash).
+- `assets/css/site.css` — all styles. `assets/js/site.js` — all behaviour (compact header, tagline ticker, mobile menu, newsletter placeholder, devlog expand, video modal, mailto form, blue-band page transition, first-visit splash, click splat).
 - Internal links do not reload the document: `site.js` fetches the next page, swaps `<main>`, title, body class and active nav link under the blue band, then drops the band (history/back-forward handled via `pushState`/`popstate`). Anything that binds to page content therefore lives in `initContent()`, which runs on load and after every swap; header/footer behaviour is bound once.
 - `assets/fonts/` — self-hosted fonts: Darumadrop One, Londrina Solid 300/400/900, Urbanist 700/800/900, Glacial Indifference Regular/Bold (OFL).
 - `assets/img/` — optimized artwork extracted from the Canva export (key art, team illustrations, arrows, brush, paw, speech bubble, logos, background texture).
@@ -23,6 +23,7 @@ GitHub Pages site for Blue Variable Studio, served at `bluevariablestudio.com` (
 
 ## Conventions
 
+- The cursor is the logo dot (SVG data URIs `--cursor-dot` / `--cursor-dot-lg`, traced from `blue_logo_reveal.svg`, with a hairline ink outline; fine pointers only). Every click drops a blue paint splat (`.splat`, built in `site.js`, styled next to the cursor rules).
 - Brand colors: ink `#1e1d1d`, paper `#f7f3ed`, cream text `#f5f3ef`, blue `#558eff`, yellow `#f5cb49`. Page backgrounds use `.paper` (cream + multiplied texture) so artwork blends.
 - Desktop layout scales like the artboard: sizes are written as `calc(N * var(--px))` where N is the pixel value measured on the 1366-wide Canva page. Below 900px `--px` is 1px and layouts stack (mobile rules live at the end of `site.css`).
 - Recolorable vector art (brush, arrows, paw, bubble) is applied with CSS `mask-image` so it takes `background-color`; the SVG files use `currentColor`. The News timeline line, the About divider and the tagline brackets are generated the same way as the torn edges (`--tear-line`, `--tear-bl`, `--tear-br`, see below) and boil with them.
