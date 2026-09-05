@@ -54,8 +54,8 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--paper); }
 /* while arriving under the transition band: root is blue and the page stays hidden until the band drops */
 html.wipe-in { background: var(--blue); }
-html.wipe-in body { opacity: 0; }
-html.wipe-in.wipe-leaving body { opacity: 1; }
+html.wipe-in :is(.site-main, .site-footer) { opacity: 0; }
+html.wipe-in.wipe-leaving :is(.site-main, .site-footer) { opacity: 1; }
 body {
   margin: 0;
   min-height: 100vh;
