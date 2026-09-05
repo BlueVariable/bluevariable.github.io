@@ -4,7 +4,7 @@ nav: news
 ---
 <article class="paper torn-bottom post">
   <div class="wrap post__wrap">
-    <a class="post__back" href="{{ '/news/' | relative_url }}">← all news</a>
+    <a class="post__back" href="{{ '/news/' | relative_url }}#{{ page.slug }}">← all news</a>
     {%- if page.game %}<p class="entry__game">{{ page.game }}</p>{% endif %}
     <h1 class="post__title">{{ page.title }}</h1>
     <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %d, %Y" }}</time>

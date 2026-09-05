@@ -10,6 +10,7 @@
       <nav class="site-nav" aria-label="Primary">
         {% for item in nav_items %}{% assign parts = item | split: "|" %}<a href="{{ parts[1] | relative_url }}" class="site-nav__link{% if page.nav == parts[0] %} is-active{% endif %}" data-nav="{{ parts[0] }}"{% if page.nav == parts[0] %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
         {% endfor %}
+        <span class="site-nav__dot is-off" aria-hidden="true"></span>
       </nav>
       <div class="tagline" data-ticker>
         <span class="tagline__bracket tagline__bracket--left" aria-hidden="true"></span>

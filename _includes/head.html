@@ -16,4 +16,4 @@
 <style>html{background:#f7f3ed}</style>
 <link rel="stylesheet" href="{{ '/assets/css/tears.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
-{% if page.splash %}<script>(function(){try{if(!sessionStorage.getItem('bv-splash')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('splash-pending');}}catch(e){}})();</script>{% endif %}
+{% if page.splash %}<script>(function(){try{if(!sessionStorage.getItem('bv-splash')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('splash-pending');var l=document.createElement('link');l.rel='preload';l.as='fetch';l.crossOrigin='anonymous';l.href='{{ '/assets/img/brand/logo-reveal.svg' | relative_url }}';document.head.appendChild(l);}}catch(e){}})();</script>{% endif %}
