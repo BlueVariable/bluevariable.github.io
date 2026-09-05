@@ -164,7 +164,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 
 .site-header { position: sticky; top: 0; z-index: 40; height: var(--header-h); pointer-events: none; }
 .site-header__bar { pointer-events: auto; background: var(--ink); height: var(--header-h); transition: height var(--dur-base) var(--ease-pop); }
-.site-header__layer { position: fixed; top: 0; left: 0; right: 0; z-index: 121; height: var(--header-h); pointer-events: none; transition: height var(--dur-base) var(--ease-pop); }
+.site-header__layer { position: fixed; top: 0; left: 0; right: 0; z-index: 123; height: var(--header-h); pointer-events: none; transition: height var(--dur-base) var(--ease-pop); }
 .site-header__wrap { height: 100%; display: flex; align-items: center; }
 .brand, .site-nav, .tagline, .nav-toggle { pointer-events: auto; }
 .brand { position: absolute; left: calc(31 * var(--px)); top: 0; height: 100%; display: grid; align-items: center; justify-items: start; transition: left var(--dur-base) var(--ease-pop); }
@@ -230,7 +230,7 @@ html.header-compact .tagline { top: calc(6 * var(--px)); scale: .93; }
 html.header-compact .site-nav__link { font-size: calc(23 * var(--px)); }
 
 .mobile-menu {
-  position: fixed; inset: 0; z-index: 35;
+  position: fixed; inset: 0; z-index: 122;
   background: var(--ink); color: var(--cream);
   padding: 96px 28px 40px;
   overflow: auto;
