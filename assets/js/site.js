@@ -10,7 +10,7 @@
     trail: { size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500 }
   };
   var BLUE = 'rgb(85, 142, 255)';
-  var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_HOLD_MS = 200;
+  var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
   var TILT = { degrees: 7, ease: .18 };
 
   var wait = function (ms) { return new Promise(function (res) { setTimeout(res, ms); }); };
@@ -31,7 +31,7 @@
   initEntries();
   initVideoModal();
   initContactForm();
-  var router = initRouter();
+  initRouter();
   initDot();
   initTilt();
   initTunerBridge();
@@ -207,7 +207,7 @@
 
   function initRouter() {
     var wipe = doc.querySelector('[data-wipe]');
-    if (!wipe || !main || reduceMotion || !window.fetch || !window.DOMParser || !history.pushState) return null;
+    if (!wipe || !main || reduceMotion || !window.fetch || !window.DOMParser || !history.pushState) return;
     var navLinks = doc.querySelectorAll('[data-nav]');
     var navigating = false, queued = null, cache = {}, hintTimer = 0, arriveTimer = 0;
     var currentKey = location.pathname + location.search;
@@ -292,13 +292,6 @@
       root.classList.remove('is-navigating');
       navigating = false;
     };
-    var cover = function () {
-      navigating = true;
-      root.classList.add('is-navigating');
-      wipe.classList.add('is-instant', 'is-covering');
-      void wipe.offsetWidth;
-      wipe.classList.remove('is-instant');
-    };
     var drop = function (quick) {
       arrive();
       wipe.classList.add('is-leaving');
@@ -367,7 +360,6 @@
       go(url, { push: false, scroll: (e.state && e.state.scroll) || 0, quick: true });
     });
     window.addEventListener('pageshow', function (e) { if (e.persisted) reset(); });
-    return { cover: cover, drop: drop };
   }
 
   function initDot() {
@@ -513,12 +505,8 @@
       clearTimeout(failSafe); clearTimeout(revealTimer);
       doc.removeEventListener('pointerdown', skip); doc.removeEventListener('keydown', skip);
       try { sessionStorage.setItem('bv-splash', '1'); } catch (e) {}
-      if (router) router.cover();
       splash.classList.add('is-done');
-      setTimeout(function () {
-        root.classList.remove('splash-pending');
-        if (router) router.drop();
-      }, SPLASH_HOLD_MS);
+      setTimeout(function () { root.classList.remove('splash-pending'); }, SPLASH_FADE_MS);
     };
     var popFrom = function (x, y) {
       if (popped) return;

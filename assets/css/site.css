@@ -342,7 +342,7 @@ html.is-navigating .site-footer__wrap { visibility: hidden; transition: visibili
 .splash { display: none; }
 html.splash-pending .splash {
   display: block; position: fixed; inset: 0; z-index: 100; background: var(--paper);
-  transition: opacity var(--dur-quick) ease;
+  transition: opacity var(--dur-base) ease;
 }
 html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 html.splash-pending .splash:not(.is-done) ~ .site-header__layer, html.splash-pending .splash:not(.is-done) ~ .site-footer .site-footer__wrap { visibility: hidden; }
@@ -364,7 +364,6 @@ html.splash-pending .splash:not(.is-done) ~ .site-header__layer, html.splash-pen
 .page-wipe.is-covering { transform: translateY(0); transition: transform var(--dur-slow) var(--ease-out), top var(--dur-base) var(--ease-pop); pointer-events: auto; }
 .page-wipe.is-leaving { transform: translateY(100%); transition: transform var(--dur-slow) var(--ease-out); }
 .page-wipe.is-quick { transition-duration: var(--dur-base); }
-.page-wipe.is-instant { transition: none; }
 .page-wipe::after {
   content: ""; position: absolute; left: 50%; top: 50%; width: calc(26 * var(--px)); height: calc(26 * var(--px));
   margin: calc(-13 * var(--px)) 0 0 calc(-13 * var(--px)); background: var(--white); opacity: 0;
