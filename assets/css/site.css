@@ -330,7 +330,7 @@ html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 
 /* ---------- Page transition: the blue footer band rises to cover, then drops away ---------- */
 .page-wipe {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; /* under the sticky header (40) */
   height: calc(100vh + 45 * var(--px)); height: calc(100dvh + 45 * var(--px));
   background: var(--blue); pointer-events: none;
   transform: translateY(100%);
