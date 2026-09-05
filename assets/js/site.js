@@ -295,14 +295,18 @@
       setTimeout(function () {
         var x = innerWidth / 2, y = innerHeight / 2;
         if (svg) {
-          /* the blue dot of "blu.e": largest #558eff element that isn't a droplet */
-          var best = null, bestArea = 0;
-          svg.querySelectorAll('[fill="#558eff"]').forEach(function (el) {
-            if (/^dp\d/.test(el.getAttribute('class') || '')) return;
-            var b = el.getBoundingClientRect(), a = b.width * b.height;
-            if (a > bestArea) { bestArea = a; best = b; }
-          });
-          if (best) { x = best.left + best.width / 2; y = best.top + best.height / 2; }
+          /* the blue dot of "blu.e" is the one path inside the .drop group (its animations have settled by now).
+             Fallback: the largest #558eff shape that is not part of a paint splash. */
+          var dot = svg.querySelector('.drop path');
+          if (!dot) {
+            var bestArea = 0;
+            svg.querySelectorAll('[fill="#558eff"]').forEach(function (el) {
+              if (el.closest('.pnt, .drp, [class^="dp"]')) return;
+              var r = el.getBoundingClientRect(), a = r.width * r.height;
+              if (a > bestArea) { bestArea = a; dot = el; }
+            });
+          }
+          if (dot) { var b = dot.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top + b.height / 2; }
         }
         popFrom(x, y);
       }, 2300);

@@ -32,10 +32,10 @@
     /* the timeline line / About divider and the tagline brackets: plain rects roughened with the same grain
        and boil. `wave` is a fixed hand-drawn wobble, `blur` widens the edge band the grain can chew into. */
     shapes: {
-      blur: 0.8,
-      wave: { freq: [0.02, 0.01], octaves: 1, seed: 9, scale: 2 },
-      line: { widths: [70, 64, 58, 52, 46, 40, 34], head: 5 },   /* stroke width in % of the box, top to bottom; head radius in px */
-      bracket: { stem: 27, tick: 5, top: 12, bottom: 88 }        /* % of the box */
+      blur: 1.6,
+      wave: { freq: [0.1, 0.1], octaves: 1, seed: 9, scale: 4.5 },
+      line: { widths: [70, 64, 58, 52, 46, 40, 34], head: 0 },   /* stroke width in % of the box, top to bottom; head radius in px */
+      bracket: { stem: 32, tick: 5.5, top: 4, bottom: 96 }        /* % of the box; the tagline text runs from ~7% to ~93% */
     },
     /* stop offsets are fractions of the 45px band; alpha ~.57 gives roughly two-thirds coverage */
     profile: {
