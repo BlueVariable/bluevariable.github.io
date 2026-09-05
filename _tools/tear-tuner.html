@@ -186,13 +186,14 @@
   function applyPreset(name) {
     var p = PRESETS[name]; var next = clone(T.DEFAULTS);
     Object.keys(p).forEach(function (k) { next[k] = Object.assign({}, next[k], p[k]); });
-    state = next; renderControls(); update();
+    state = next; renderControls(); update(true);
     document.querySelectorAll('#presets button').forEach(function (b) { b.classList.toggle('is-on', b.textContent === name); });
   }
 
   var demos = document.getElementById('demos'), cssOut = document.getElementById('css');
   var pending = null;
-  function update() {
+  function update(keepPreset) {
+    if (!keepPreset) document.querySelectorAll('#presets button').forEach(function (b) { b.classList.remove('is-on'); }); /* sliders moved: no longer exactly a preset */
     if (pending) return;
     pending = requestAnimationFrame(function () {
       pending = null;
@@ -200,7 +201,6 @@
       Object.keys(r.uris).forEach(function (dir) { r.uris[dir].forEach(function (u, i) { demos.style.setProperty('--tear-' + dir + (i + 1), u); }); });
       var recipe = clone(state); delete recipe.profile;
       cssOut.value = '  /* recipe: ' + JSON.stringify(recipe) + ' */\n' + r.css;
-      document.querySelectorAll('#presets button').forEach(function (b) { b.classList.remove('is-on'); });
     });
   }
 
