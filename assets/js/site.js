@@ -124,10 +124,11 @@
       var revealed = false;
       var reveal = function () {
         if (revealed) return; revealed = true;
-        requestAnimationFrame(function () { requestAnimationFrame(function () {
+        void wipe.offsetHeight; /* flush the covering state before transitioning (works in background tabs too) */
+        setTimeout(function () {
           wipe.classList.add('is-leaving'); root.classList.add('wipe-leaving');
           setTimeout(function () { root.classList.remove('wipe-in'); root.classList.remove('wipe-leaving'); wipe.classList.remove('is-leaving'); }, 600);
-        }); });
+        }, 30);
       };
       /* keep the band up until the page (images, fonts) has loaded, but never longer than 1.5s */
       var loaded = doc.readyState === 'complete' ? Promise.resolve() : new Promise(function (res) { window.addEventListener('load', res, { once: true }); });
