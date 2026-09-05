@@ -257,6 +257,20 @@
     });
   }
 
+  /* ---------- Local preview only: _tools/tear-tuner.html pushes new torn-edge frames into this page ---------- */
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+    window.addEventListener('message', function (e) {
+      var d = e.data;
+      if (!d || d.type !== 'bv-tear' || !d.vars) return;
+      Object.keys(d.vars).forEach(function (k) {
+        var v = String(d.vars[k]);
+        if (/^--tear-[btlr][123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
+      });
+      /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
+      root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';
+    });
+  }
+
   /* ---------- Splash: reveal → dot pop → home (first visit per session) ---------- */
   var splash = doc.querySelector('[data-splash]');
   if (splash && root.classList.contains('splash-pending')) {

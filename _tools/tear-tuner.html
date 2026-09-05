@@ -43,6 +43,12 @@
   }
   .view { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; color: var(--muted); font-size: 12px; }
   .view label { display: flex; gap: 4px; align-items: center; }
+  .live { margin: 0 0 22px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+  .live summary { cursor: pointer; color: var(--text); font-weight: 600; }
+  .live-bar { display: flex; gap: 10px; align-items: center; margin: 8px 0; color: var(--muted); font-size: 12px; }
+  .live-bar input { width: 260px; background: #1a1919; color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; font: inherit; font-size: 12px; }
+  .live-bar button { background: #383535; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px; font: inherit; font-size: 12px; cursor: pointer; }
+  .live iframe { display: block; width: 100%; height: 560px; border: 1px solid var(--line); border-radius: 4px; background: #f7f3ed; }
   .out { margin-top: 10px; }
   .out textarea { width: 100%; height: 90px; background: #1a1919; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; font: 11px/1.3 ui-monospace, Consolas, monospace; padding: 6px; resize: vertical; }
   .out .actions { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
@@ -77,6 +83,15 @@
     <label><input type="checkbox" id="boilOn" checked> boil (preview only; speed lives in site.css)</label>
     <label>magnify <select id="zoom"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select></label>
   </div>
+  <details class="live" open>
+    <summary>Live preview on the real site</summary>
+    <div class="live-bar">
+      <label>site <input id="siteUrl" type="text" value="http://127.0.0.1:4000/" spellcheck="false"></label>
+      <button id="siteReload" type="button">reload</button>
+      <span>needs <code>bundle exec jekyll serve</code> running; the tears below update as you drag, nothing is saved until you copy the block</span>
+    </div>
+    <iframe id="site" title="Site preview"></iframe>
+  </details>
   <div class="demos" id="demos">
     <div class="demo d-header"><span class="cap">header strip over the dark bar</span><div class="bar"></div><div class="strip"></div></div>
     <div class="demo d-hero"><span class="cap">section tearing into the blue footer</span><div class="hero"></div></div>
@@ -191,6 +206,25 @@
   }
 
   var demos = document.getElementById('demos'), cssOut = document.getElementById('css');
+  var site = document.getElementById('site'), siteUrl = document.getElementById('siteUrl');
+  var lastVars = null;
+  /* The site (site.js, localhost only) listens for these and swaps its --tear-* frames in place. */
+  function pushToSite() {
+    if (!lastVars || !site.contentWindow) return;
+    try { site.contentWindow.postMessage({ type: 'bv-tear', vars: lastVars }, '*'); } catch (e) { /* not loaded yet */ }
+  }
+  function loadSite() { site.src = siteUrl.value; }
+  site.addEventListener('load', pushToSite);
+  document.getElementById('siteReload').addEventListener('click', loadSite);
+  siteUrl.addEventListener('change', loadSite);
+
+  /* Browsers resolve var() inside @keyframes when an animation starts, not on every frame,
+     so the boil preview has to be restarted whenever the frames change. */
+  function restartBoil() {
+    if (!demos.classList.contains('is-boiling')) return;
+    demos.style.animation = 'none'; void demos.offsetWidth; demos.style.animation = '';
+  }
+
   var pending = null;
   function update(keepPreset) {
     if (!keepPreset) document.querySelectorAll('#presets button').forEach(function (b) { b.classList.remove('is-on'); }); /* sliders moved: no longer exactly a preset */
@@ -198,7 +232,10 @@
     pending = requestAnimationFrame(function () {
       pending = null;
       var r = T.build(state);
-      Object.keys(r.uris).forEach(function (dir) { r.uris[dir].forEach(function (u, i) { demos.style.setProperty('--tear-' + dir + (i + 1), u); }); });
+      lastVars = {};
+      Object.keys(r.uris).forEach(function (dir) { r.uris[dir].forEach(function (u, i) { lastVars['--tear-' + dir + (i + 1)] = u; demos.style.setProperty('--tear-' + dir + (i + 1), u); }); });
+      restartBoil();
+      pushToSite();
       var recipe = clone(state); delete recipe.profile;
       cssOut.value = '  /* recipe: ' + JSON.stringify(recipe) + ' */\n' + r.css;
     });
@@ -220,8 +257,10 @@
     else { cssOut.select(); document.execCommand('copy'); done(); }
   });
 
+  document.getElementById('boilOn').addEventListener('change', restartBoil);
   demos.classList.add('is-boiling'); demos.style.zoom = 2;
   applyPreset('R4 (current)');
+  loadSite();
 })();
 </script>
 </body>
