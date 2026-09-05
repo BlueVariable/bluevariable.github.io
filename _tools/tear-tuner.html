@@ -228,7 +228,7 @@
     trail: { size: [7, 16], spread: 6, sway: 14, drift: [4, 22], every: 40, minMove: 6, max: 24, life: 650 }
   };
   var DOT_CONTROLS = [
-    ['', 'cursorSize', 'cursor size (px)', 20, 90, 1],
+    ['', 'cursorSize', 'cursor size (design px)', 20, 90, 1],
     ['splat', 'count.1', 'splat droplets (max)', 2, 24, 1],
     ['splat', 'size.1', 'splat droplet size (max px)', 4, 48, 1],
     ['splat', 'distance.1', 'splat reach (max px)', 20, 240, 2],
@@ -248,10 +248,10 @@
     var cfg = { splat: dot.splat, trail: dot.trail };
     try {
       site.contentWindow.postMessage({ type: 'bv-dot', dot: cfg }, '*');
-      site.contentWindow.postMessage({ type: 'bv-tear', vars: { '--cursor-size': dot.cursorSize + 'px' } }, '*');
+      site.contentWindow.postMessage({ type: 'bv-tear', vars: { '--cursor-size': 'calc(' + dot.cursorSize + ' * var(--px))' } }, '*');
     } catch (e) {}
     document.getElementById('dotOut').value =
-      '/* site.css, :root in the cursor section */\n--cursor-size: ' + dot.cursorSize + 'px;\n\n' +
+      '/* site.css, :root in the cursor section */\n--cursor-size: calc(' + dot.cursorSize + ' * var(--px));\n\n' +
       '/* site.js, the DOT object */\nvar DOT = {\n  splat: ' + JSON.stringify(dot.splat).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') +
       ',\n  trail: ' + JSON.stringify(dot.trail).replace(/"/g, '').replace(/,/g, ', ').replace(/:/g, ': ') + '\n};';
   }

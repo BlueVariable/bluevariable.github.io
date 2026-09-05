@@ -1,8 +1,9 @@
 /* ==========================================================================
    Blue Variable Studio — site styles
    Design source: Canva "Blue Variable" pages 1–9 (1366×768 artboards).
-   Desktop sizes are expressed in "design pixels" via --px so the layout
-   scales like the artboard between 984px and 1530px wide.
+   Desktop sizes are expressed in "design pixels" via --px: the 1366x768
+   artboard fitted to the viewport (both axes), so the layout scales like the
+   artboard on any screen, 4K included, and never drops below 0.72px.
    ========================================================================== */
 
 /* ---------- Fonts (self-hosted, see assets/fonts) ---------- */
@@ -41,17 +42,14 @@
   --font-body: "Urbanist", "Segoe UI", system-ui, sans-serif;
   --font-text: "Glacial Indifference", "Segoe UI", system-ui, sans-serif;
 
-  /* 1 design pixel. Artboard is 1366 wide. */
-  --px: clamp(0.72px, calc(100vw / 1366), 1.12px);
+  /* 1 design pixel: the 1366x768 artboard fitted to the viewport (width or height, whichever binds). */
+  --px: max(0.72px, min(calc(100vw / 1366), calc(100vh / 768)));
   --wrap: calc(1366 * var(--px));
   --header-h: calc(115 * var(--px));
   --header-compact-h: calc(72 * var(--px));
   /* About / Team / Contact / Press kit each fill at least this much of the viewport on desktop,
      so tall screens (4K) still scroll one section at a time. */
   --section-min-h: 80vh;
-  /* Design pixel for the content of those sections: the 1366x768 artboard scaled to fit the screen
-     (never smaller than --px), so the content grows with the section instead of floating in it. */
-  --section-px: max(var(--px), min(calc(100vw / 1366), calc(var(--section-min-h) / 614)));
   --ease-pop: cubic-bezier(.22, 1.18, .36, 1);
 }
 
@@ -184,7 +182,7 @@ em { font-style: normal; color: var(--blue); }
    site.js hides the native pointer (html.has-cursor, fine pointers only) and moves .cursor with it; the dot
    is the logo dot masked with the wobbling --tear-dot frames. Moving sheds droplets (.trail i), pressing
    anywhere flings a ring of droplets (.splat i, no core dot). All of it is inert to the pointer and cleans itself up. */
-:root { --cursor-size: 44px; }
+:root { --cursor-size: calc(44 * var(--px)); }
 html.has-cursor, html.has-cursor * { cursor: none; }
 html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor: auto; } /* the dot hides itself over fields */
 .cursor {
@@ -298,7 +296,7 @@ body.menu-open { overflow: hidden; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: calc(37 * var(--px)); padding: calc(4 * var(--px)) calc(18 * var(--px));
-  border: 2px solid var(--ink); border-radius: calc(12 * var(--px));
+  border: calc(2 * var(--px)) solid var(--ink); border-radius: calc(12 * var(--px));
   background: var(--white); color: var(--ink);
   font-family: var(--font-hand); font-weight: 400; text-transform: uppercase;
   font-size: calc(20.5 * var(--px)); letter-spacing: .02em; line-height: 1;
@@ -306,7 +304,7 @@ body.menu-open { overflow: hidden; }
   transition: transform .15s var(--ease-pop), box-shadow .15s;
 }
 .btn:hover { transform: translate(-1px, -1px); box-shadow: calc(6 * var(--px)) calc(6 * var(--px)) 0 rgba(30, 29, 29, .28); }
-.btn:active { transform: translate(2px, 2px); box-shadow: calc(2 * var(--px)) calc(2 * var(--px)) 0 rgba(30, 29, 29, .28); }
+.btn:active { transform: translate(calc(2 * var(--px)), calc(2 * var(--px))); box-shadow: calc(2 * var(--px)) calc(2 * var(--px)) 0 rgba(30, 29, 29, .28); }
 .btn--blue { background: var(--blue); color: var(--white); box-shadow: calc(4 * var(--px)) calc(4 * var(--px)) 0 rgba(84, 93, 170, .55); }
 
 /* Brush-stroke button (WISHLIST NOW, SAY HI ON DISCORD) */
@@ -359,7 +357,7 @@ body.menu-open { overflow: hidden; }
 .newsletter__field {
   position: relative; display: flex; align-items: center;
   width: calc(237 * var(--px)); height: calc(37 * var(--px));
-  background: var(--white); border: 2px solid var(--ink); border-radius: calc(12 * var(--px));
+  background: var(--white); border: calc(2 * var(--px)) solid var(--ink); border-radius: calc(12 * var(--px));
 }
 .newsletter__input {
   flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: 0;
@@ -435,8 +433,6 @@ html.splash-pending .page-wipe { display: none; }
    ABOUT
    ========================================================================== */
 .about { padding-top: calc(70 * var(--px)); padding-bottom: calc(60 * var(--px)); min-height: var(--section-min-h); display: grid; align-content: center; }
-/* Content of the four full-height sections scales with --section-px (the tears, paddings and side labels stay on --px) */
-.about__wrap, .team > .wrap, .contact__wrap, .presskit__wrap { --px: var(--section-px); --wrap: calc(1366 * var(--px)); }
 .about__wrap { display: flex; align-items: center; justify-content: center; gap: calc(50 * var(--px)); min-height: calc(420 * var(--px)); }
 .about__mark { width: calc(330 * var(--px)); flex: 0 0 auto; }
 .about__mark img { width: 100%; height: auto; }
@@ -500,7 +496,7 @@ html.splash-pending .page-wipe { display: none; }
 .game-about__title { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: calc(46.4 * var(--px)); line-height: .83; letter-spacing: .02em; }
 .game-about__lead { font-family: var(--font-display); font-weight: 400; font-size: calc(21.5 * var(--px)); line-height: 1.12; margin-top: calc(18 * var(--px)); max-width: calc(620 * var(--px)); }
 .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(18 * var(--px)); margin-top: calc(28 * var(--px)); }
-.shots img { width: 100%; height: auto; border-radius: calc(16 * var(--px)); border: 2px solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); }
+.shots img { width: 100%; height: auto; border-radius: calc(16 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); }
 
 
 /* ==========================================================================
@@ -558,7 +554,7 @@ html.splash-pending .page-wipe { display: none; }
 .play .icon { width: 60%; height: 60%; }
 .play:hover { transform: scale(1.08); }
 
-.video-modal { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1100px); width: 100%; }
+.video-modal { border: 0; padding: 0; background: transparent; max-width: min(92vw, calc(1100 * var(--px))); width: 100%; }
 .video-modal::backdrop { background: rgba(30, 29, 29, .85); }
 .video-modal__frame { aspect-ratio: 16 / 9; width: 100%; background: var(--ink); border-radius: 18px; overflow: hidden; border: 3px solid var(--white); }
 .video-modal__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
@@ -585,7 +581,7 @@ html.splash-pending .page-wipe { display: none; }
 .contact-form { display: grid; gap: calc(10 * var(--px)); margin-top: calc(10 * var(--px)); }
 .field {
   width: 100%; min-height: calc(37 * var(--px)); padding: calc(6 * var(--px)) calc(12 * var(--px));
-  background: var(--white); border: 2px solid var(--ink); border-radius: calc(12 * var(--px));
+  background: var(--white); border: calc(2 * var(--px)) solid var(--ink); border-radius: calc(12 * var(--px));
   font-family: var(--font-hand); text-transform: uppercase; font-size: calc(20.5 * var(--px)); letter-spacing: .02em; color: var(--blue); outline: 0;
 }
 .field::placeholder { color: var(--blue); opacity: 1; }
@@ -643,7 +639,7 @@ html.splash-pending .page-wipe { display: none; }
    Mobile (< 900px)
    ========================================================================== */
 @media (max-width: 899px) {
-  :root { --px: 1px; --section-px: 1px; --header-h: 72px; --header-compact-h: 60px; }
+  :root { --px: 1px; --header-h: 72px; --header-compact-h: 60px; }
   .wrap { width: 100%; padding-inline: 20px; }
   .brand { left: 20px; }
   .brand__full { width: 118px; }

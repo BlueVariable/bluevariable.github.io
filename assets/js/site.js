@@ -269,8 +269,9 @@
   }
 
   /* ---------- The dot: custom cursor, droplet trail, click splat ----------
-     Droplet settings. Tune them live in _tools/tear-tuner.html (Cursor & droplets panel) and paste the block it
-     prints over this object; the cursor size is --cursor-size in site.css. */
+     Droplet settings, in design px (they scale with --px like everything else). Tune them live in
+     _tools/tear-tuner.html (Cursor & droplets panel) and paste the block it prints over this object;
+     the cursor size is --cursor-size in site.css. */
   var DOT = {
     splat: {count: [13, 15], size: [16.7, 37], distance: [53.6, 134], life: 200},
     trail: {size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500}
@@ -278,6 +279,7 @@
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
   var between = function (r) { return rnd(r[0], r[1]); };
   var deg = function () { return Math.round(Math.random() * 360) + 'deg'; };
+  var dp = function (n) { return 'calc(' + n.toFixed(1) + ' * var(--px))'; }; /* design px → CSS length */
   /* is the first solid background behind this element the brand blue? (footer, transition band…) → the dot turns white there */
   var BLUE = 'rgb(85, 142, 255)', blueCacheEl = null, blueCache = false;
   var onBlue = function (el) {
@@ -300,9 +302,9 @@
       for (var i = 0; i < n; i++) {
         var drop = doc.createElement('i');
         var angle = (i / n) * Math.PI * 2 + rnd(-.35, .35), dist = between(DOT.splat.distance);
-        drop.style.setProperty('--dx', (Math.cos(angle) * dist).toFixed(1) + 'px');
-        drop.style.setProperty('--dy', (Math.sin(angle) * dist).toFixed(1) + 'px');
-        drop.style.setProperty('--s', between(DOT.splat.size).toFixed(1) + 'px');
+        drop.style.setProperty('--dx', dp(Math.cos(angle) * dist));
+        drop.style.setProperty('--dy', dp(Math.sin(angle) * dist));
+        drop.style.setProperty('--s', dp(between(DOT.splat.size)));
         drop.style.setProperty('--r', deg());
         splat.appendChild(drop);
       }
@@ -316,9 +318,9 @@
     var emit = function (x, y, white) {
       var t = DOT.trail, p = doc.createElement('i');
       if (white) p.className = 'is-white';
-      p.style.setProperty('--x', (x + rnd(-t.spread, t.spread)).toFixed(1) + 'px'); p.style.setProperty('--y', (y + rnd(-t.spread, t.spread)).toFixed(1) + 'px');
-      p.style.setProperty('--dx', rnd(-t.sway, t.sway).toFixed(1) + 'px'); p.style.setProperty('--dy', between(t.drift).toFixed(1) + 'px'); /* drifts down a little, like a drip */
-      p.style.setProperty('--s', between(t.size).toFixed(1) + 'px'); p.style.setProperty('--r', deg());
+      p.style.setProperty('--x', 'calc(' + x.toFixed(1) + 'px + ' + dp(rnd(-t.spread, t.spread)) + ')'); p.style.setProperty('--y', 'calc(' + y.toFixed(1) + 'px + ' + dp(rnd(-t.spread, t.spread)) + ')');
+      p.style.setProperty('--dx', dp(rnd(-t.sway, t.sway))); p.style.setProperty('--dy', dp(between(t.drift))); /* drifts down a little, like a drip */
+      p.style.setProperty('--s', dp(between(t.size))); p.style.setProperty('--r', deg());
       trail.appendChild(p); live++;
       setTimeout(function () { p.remove(); live--; }, t.life);
     };
@@ -362,7 +364,7 @@
       Object.keys(d.vars).forEach(function (k) {
         var v = String(d.vars[k]);
         if (/^--tear-(b|t|l|r|line|bl|br|dot)[123]$/.test(k) && /^url\("data:image\/svg\+xml,[^"]*"\)$/.test(v)) root.style.setProperty(k, v);
-        if (k === '--cursor-size' && /^\d+(\.\d+)?px$/.test(v)) root.style.setProperty(k, v);
+        if (k === '--cursor-size' && /^calc\(\d+(\.\d+)? \* var\(--px\)\)$/.test(v)) root.style.setProperty(k, v);
       });
       /* var() inside @keyframes is resolved when the animation starts, so restart the boil to show the new frames */
       root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';
