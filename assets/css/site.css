@@ -121,10 +121,14 @@ em { font-style: normal; color: var(--blue); }
   position: absolute; left: 0; right: 0;
   top: calc(var(--header-h) - 10 * var(--px));
   height: calc(26 * var(--px));
-  background: url("../img/torn-top.webp") center top / auto calc(45 * var(--px)) repeat-x;
+  background: var(--edge, var(--paper));
+  -webkit-mask: url("../img/torn-top-mask.webp") center top / auto calc(45 * var(--px)) repeat-x; mask: url("../img/torn-top-mask.webp") center top / auto calc(45 * var(--px)) repeat-x;
   pointer-events: none;
   transition: top .3s var(--ease-pop);
 }
+.torn--header::after { content: ""; position: absolute; inset: 0; background: url("../img/specks-top.webp") center top / auto calc(45 * var(--px)) repeat-x; }
+/* while the blue page-transition band is up, the edge tears into blue instead of cream */
+html.wipe-covering .torn--header, html.wipe-in:not(.wipe-leaving) .torn--header { --edge: var(--blue); }
 /* Sections with a torn TOP edge: they start 45px above the previous section and
    tear over it (same construction as the news bands). */
 .torn-top {
@@ -586,7 +590,8 @@ html.splash-pending .page-wipe { display: none; }
   .site-header.is-compact .brand__full { display: block; width: 100px; }
   .site-header.is-compact .brand__compact { display: none; }
   .site-nav, .tagline { display: none; }
-  .torn--header { top: calc(var(--header-h) - 8px); height: 22px; background-size: auto 36px; }
+  .torn--header { top: calc(var(--header-h) - 8px); height: 22px; -webkit-mask-size: auto 36px; mask-size: auto 36px; }
+  .torn--header::after { background-size: auto 36px; }
   .site-header.is-compact .torn--header { top: calc(var(--header-compact-h) - 8px); }
   .nav-toggle {
     display: flex; flex-direction: column; justify-content: center; gap: 6px;

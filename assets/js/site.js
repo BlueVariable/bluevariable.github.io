@@ -122,13 +122,13 @@
       try { sessionStorage.removeItem('bv-wipe'); } catch (e) {}
       if (root.classList.contains('wipe-in')) {
         requestAnimationFrame(function () { requestAnimationFrame(function () {
-          wipe.classList.add('is-leaving');
-          setTimeout(function () { root.classList.remove('wipe-in'); wipe.classList.remove('is-leaving'); }, 600);
+          wipe.classList.add('is-leaving'); root.classList.add('wipe-leaving');
+          setTimeout(function () { root.classList.remove('wipe-in'); root.classList.remove('wipe-leaving'); wipe.classList.remove('is-leaving'); }, 600);
         }); });
       }
     };
     clearWipe();
-    window.addEventListener('pageshow', function (e) { if (e.persisted) { wipe.classList.remove('is-covering'); clearWipe(); } });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) { wipe.classList.remove('is-covering'); root.classList.remove('wipe-covering'); clearWipe(); } });
     doc.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest('a[href]');
@@ -139,7 +139,7 @@
       if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
       e.preventDefault();
       try { sessionStorage.setItem('bv-wipe', '1'); } catch (err) {}
-      wipe.classList.add('is-covering');
+      wipe.classList.add('is-covering'); root.classList.add('wipe-covering');
       setTimeout(function () { location.href = url.href; }, 440);
     });
   }
