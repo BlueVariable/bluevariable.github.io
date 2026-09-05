@@ -232,7 +232,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .site-header__wrap { height: 100%; display: flex; align-items: center; }
 .brand { position: absolute; left: calc(31 * var(--px)); top: 0; height: 100%; display: flex; align-items: center; }
 .brand__full { width: calc(160 * var(--px)); height: auto; }
-.brand__compact { width: calc(150 * var(--px)); height: auto; display: none; }
+.brand__compact { width: calc(125 * var(--px)); height: auto; display: none; }
 .site-nav {
   position: absolute; left: calc(294 * var(--px)); top: 0; height: 100%;
   display: flex; align-items: center; gap: calc(56 * var(--px));
