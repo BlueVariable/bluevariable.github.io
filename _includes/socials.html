@@ -7,5 +7,5 @@
   <li><a href="{{ l.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon"><use href="#i-instagram"/></svg></a></li>
   <li><a href="{{ l.youtube }}" target="_blank" rel="noopener" aria-label="YouTube"><svg class="icon"><use href="#i-youtube"/></svg></a></li>
   <li><a href="{{ l.reddit }}" target="_blank" rel="noopener" aria-label="Reddit"><svg class="icon"><use href="#i-reddit"/></svg></a></li>
-  {%- if include.handle %}<li class="socials__handle">{{ include.handle }}</li>{% endif %}
+  {%- if include.handle %}<li class="socials__handle"><span class="socials__at">@</span>{{ include.handle }}</li>{% endif %}
 </ul>
