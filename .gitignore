@@ -8,3 +8,4 @@ Gemfile.lock
 .claude/
 .codex/
 skills-lock.json
+.impeccable/

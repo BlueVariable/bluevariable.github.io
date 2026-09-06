@@ -36,6 +36,7 @@ defaults:
 
 exclude:
   - CLAUDE.md
+  - PRODUCT.md
   - Gemfile
   - Gemfile.lock
   - node_modules
