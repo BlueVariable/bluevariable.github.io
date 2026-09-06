@@ -5,6 +5,9 @@ url: "https://bluevariablestudio.com"
 baseurl: ""
 lang: en
 email: info@bluevariablestudio.com
+author:
+  name: Blue Variable Studio
+social_image: /assets/img/brand/social.jpg
 
 links:
   steam: https://store.steampowered.com/developer/bluevariablestudio
@@ -16,6 +19,10 @@ links:
   reddit: https://reddit.com/r/bluevariablestudio
 wishlist_url: https://store.steampowered.com/developer/bluevariablestudio
 presskit_url: /assets/presskit/blue-variable-presskit.zip
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
 
 markdown: kramdown
 kramdown:
