@@ -458,7 +458,7 @@
       }
       cursor.style.setProperty('--x', e.clientX + 'px'); cursor.style.setProperty('--y', e.clientY + 'px');
       cursor.classList.toggle('is-hidden', !!closest(e.target, 'input, textarea, select'));
-      cursor.classList.toggle('is-link', !!closest(e.target, 'a, button, [role="button"], label, summary, [data-ticker]'));
+      cursor.classList.toggle('is-link', !!closest(e.target, 'a, button, [role="button"], label, summary, [data-ticker], [data-hoverable]'));
       var white = onBlue(e.target);
       cursor.classList.toggle('is-white', white);
       var dx = e.clientX - lastX, dy = e.clientY - lastY;
