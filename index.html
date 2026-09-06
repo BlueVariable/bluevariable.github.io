@@ -18,5 +18,13 @@ permalink: /
     <div class="hero__cta">
       {% include wishlist.html href=site.wishlist_url %}
     </div>
+    {%- assign latest = site.posts | first %}
+    {%- if latest %}
+    <a class="hero__news" href="{{ latest.url | relative_url }}">
+      <span>latest news</span>
+      <span class="hero__news-title">{{ latest.title }}</span>
+      <time datetime="{{ latest.date | date_to_xmlschema }}">{{ latest.date | date: "%b %d" }}</time>
+    </a>
+    {%- endif %}
   </div>
 </section>

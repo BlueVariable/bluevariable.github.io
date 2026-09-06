@@ -25,5 +25,15 @@ nav: news
     {%- if page.tags.size > 0 %}
     <ul class="entry__tags">{% for tag in page.tags %}<li>#{{ tag }}</li>{% endfor %}</ul>
     {%- endif %}
+    {%- if page.previous or page.next %}
+    <nav class="post__nav" aria-label="More news">
+      {%- if page.previous %}
+      <a class="post__nav-link post__nav-link--older" href="{{ page.previous.url | relative_url }}"><span class="post__nav-label">← older</span><span class="post__nav-title">{{ page.previous.title }}</span></a>
+      {%- endif %}
+      {%- if page.next %}
+      <a class="post__nav-link post__nav-link--newer" href="{{ page.next.url | relative_url }}"><span class="post__nav-label">newer →</span><span class="post__nav-title">{{ page.next.title }}</span></a>
+      {%- endif %}
+    </nav>
+    {%- endif %}
   </div>
 </article>

@@ -10,7 +10,7 @@
     trail: { size: [7.2, 16], spread: 6, sway: 14, drift: [5.4, 27], every: 20, minMove: 6, max: 23, life: 1500 }
   };
   var BLUE = 'rgb(85, 142, 255)';
-  var COVER_MS = 480, LEAVE_MS = 480, QUICK_MS = 330, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
+  var COVER_MS = 380, LEAVE_MS = 380, QUICK_MS = 280, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
   var TILT = { degrees: 7, ease: .18 };
   var TICKER_MS = 4000, TICKER_LEAVE_MS = 600;
 
