@@ -421,6 +421,11 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 @media (any-hover: hover) {
   .about__mark .fl:hover { scale: 1.12; rotate: -8deg; }
   .about__mark .f-dot:hover { scale: 1.4; rotate: 0deg; }
+  .about__mark .mark:has(.hit-b:hover) .f-b,
+  .about__mark .mark:has(.hit-l:hover) .f-l,
+  .about__mark .mark:has(.hit-u:hover) .f-u,
+  .about__mark .mark:has(.hit-e:hover) .f-e { scale: 1.12; rotate: -8deg; }
+  .about__mark .mark:has(.hit-dot:hover) .f-dot { scale: 1.4; rotate: 0deg; }
 }
 .about__divider {
   flex: 0 0 auto; width: calc(10 * var(--px)); height: calc(405 * var(--px)); background: var(--blue);
