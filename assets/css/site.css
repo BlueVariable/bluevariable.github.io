@@ -614,7 +614,7 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .facts dd a + a { margin-left: .3em; }
 .presskit__logos { flex: 1 1 auto; }
 .logos { display: grid; grid-template-columns: repeat(2, calc(176 * var(--px))); gap: calc(14 * var(--px)); margin-top: calc(14 * var(--px)); }
-.logos__tile { display: grid; place-items: center; aspect-ratio: 5 / 3; padding: calc(12 * var(--px)) calc(18 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); border-radius: calc(12 * var(--px)); background: var(--grey); }
+.logos__tile { display: grid; place-items: center; aspect-ratio: 5 / 3; padding: calc(12 * var(--px)) calc(18 * var(--px)); border: calc(2 * var(--px)) solid var(--white); border-radius: calc(12 * var(--px)); background: var(--cream); }
 .logos__tile img { max-width: 100%; max-height: calc(66 * var(--px)); width: auto; height: auto; }
 .presskit__download { margin-top: calc(22 * var(--px)); }
 
