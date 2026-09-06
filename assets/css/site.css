@@ -473,9 +473,13 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .shots img { width: 100%; height: auto; border-radius: calc(16 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); }
 .game-presskit { display: grid; grid-template-columns: calc((100% - 40 * var(--px)) * .4) 1fr; column-gap: calc(40 * var(--px)); align-items: start; padding-top: calc(30 * var(--px)); }
 .game-presskit__art { margin: calc(8 * var(--px)) 0 0; }
-.game-presskit__frame { display: block; overflow: hidden; background: var(--white); border-radius: calc(16 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); transition: transform var(--dur-base) var(--ease-pop), box-shadow var(--dur-base); }
-.game-presskit__frame img { width: 100%; height: auto; }
-@media (any-hover: hover) { .game-presskit__frame:hover { transform: rotate(-1deg) scale(1.02); box-shadow: calc(7 * var(--px)) calc(7 * var(--px)) 0 rgba(30, 29, 29, .28); } }
+.game-presskit__print { position: relative; display: block; line-height: 0; isolation: isolate; }
+.game-presskit__print img { width: 100%; height: auto; display: block; }
+.game-presskit__print::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: url("../img/decor/paper.webp") center top / 100% auto repeat-y;
+  mix-blend-mode: multiply; opacity: .62;
+}
 .game-presskit__caption { display: flex; flex-wrap: wrap; align-items: center; gap: calc(14 * var(--px)); margin-top: calc(18 * var(--px)); }
 .game-presskit__down { transform: rotate(90deg); }
 .game-presskit__meta, .game-presskit__note { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(15 * var(--px)); letter-spacing: .02em; }
