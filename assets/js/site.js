@@ -11,6 +11,7 @@
   };
   var BLUE = 'rgb(85, 142, 255)';
   var COVER_MS = 380, LEAVE_MS = 380, QUICK_MS = 280, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
+  var CURSOR = { ease: .22 };
   var TILT = { degrees: 7, ease: .18 };
   var TICKER_MS = 4000, TICKER_LEAVE_MS = 600;
 
@@ -434,7 +435,8 @@
     }
 
     if (!finePointer) return;
-    var cursor = null, trail = null, live = 0, lastX = 0, lastY = 0, lastEmit = 0;
+    var cursor = null, trail = null, live = 0, frame = 0, white = false;
+    var pointerX = 0, pointerY = 0, x = 0, y = 0, lastX = 0, lastY = 0, lastEmit = 0;
     var emit = function (x, y, white) {
       var t = DOT.trail;
       var p = droplet({
@@ -448,25 +450,35 @@
       trail.appendChild(p); live++;
       setTimeout(function () { p.remove(); live--; }, t.life);
     };
+    var render = function (now) {
+      var dx = pointerX - x, dy = pointerY - y;
+      var settled = Math.hypot(dx, dy) < .1;
+      if (settled) { x = pointerX; y = pointerY; }
+      else { x += dx * CURSOR.ease; y += dy * CURSOR.ease; }
+      cursor.style.setProperty('--x', x.toFixed(1) + 'px'); cursor.style.setProperty('--y', y.toFixed(1) + 'px');
+      var mx = x - lastX, my = y - lastY;
+      if (!reduceMotion && live < DOT.trail.max && now - lastEmit > DOT.trail.every && Math.hypot(mx, my) > DOT.trail.minMove) {
+        emit(x - mx * .6, y - my * .6, white);
+        lastEmit = now;
+      }
+      lastX = x; lastY = y;
+      frame = settled ? 0 : requestAnimationFrame(render);
+    };
     doc.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;
+      pointerX = e.clientX; pointerY = e.clientY;
       if (!cursor) {
         cursor = doc.createElement('div'); cursor.className = 'cursor'; doc.body.appendChild(cursor);
         trail = doc.createElement('div'); trail.className = 'trail'; doc.body.appendChild(trail);
         root.classList.add('has-cursor');
-        lastX = e.clientX; lastY = e.clientY;
+        x = pointerX; y = pointerY; lastX = x; lastY = y;
       }
-      cursor.style.setProperty('--x', e.clientX + 'px'); cursor.style.setProperty('--y', e.clientY + 'px');
       cursor.classList.toggle('is-hidden', !!closest(e.target, 'input, textarea, select'));
       cursor.classList.toggle('is-link', !!closest(e.target, 'a, button, [role="button"], label, summary, [data-ticker], [data-hoverable]'));
-      var white = onBlue(e.target);
+      white = onBlue(e.target);
       cursor.classList.toggle('is-white', white);
-      var dx = e.clientX - lastX, dy = e.clientY - lastY;
-      if (!reduceMotion && live < DOT.trail.max && e.timeStamp - lastEmit > DOT.trail.every && Math.hypot(dx, dy) > DOT.trail.minMove) {
-        emit(e.clientX - dx * .6, e.clientY - dy * .6, white);
-        lastEmit = e.timeStamp;
-      }
-      lastX = e.clientX; lastY = e.clientY;
+      if (reduceMotion) { x = pointerX; y = pointerY; }
+      if (!frame) frame = requestAnimationFrame(render);
     }, { passive: true });
     doc.addEventListener('pointerover', function (e) {
       if (cursor && e.target.tagName === 'IFRAME') cursor.classList.add('is-hidden');
