@@ -11,7 +11,7 @@
   };
   var BLUE = 'rgb(85, 142, 255)';
   var COVER_MS = 380, LEAVE_MS = 380, QUICK_MS = 280, SETTLE_MS = 1500, HINT_MS = 800, ARRIVE_MS = 1000, SPLASH_FADE_MS = 400;
-  var CURSOR = { ease: .22 };
+  var CURSOR = { ease: .08 };
   var TILT = { degrees: 7, ease: .18 };
   var TICKER_MS = 4000, TICKER_LEAVE_MS = 600;
 
