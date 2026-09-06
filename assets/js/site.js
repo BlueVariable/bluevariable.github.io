@@ -171,9 +171,7 @@
       }
       observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
+          entry.target.classList.toggle('is-revealed', entry.isIntersecting);
         });
       }, { rootMargin: '0px 0px -15% 0px', threshold: 0 });
       sections.forEach(function (section) { observer.observe(section); });
