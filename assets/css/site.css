@@ -471,6 +471,18 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .game-about__lead { font-family: var(--font-display); font-weight: 400; font-size: calc(21.5 * var(--px)); line-height: 1.12; margin-top: calc(18 * var(--px)); max-width: calc(620 * var(--px)); }
 .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(18 * var(--px)); margin-top: calc(28 * var(--px)); }
 .shots img { width: 100%; height: auto; border-radius: calc(16 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); }
+.game-presskit { display: grid; grid-template-columns: calc((100% - 40 * var(--px)) * .4) 1fr; column-gap: calc(40 * var(--px)); align-items: start; padding-top: calc(30 * var(--px)); }
+.game-presskit__art { margin: calc(8 * var(--px)) 0 0; }
+.game-presskit__frame { display: block; overflow: hidden; background: var(--white); border-radius: calc(16 * var(--px)); border: calc(2 * var(--px)) solid var(--ink); box-shadow: calc(5 * var(--px)) calc(5 * var(--px)) 0 rgba(30, 29, 29, .28); transition: transform var(--dur-base) var(--ease-pop), box-shadow var(--dur-base); }
+.game-presskit__frame img { width: 100%; height: auto; }
+@media (any-hover: hover) { .game-presskit__frame:hover { transform: rotate(-1deg) scale(1.02); box-shadow: calc(7 * var(--px)) calc(7 * var(--px)) 0 rgba(30, 29, 29, .28); } }
+.game-presskit__caption { display: flex; flex-wrap: wrap; align-items: center; gap: calc(14 * var(--px)); margin-top: calc(18 * var(--px)); }
+.game-presskit__down { transform: rotate(90deg); }
+.game-presskit__meta, .game-presskit__note { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(15 * var(--px)); letter-spacing: .02em; }
+.game-presskit__lead { max-width: none; }
+.game-presskit .facts { margin-top: calc(22 * var(--px)); font-size: calc(16.5 * var(--px)); gap: calc(4 * var(--px)); }
+.game-presskit__desc { margin-top: calc(22 * var(--px)); font-size: calc(17.2 * var(--px)); max-width: calc(520 * var(--px)); display: grid; gap: calc(12 * var(--px)); }
+.game-presskit__note { margin-top: calc(22 * var(--px)); }
 
 .news { padding-top: calc(45 * var(--px)); flex: 1 0 auto; }
 .news__empty { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(24 * var(--px)); color: var(--grey); padding: calc(60 * var(--px)) 0; text-align: center; }
@@ -696,6 +708,8 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
   .game-about__title { font-size: 34px; }
   .game-about__lead { font-size: 19px; }
   .shots { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .game-presskit { grid-template-columns: 1fr; row-gap: 24px; padding-top: 10px; }
+  .game-presskit__desc { max-width: none; }
 
   .news { padding-top: 30px; }
   .timeline::before { left: 7px; top: 44px; bottom: 105px; width: 10px; }
