@@ -5,8 +5,8 @@
     transform-origin: center;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    will-change: transform;
   }
+  .fl__hit { fill: none; pointer-events: all; }
   @keyframes float-b {
     0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
     35%      { transform: translate(-1.8px, -3.25px) rotate(-4deg); }
