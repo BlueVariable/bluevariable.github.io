@@ -431,15 +431,18 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .team__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(40 * var(--px)); max-width: calc(1100 * var(--px)); margin-inline: auto; padding-inline: calc(20 * var(--px)); }
 .member { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .member__art { height: calc(112 * var(--px)); width: auto; max-width: 100%; margin-bottom: calc(10 * var(--px)); transition: transform var(--dur-base) var(--ease-pop); }
-@media (any-hover: hover) { .member:hover .member__art { transform: rotate(-4deg) scale(1.05); } }
+@media (any-hover: hover) { .member:hover .member__art, .member:focus-within .member__art { transform: rotate(-4deg) scale(1.05); } }
 .member__name { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: calc(46 * var(--px)); line-height: .83; letter-spacing: .02em; }
 .member__role { font-family: var(--font-hand); font-weight: 400; text-transform: uppercase; font-size: calc(19.5 * var(--px)); line-height: 1; letter-spacing: .02em; color: var(--role-color, var(--blue)); margin-top: calc(8 * var(--px)); }
 .member__bio, .member__faves { font-family: var(--font-text); font-weight: 400; font-size: calc(17.2 * var(--px)); line-height: 1.1; max-width: calc(290 * var(--px)); }
 .member__bio { margin-top: calc(16 * var(--px)); }
 .member__faves { margin-top: calc(16 * var(--px)); }
 @media (any-hover: hover) {
+  .member { --boil: .35; }
+  .member__art { animation: decor-boil .45s steps(1) infinite; }
+  .member:hover .member__art, .member:focus-within .member__art { animation: none; }
   .member__bio, .member__faves { opacity: 0; transform: translateY(calc(8 * var(--px))); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-pop); }
-  .member:hover .member__bio, .member:hover .member__faves { opacity: 1; transform: none; }
+  .member:hover .member__bio, .member:hover .member__faves, .member:focus-within .member__bio, .member:focus-within .member__faves { opacity: 1; transform: none; }
   .member:hover .member__faves { transition-delay: 60ms; }
 }
 
