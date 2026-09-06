@@ -343,6 +343,7 @@ html.is-navigating .site-footer__wrap { visibility: hidden; transition: visibili
 @media (any-hover: hover) { .socials a:hover { transform: translateY(-3px) rotate(-6deg); } }
 .socials a:active { transform: scale(.88); transition-duration: var(--dur-quick); }
 .socials .icon { width: calc(28 * var(--px)); height: calc(28 * var(--px)); }
+.socials__handle { font-family: var(--font-hand); font-weight: 400; font-size: calc(17 * var(--px)); line-height: 1; letter-spacing: .02em; color: var(--ink); margin-left: calc(4 * var(--px)); }
 .socials--menu { gap: 22px; }
 .socials--menu a { width: 36px; height: 36px; color: var(--cream); }
 .socials--menu .icon { width: 30px; height: 30px; }
