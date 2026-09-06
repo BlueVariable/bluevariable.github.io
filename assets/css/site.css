@@ -477,15 +477,14 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
 .game-presskit__print img { width: 100%; height: auto; display: block; }
 .game-presskit__print::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: url("../img/decor/paper.webp") center top / 100% auto repeat-y;
   mix-blend-mode: multiply; opacity: .62;
 }
 .game-presskit__caption { display: flex; flex-wrap: wrap; align-items: center; gap: calc(14 * var(--px)); margin-top: calc(18 * var(--px)); }
 .game-presskit__down { transform: rotate(90deg); }
 .game-presskit__meta, .game-presskit__note { font-family: var(--font-hand); text-transform: uppercase; font-size: calc(15 * var(--px)); letter-spacing: .02em; }
 .game-presskit__lead { max-width: none; }
-.game-presskit .facts { margin-top: calc(22 * var(--px)); font-size: calc(16.5 * var(--px)); gap: calc(4 * var(--px)); }
-.game-presskit__desc { margin-top: calc(22 * var(--px)); font-size: calc(17.2 * var(--px)); max-width: calc(520 * var(--px)); display: grid; gap: calc(12 * var(--px)); }
+.game-presskit .facts { margin-top: calc(22 * var(--px)); font-size: calc(15.6 * var(--px)); gap: calc(4 * var(--px)); }
+.game-presskit__desc { margin-top: calc(22 * var(--px)); font-size: calc(15.6 * var(--px)); max-width: calc(520 * var(--px)); display: grid; gap: calc(12 * var(--px)); }
 .game-presskit__note { margin-top: calc(22 * var(--px)); }
 
 .news { padding-top: calc(45 * var(--px)); flex: 1 0 auto; }
