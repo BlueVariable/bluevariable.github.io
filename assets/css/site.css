@@ -171,7 +171,7 @@ html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor
 .brand, .site-nav, .tagline, .nav-toggle { pointer-events: auto; }
 .brand { position: absolute; left: calc(31 * var(--px)); top: 0; height: 100%; display: grid; align-items: center; justify-items: start; transition: left var(--dur-base) var(--ease-pop); }
 .brand__full, .brand__compact { grid-area: 1 / 1; height: auto; transition: opacity var(--dur-base), scale var(--dur-base) var(--ease-pop); }
-.brand__full { width: calc(140 * var(--px)); }
+.brand__full { width: calc(120 * var(--px)); }
 .brand__compact { width: calc(70 * var(--px)); opacity: 0; scale: .8; }
 .site-nav {
   position: absolute; left: calc(294 * var(--px)); top: 0; height: 100%;
@@ -639,7 +639,6 @@ html.header-compact .page-wipe { top: calc(var(--header-compact-h) - var(--tear-
   .hero__art { width: 100%; margin-top: 14px; }
   .hero__cta { margin-top: 18px; }
 
-  .about, .team, .contact, .presskit { min-height: 0; display: block; }
   .about { padding: 28px 0 40px; }
   .about__wrap { flex-direction: column; gap: 22px; min-height: 0; }
   .about__mark { width: 56%; max-width: 240px; }
