@@ -357,7 +357,7 @@ html.splash-pending .splash {
 html.splash-pending .splash.is-done { opacity: 0; pointer-events: none; }
 html.splash-pending .splash:not(.is-done) ~ .site-header__layer, html.splash-pending .splash:not(.is-done) ~ .site-footer .site-footer__wrap { visibility: hidden; }
 .splash__logo { position: absolute; inset: 0; display: grid; place-items: center; }
-.splash__logo svg { width: min(70vmin, 540px); height: auto; }
+.splash__logo svg { width: min(88vmin, 780px); height: auto; }
 .splash__pop {
   position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%;
   background: var(--blue); transform: scale(0); will-change: transform;
