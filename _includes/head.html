@@ -26,6 +26,9 @@
 <link rel="preload" href="{{ '/assets/fonts/darumadrop-one-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ '/assets/fonts/londrina-solid-900-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ '/assets/fonts/urbanist-800-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+{%- if page.nav == 'about' or page.nav == 'contact' %}
+<link rel="preload" href="{{ '/assets/fonts/glacial-indifference-regular.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+{%- endif %}
 <style>html{background:#f7f3ed}</style>
 <link rel="stylesheet" href="{{ '/assets/css/tears.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
